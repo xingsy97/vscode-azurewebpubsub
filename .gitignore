@@ -69,4 +69,4 @@ dist
 stats.json
 
 .idea
-vscode-azurespringcloud.iml
+api
