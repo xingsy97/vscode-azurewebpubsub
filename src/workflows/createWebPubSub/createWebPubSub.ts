@@ -7,18 +7,18 @@ import { ext } from "../../extensionVariables";
 import * as utils from "../../utils";
 import { createActivityContext } from "../../utils";
 import { CreateWebPubSubStep } from "./CreateWebPubSubStep";
-import { IWebPubSubCreationWizardContext } from "./IWebPubSubCreationWizardContext";
-import { InputWebPubSubNameStep, InputWebPubSubSkuTierListStep, InputWebPubSubSkuUnitCountListStep } from "./InputWebPubSubNameStep";
+import { ICreateWebPubSubContext } from "./ICreateWebPubSubContext";
+import { InputWebPubSubKindListStep, InputWebPubSubNameStep, InputWebPubSubSkuTierListStep, InputWebPubSubSkuUnitCountListStep } from "./InputWebPubSubNameStep";
 
 export async function helloWorld(context: IActionContext): Promise<void> {
-    context.ui.showWarningMessage("hello ZZZ");
+    context.ui.showWarningMessage("hello");
 }
 
 export async function createWebPubSub(context: IActionContext, node?: { subscription: AzureSubscription }): Promise<void> {
     const tdp = ext.rgApiV2.resources.azureResourceTreeDataProvider;
     const subscription = node?.subscription ?? await subscriptionExperience(context, tdp);
 
-    const wizardContext: IWebPubSubCreationWizardContext = {
+    const wizardContext: ICreateWebPubSubContext = {
         ...context,
         ...createSubscriptionContext(subscription),
         ...(await createActivityContext()),
@@ -33,9 +33,10 @@ export async function createWebPubSub(context: IActionContext, node?: { subscrip
 
     const title: string = utils.localize('createWebPubSub', "Create Web PubSub");
 
-    const promptSteps: AzureWizardPromptStep<IWebPubSubCreationWizardContext>[] = [
-        new InputWebPubSubNameStep(),
+    const promptSteps: AzureWizardPromptStep<ICreateWebPubSubContext>[] = [
         new ResourceGroupListStep(),
+        new InputWebPubSubNameStep(),
+        new InputWebPubSubKindListStep(),
         new InputWebPubSubSkuTierListStep(),
         new InputWebPubSubSkuUnitCountListStep(),
     ];
@@ -43,7 +44,7 @@ export async function createWebPubSub(context: IActionContext, node?: { subscrip
     const subContext = createSubscriptionContext(subscription);
     const client: WebPubSubManagementClient = createAzureClient([context, subContext], WebPubSubManagementClient);
 
-    const executeSteps: AzureWizardExecuteStep<IWebPubSubCreationWizardContext>[] = [
+    const executeSteps: AzureWizardExecuteStep<ICreateWebPubSubContext>[] = [
         new VerifyProvidersStep([webPubSubProvider]),
         // new ResourceGroupCreateStep<IWebPubSubCreationWizardContext>(),
         new CreateWebPubSubStep(client),
@@ -52,7 +53,7 @@ export async function createWebPubSub(context: IActionContext, node?: { subscrip
     LocationListStep.addProviderForFiltering(wizardContext, webPubSubProvider, webPubSubId);
     LocationListStep.addStep(wizardContext, promptSteps);
 
-    const wizard: AzureWizard<IWebPubSubCreationWizardContext> = new AzureWizard(wizardContext, {
+    const wizard: AzureWizard<ICreateWebPubSubContext> = new AzureWizard(wizardContext, {
         title,
         promptSteps,
         executeSteps,

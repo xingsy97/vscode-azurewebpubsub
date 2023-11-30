@@ -12,6 +12,8 @@
     "azureWebPubSub.common.edit": "Edit",
     "azureWebPubSub.webPubSub.create": "Create Web PubSub",
     "azureWebPubSub.webPubSub.delete": "Delete Web PubSub",
+    "azureWebPubSub.hub.create": "Create Web PubSub hub",
+    "azureWebPubSub.hub.delete": "Delete Web PubSub hub",
     "azureWebPubSub.webPubSub.createInPortal": "Create Azure Web PubSub in Portal",
     "azureWebPubSub.webPubSub.create.info": "Create a Azure Web PubSub resource in Portal.",
     "azureWebPubSub.webPubSub.openPublicEndpoint": "Access Public Endpoint",

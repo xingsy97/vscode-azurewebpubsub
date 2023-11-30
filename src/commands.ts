@@ -4,8 +4,8 @@
 import { CommandCallback, IActionContext, IParsedError, openUrl, parseError, registerCommandWithTreeNodeUnwrapping, registerErrorHandler, registerReportIssueCommand } from '@microsoft/vscode-azext-utils';
 import { instrumentOperation } from 'vscode-extension-telemetry-wrapper';
 import { showError } from './utils';
+import { createHub } from './workflows/createHub/createHub';
 import { createWebPubSub, helloWorld } from './workflows/createWebPubSub/createWebPubSub';
-import { deleteWebPubSub } from './workflows/deleteWebPubSub/deleteWebPubSub';
 
 export function registerCommands(): void {
     registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.createInPortal', createServiceInportalWebPubSub);
@@ -13,9 +13,11 @@ export function registerCommands(): void {
     registerErrorHandler(c => c.errorHandling.suppressReportIssue = true);
     registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.helloWorld', helloWorld);
     registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.create', createWebPubSub);
-    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.delete', deleteWebPubSub);
+    // registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.delete', deleteWebPubSub);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.hub.create', createHub);
+    // registerCommandWithTelemetryWrapper('azureWebPubSub.hub.delete', );
     // registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.restart', restartWebPubSub);
-    registerReportIssueCommand('webPubSub.reportIssue');
+    registerReportIssueCommand('azureWebPubSub.reportIssue');
 }
 
 function registerCommandWithTelemetryWrapper(commandId: string, callback: CommandCallback): void {

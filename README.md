@@ -1,12 +1,6 @@
 # Azure Web PubSub for Visual Studio Code (Preview)
 
-<!-- region exclude-from-marketplace -->
 
-[![Version](https://img.shields.io/visual-studio-marketplace/v/vscjava.vscode-azurespringcloud.png)](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-azurespringcloud)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/vscjava.vscode-azurespringcloud.png)](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-azurespringcloud)
-[![Build Status](https://dev.azure.com/mseng/VSJava/_apis/build/status/microsoft.vscode-azurespringcloud?branchName=main)](https://dev.azure.com/mseng/VSJava/_build/latest?definitionId=10839&branchName=main)
-
-<!-- endregion exclude-from-marketplace -->
 
 [Azure Web PubSub](https://azure.microsoft.com/services/web-pubsub/) provides a managed service that lets you run microservices on Azure using Spring Boot with no code changes. Use the Azure Web PubSub extension for VS Code to quickly create, manage and deploy apps to an Azure Web PubSub instance.
 

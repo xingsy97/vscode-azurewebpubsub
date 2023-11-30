@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { WebPubSubSkuTier } from "@azure/arm-webpubsub";
+import { KnownServiceKind, ServiceKind, WebPubSubSkuTier } from "@azure/arm-webpubsub";
 import { AzureNameStep, AzureWizardPromptStep, IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
 import { localize } from "../../utils";
-import { IWebPubSubCreationWizardContext } from "./IWebPubSubCreationWizardContext";
+import { ICreateWebPubSubContext } from "./ICreateWebPubSubContext";
 
-export class InputWebPubSubNameStep extends AzureNameStep<IWebPubSubCreationWizardContext> {
+export class InputWebPubSubNameStep extends AzureNameStep<ICreateWebPubSubContext> {
     //refer: https://dev.azure.com/msazure/AzureDMSS/_git/AzureDMSS-PortalExtension?path=%2Fsrc%2FSpringCloudPortalExt%2FClient%2FCreateApplication%2FCreateApplicationBlade.ts&version=GBdev&line=463&lineEnd=463&lineStartColumn=25&lineEndColumn=55&lineStyle=plain&_a=contents
     private static readonly VALID_NAME_REGEX: RegExp = /^[a-z][a-z0-9-]{2,30}[a-z0-9]$/;
 
@@ -16,17 +16,17 @@ export class InputWebPubSubNameStep extends AzureNameStep<IWebPubSubCreationWiza
         this.validateWebPubSubName = this.validateWebPubSubName.bind(this);
     }
 
-    public async prompt(context: IWebPubSubCreationWizardContext): Promise<void> {
+    public async prompt(context: ICreateWebPubSubContext): Promise<void> {
         const prompt: string = localize('webPubSubNamePrompt', 'Enter a globally unique name for the new Web PubSub resource.');
         context.webPubSubName = (await context.ui.showInputBox({ prompt, validateInput: this.validateWebPubSubName })).trim();
         return Promise.resolve(undefined);
     }
 
-    public shouldPrompt(context: IWebPubSubCreationWizardContext): boolean {
+    public shouldPrompt(context: ICreateWebPubSubContext): boolean {
         return true;
     }
 
-    protected async isRelatedNameAvailable(_context: IWebPubSubCreationWizardContext, _name: string): Promise<boolean> {
+    protected async isRelatedNameAvailable(_context: ICreateWebPubSubContext, _name: string): Promise<boolean> {
         return false;
     }
 
@@ -61,13 +61,13 @@ const skuTierToName = (tier: WebPubSubSkuTier) => {
     }
 }
 
-export class InputWebPubSubSkuTierListStep extends AzureWizardPromptStep<IWebPubSubCreationWizardContext> {
-    public async prompt(context: IWebPubSubCreationWizardContext): Promise<void> {
-        const placeHolder: string = localize("sku", "Select a SKU");
+export class InputWebPubSubSkuTierListStep extends AzureWizardPromptStep<ICreateWebPubSubContext> {
+    public async prompt(context: ICreateWebPubSubContext): Promise<void> {
+        const placeHolder: string = localize("tier", "Select price tier for Web PubSub");
         const picks: IAzureQuickPickItem<WebPubSubSkuTier>[] = [
-            { label: "Free", data: "Free" },
-            { label: "Standard", data: "Standard" },
-            { label: "Premium", data: "Premium" },
+            { label: "Free", data: "Free", description: "This is free tier desc", detail: "This is free tier detail" },
+            { label: "Standard", data: "Standard", description: "This is standard tier desc", detail: "This is standard tier detail" },
+            { label: "Premium", data: "Premium", description: "This is premium tier desc", detail: "This is premium tier detail" },
         ];
         const tier = (await context.ui.showQuickPick(picks, {
             placeHolder,
@@ -77,15 +77,15 @@ export class InputWebPubSubSkuTierListStep extends AzureWizardPromptStep<IWebPub
         context.Sku!.sku!.name = skuTierToName(tier);
     }
 
-    public shouldPrompt(context: IWebPubSubCreationWizardContext): boolean {
+    public shouldPrompt(context: ICreateWebPubSubContext): boolean {
         return true;
     }
 }
 
 const paidUnitCountList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
-export class InputWebPubSubSkuUnitCountListStep extends AzureWizardPromptStep<IWebPubSubCreationWizardContext> {
-    public async prompt(context: IWebPubSubCreationWizardContext): Promise<void> {
+export class InputWebPubSubSkuUnitCountListStep extends AzureWizardPromptStep<ICreateWebPubSubContext> {
+    public async prompt(context: ICreateWebPubSubContext): Promise<void> {
         const placeHolder: string = localize("unit count", "Select a unit count");
         var picks: IAzureQuickPickItem<number>[] = [];
         switch (context.Sku!.sku!.tier) {
@@ -108,19 +108,29 @@ export class InputWebPubSubSkuUnitCountListStep extends AzureWizardPromptStep<IW
         })).data;
     }
 
-    public shouldPrompt(context: IWebPubSubCreationWizardContext): boolean {
+    public shouldPrompt(context: ICreateWebPubSubContext): boolean {
         return true;
     }
 }
 
-import { VerifyProvidersStep } from "@microsoft/vscode-azext-azureutils";
-import { type ISubscriptionActionContext } from "@microsoft/vscode-azext-utils";
+export class InputWebPubSubKindListStep extends AzureWizardPromptStep<ICreateWebPubSubContext> {
+    public async prompt(context: ICreateWebPubSubContext): Promise<void> {
+        const placeHolder: string = localize("kind", "Select resource kind");
+        const picks: IAzureQuickPickItem<ServiceKind>[] = [
+            { label: "Web PubSub", data: KnownServiceKind.WebPubSub, detail: "Supports the native Web PubSub API and provides SDKs in various languages" },
+            { label: "SocketIO", data: KnownServiceKind.SocketIO, detail: "Supports Socket.IO protocols and compatible with Socket.IO client and server SDKs" }
+        ];
+        const kind = (await context.ui.showQuickPick(picks, {
+            placeHolder,
+            suppressPersistence: true
+        })).data;
+        context.kind = kind;
+    }
 
-/**
- * Use to obtain a `VerifyProvidersStep` that registers all known container app providers to the user's subscription
- */
-export function getVerifyProvidersStep<T extends ISubscriptionActionContext>(): VerifyProvidersStep<T> {
-    return new VerifyProvidersStep<T>([
-        "Microsoft.SignalRService/WebPubSub",
-    ]);
+    public shouldPrompt(context: ICreateWebPubSubContext): boolean {
+        return true;
+    }
 }
+
+
+

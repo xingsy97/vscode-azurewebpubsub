@@ -5,8 +5,8 @@
 
 import { getResourceGroupFromId } from "@microsoft/vscode-azext-azureutils";
 import { AzureWizard, createSubscriptionContext, type IActionContext } from "@microsoft/vscode-azext-utils";
+import { WebPubSubItem } from "src/tree/WebPubSubItem";
 import { ext } from "../../extensionVariables";
-import { WebPubSubItem } from "../../model";
 import { createActivityContext } from "../../utils";
 import { localize } from "../../utils/localize";
 import { pickWebPubSub } from "../../utils/pickitem/ItemPicker";

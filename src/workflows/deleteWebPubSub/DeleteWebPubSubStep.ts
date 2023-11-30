@@ -6,7 +6,7 @@
 import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-utils";
 import { type Progress } from "vscode";
 import { ext } from "../../extensionVariables";
-import { createWebPubSubHubsAPIClient } from "../../model";
+import { createWebPubSubHubsAPIClient } from "../../tree";
 import { localize } from "../../utils/localize";
 import { IDeleteWebPubSubContext } from "./IDeleteWebPubSubContext";
 

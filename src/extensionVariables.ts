@@ -4,7 +4,7 @@
 import { IAzExtOutputChannel, IExperimentationServiceAdapter, TreeElementStateManager } from "@microsoft/vscode-azext-utils";
 import { AzureResourcesExtensionApi } from "@microsoft/vscode-azureresources-api";
 import { ExtensionContext } from "vscode";
-import { HubsBranchDataProvider } from "./model";
+import { HubsBranchDataProvider } from "./tree";
 
 /**
  * Namespace for common variables used throughout the extension. They must be initialized in the activate() method of extension.ts

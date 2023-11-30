@@ -6,7 +6,7 @@
 import { ContextValueQuickPickStep, QuickPickAzureSubscriptionStep, QuickPickGroupStep, runQuickPickWizard, type AzureResourceQuickPickWizardContext, type AzureWizardPromptStep, type IActionContext, type QuickPickWizardContext } from "@microsoft/vscode-azext-utils";
 import { AzExtResourceType, type ResourceGroupsTreeDataProvider } from "@microsoft/vscode-azureresources-api";
 import { ext } from "../../extensionVariables";
-import { WebPubSubItem } from "../../model";
+import { WebPubSubItem } from "../../tree/WebPubSubItem";
 import { localize } from "../../utils/localize";
 import { type PickItemOptions } from "./PickItemOptions";
 

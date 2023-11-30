@@ -5,9 +5,9 @@ import { WebPubSubManagementClient } from "@azure/arm-webpubsub";
 import { AzureWizardExecuteStep } from "@microsoft/vscode-azext-utils";
 import { Progress } from "vscode";
 import { localize, nonNullProp } from "../../utils";
-import { IWebPubSubCreationWizardContext } from "./IWebPubSubCreationWizardContext";
+import { ICreateWebPubSubContext } from "./ICreateWebPubSubContext";
 
-export class CreateWebPubSubStep extends AzureWizardExecuteStep<IWebPubSubCreationWizardContext> {
+export class CreateWebPubSubStep extends AzureWizardExecuteStep<ICreateWebPubSubContext> {
     public priority: number = 135;
     private readonly client: WebPubSubManagementClient;
 
@@ -16,7 +16,7 @@ export class CreateWebPubSubStep extends AzureWizardExecuteStep<IWebPubSubCreati
         this.client = client;
     }
 
-    public async execute(context: IWebPubSubCreationWizardContext, progress: Progress<{ message?: string; increment?: number }>): Promise<void> {
+    public async execute(context: ICreateWebPubSubContext, progress: Progress<{ message?: string; increment?: number }>): Promise<void> {
         const message: string = localize('creatingNewWebPubSub', 'Creating new WebPubSub "{0}"...', context.webPubSubName);
         progress.report({ message });
         const webPubSubName: string = nonNullProp(context, 'webPubSubName');
@@ -25,12 +25,13 @@ export class CreateWebPubSubStep extends AzureWizardExecuteStep<IWebPubSubCreati
             webPubSubName as string,
             {
                 sku: context.Sku?.sku,
-                location: context.location ?? context.resourceGroup?.location,
+                kind: context.kind,
+                location: context.location ?? context.resourceGroup?.location!,
             }
         );
     }
 
-    public shouldExecute(context: IWebPubSubCreationWizardContext): boolean {
+    public shouldExecute(context: ICreateWebPubSubContext): boolean {
         return true;
     }
 }

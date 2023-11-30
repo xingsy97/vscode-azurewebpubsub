@@ -4,45 +4,39 @@
 'use strict';
 
 import { registerAzureUtilsExtensionVariables } from '@microsoft/vscode-azext-azureutils';
-import { TreeElementStateManager, createAzExtOutputChannel, createExperimentationService, registerUIExtensionVariables } from '@microsoft/vscode-azext-utils';
-import { AzureResourcesExtensionApi, getAzureResourcesExtensionApi } from '@microsoft/vscode-azureresources-api';
+import { IActionContext, TreeElementStateManager, callWithTelemetryAndErrorHandling, createAzExtOutputChannel, createExperimentationService, registerUIExtensionVariables } from '@microsoft/vscode-azext-utils';
+import { getAzureResourcesExtensionApi } from '@microsoft/vscode-azureresources-api';
 import * as vscode from 'vscode';
-import { dispose as disposeTelemetryWrapper, initialize, instrumentOperation } from 'vscode-extension-telemetry-wrapper';
 import { registerCommands } from './commands';
 import { ext } from './extensionVariables';
-import { HubsBranchDataProvider } from './model';
-import { getAiKey, getExtensionId, getExtensionVersion, loadPackageInfo } from './utils';
+import { HubsBranchDataProvider } from './tree';
 
-export async function activateInternal(context: vscode.ExtensionContext, _perfStats: { loadStartTime: number; loadEndTime: number }, ignoreBundle?: boolean): Promise<void> {
+export async function activate(context: vscode.ExtensionContext, perfStats: { loadStartTime: number; loadEndTime: number }, ignoreBundle?: boolean): Promise<void> {
+    // the entry point for vscode.dev is this activate, not main.js, so we need to instantiate perfStats here
+    // the perf stats don't matter for vscode because there is no main file to load-- we may need to see if we can track the download time
+    perfStats ||= { loadStartTime: Date.now(), loadEndTime: Date.now() };
     ext.context = context;
     ext.ignoreBundle = ignoreBundle;
-    ext.outputChannel = createAzExtOutputChannel('Azure Web PubSub', ext.prefix);
+    ext.outputChannel = createAzExtOutputChannel('Azure Container Apps', ext.prefix);
     context.subscriptions.push(ext.outputChannel);
 
     registerUIExtensionVariables(ext);
     registerAzureUtilsExtensionVariables(ext);
 
-    await loadPackageInfo(context);
-    // Usage data statistics.
-    if (getAiKey()) {
-        initialize(getExtensionId(), getExtensionVersion(), getAiKey(), { firstParty: true });
-    }
-    instrumentOperation('activation', async () => {
+    await callWithTelemetryAndErrorHandling('containerApps.activate', async (activateContext: IActionContext) => {
+        activateContext.telemetry.properties.isActivationEvent = 'true';
+        activateContext.telemetry.measurements.mainFileLoad = (perfStats.loadEndTime - perfStats.loadStartTime) / 1000;
+
         registerCommands();
-        const rgApiProvider: AzureResourcesExtensionApi = await getAzureResourcesExtensionApi(context, '2.0.0');
-        if (rgApiProvider) {
-            ext.experimentationService = await createExperimentationService(context);
-            ext.state = new TreeElementStateManager();
-            ext.rgApiV2 = await getAzureResourcesExtensionApi(context, '2.0.0');
-            ext.branchDataProvider = new HubsBranchDataProvider();
-            // ext.rgApiV2.resources.registerAzureResourceBranchDataProvider(AzExtResourceType.WebPubSub, ext.branchDataProvider);
-            ext.rgApiV2.resources.registerAzureResourceBranchDataProvider("WebPubSub" as any, ext.branchDataProvider);
-        } else {
-            throw new Error('Could not find the Azure Resource Groups extension');
-        }
-    })();
+        ext.experimentationService = await createExperimentationService(context);
+        ext.state = new TreeElementStateManager();
+        ext.rgApiV2 = await getAzureResourcesExtensionApi(context, '2.0.0');
+        ext.branchDataProvider = new HubsBranchDataProvider();
+        // ext.rgApiV2.resources.registerAzureResourceBranchDataProvider(AzExtResourceType.ContainerAppsEnvironment, ext.branchDataProvider);
+        ext.rgApiV2.resources.registerAzureResourceBranchDataProvider("WebPubSub" as any, ext.branchDataProvider);
+    });
 }
 
-export async function deactivateInternal(): Promise<void> {
-    await disposeTelemetryWrapper();
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+export function deactivate(): void {
 }

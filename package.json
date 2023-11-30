@@ -96,6 +96,12 @@
                 "title": "%azureWebPubSub.common.restart%",
                 "category": "Azure Web PubSub",
                 "icon": "$(debug-restart)"
+            },
+            {
+                "command": "azureWebPubSub.hub.create",
+                "title": "%azureWebPubSub.hub.create%",
+                "category": "Azure Web PubSub",
+                "icon": "$(add)"
             }
         ],
         "menus": {
@@ -161,7 +167,7 @@
     },
     "dependencies": {
         "@azure/arm-resources": "^5.0.1",
-        "@azure/arm-webpubsub": "^1.1.0",
+        "@azure/arm-webpubsub": "^2.0.0-beta.2",
         "@azure/container-registry": "1.0.0-beta.5",
         "@azure/core-rest-pipeline": "1.10.3",
         "@azure/storage-blob": "^12.4.1",
