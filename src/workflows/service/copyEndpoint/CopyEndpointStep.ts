@@ -8,14 +8,13 @@ import * as vscode from 'vscode';
 import { env, window, type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
 import { createWebPubSubHubsAPIClient } from "../../../tree";
-import { createEndpointFromHostName } from "../../../utils/createUrl";
 import { localize } from "../../../utils/localize";
-import { IPickWebPubSubContext } from "../../common/IPickWebPubSubContext";
+import { ICopyEndpointContext } from "./ICopyEndpointContext";
 
-export class CopyEndpointStep extends AzureWizardExecuteStep<IPickWebPubSubContext> {
+export class CopyEndpointStep extends AzureWizardExecuteStep<ICopyEndpointContext> {
     public priority: number = 110;
 
-    public async execute(context: IPickWebPubSubContext, progress: Progress<{ message?: string | undefined; increment?: number | undefined }>): Promise<void> {
+    public async execute(context: ICopyEndpointContext, progress: Progress<{ message?: string | undefined; increment?: number | undefined }>): Promise<void> {
         const client = await createWebPubSubHubsAPIClient([context, context.subscription!]);
 
         const restarting: string = localize('copyingEndpoint', 'This may take several seconds...');
@@ -28,12 +27,11 @@ export class CopyEndpointStep extends AzureWizardExecuteStep<IPickWebPubSubConte
             );
         };
         try {
-            const hostName = (await (client.webPubSub.get(context.resourceGroupName, context.webPubSubName))).hostName
-            if (hostName === undefined) {
+            if (context.endpoint === undefined) {
                 window.showErrorMessage(localize('copyEndpointError', `Failed to copy endpoint of ${context.webPubSubName}.`));
             }
             else {
-                env.clipboard.writeText(createEndpointFromHostName(hostName));
+                env.clipboard.writeText(context.endpoint);
                 vscode.window.showInformationMessage(`Copied Endpoint of ${context.webPubSubName} to Clipboard`)
             }
         } catch (error) {
@@ -49,7 +47,7 @@ export class CopyEndpointStep extends AzureWizardExecuteStep<IPickWebPubSubConte
         ext.outputChannel.appendLog(copied);
     }
 
-    public shouldExecute(context: IPickWebPubSubContext): boolean {
+    public shouldExecute(context: ICopyEndpointContext): boolean {
         return !!context.webPubSubName && !!context.resourceGroupName;
     }
 }

@@ -8,33 +8,35 @@ import { ext } from "../../../extensionVariables";
 import { WebPubSubItem } from "../../../tree/WebPubSubItem";
 import * as utils from "../../../utils";
 import { createActivityContext } from "../../../utils";
+import { createEndpointFromHostName } from "../../../utils/createUrl";
 import { localize } from "../../../utils/localize";
 import { pickWebPubSub } from "../../../utils/pickitem/pickWebPubSub";
-import { IPickWebPubSubContext } from "../../common/IPickWebPubSubContext";
-import { CopyEndpointStep } from "./CopyEndpointStep";
+import { CheckHealthStep } from "./CheckHealthStep";
+import { ICheckHealthContext } from "./ICheckHealthContext";
 
-export async function copyEndpoint(context: IActionContext, node?: WebPubSubItem): Promise<void> {
+export async function checkHealth(context: IActionContext, node?: WebPubSubItem): Promise<void> {
     const { subscription, webPubSub } = node ?? await pickWebPubSub(context, {
-        title: localize('copyEndpoint', 'Copy Endpoint'),
+        title: localize('checkHealth', 'Check Web PubSub Health'),
     });
 
-    const wizardContext: IPickWebPubSubContext = {
+    const wizardContext: ICheckHealthContext = {
         ...context,
         ...await createActivityContext(),
         subscription: createSubscriptionContext(subscription),
         webPubSubName: webPubSub.name,
-        resourceGroupName: webPubSub.resourceGroup
+        resourceGroupName: webPubSub.resourceGroup,
+        endpoint: webPubSub.hostName !== undefined ? createEndpointFromHostName(webPubSub.hostName!) : undefined
     };
 
-    const wizard: AzureWizard<IPickWebPubSubContext> = new AzureWizard(wizardContext, {
-        title: localize('copyEndpoint', 'Copy Endpoint of "{0}"', webPubSub.name),
+    const wizard: AzureWizard<ICheckHealthContext> = new AzureWizard(wizardContext, {
+        title: localize('checkHealth', 'Check Health of "{0}"', webPubSub.name),
         promptSteps: [],
-        executeSteps: [new CopyEndpointStep()]
+        executeSteps: [new CheckHealthStep()]
     });
 
     await wizard.prompt();
-    wizardContext.activityTitle = utils.localize('copyEndpoint', 'Copy Endpoint of "{0}"', wizardContext.webPubSubName);
-    await ext.state.runWithTemporaryDescription(webPubSub.id, "Retrieving Endpoint...", async () => {
+    wizardContext.activityTitle = utils.localize('checkHealth', 'Check Health of "{0}"', wizardContext.webPubSubName);
+    await ext.state.runWithTemporaryDescription(webPubSub.id, "Checking...", async () => {
         await wizard.execute();
     });
 

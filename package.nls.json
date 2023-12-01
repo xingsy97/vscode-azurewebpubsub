@@ -10,6 +10,7 @@
     "azureWebPubSub.webPubSub.openLiveTraceTool": "Open Live Trace Tool",
     "azureWebPubSub.webPubSub.copyConnectionString": "Copy Service Connection String",
     "azureWebPubSub.webPubSub.copyEndpoint": "Copy Service Endpoint",
+    "azureWebPubSub.webPubSub.checkHealth": "Check Service Health",
     "azureWebPubSub.hub.create": "Create Hub",
     "azureWebPubSub.hub.delete": "Delete Hub",
     "azureWebPubSub.webPubSub.createInPortal": "Create Web PubSub Service in Portal",

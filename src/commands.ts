@@ -8,13 +8,14 @@ import { instrumentOperation } from 'vscode-extension-telemetry-wrapper';
 import { showError } from './utils';
 import { createHub } from './workflows/hub/create/createHub';
 import { deleteHub } from './workflows/hub/delete/deleteHub';
+import { checkHealth } from './workflows/service/checkHealth/checkHealth';
+import { copyConnectionString } from './workflows/service/copyConnectionString/copyConnectionString';
+import { copyEndpoint } from './workflows/service/copyEndpoint/copyEndpoint';
 import { createService } from './workflows/service/create/createService';
 import { deleteService } from './workflows/service/delete/deleteService';
+import { openLiveTraceTool } from './workflows/service/openLiveTraceTool/openLiveTraceTool';
 import { restartWebPubSub } from './workflows/service/restart/restartWebPubSub';
-import { copyConnectionString } from './workflows/trivial/copyConnectionString/copyConnectionString';
-import { copyEndpoint } from './workflows/trivial/copyEndpoint/copyEndpoint';
 import { helloWorld } from "./workflows/trivial/helloWorld";
-import { openLiveTraceTool } from './workflows/trivial/openLiveTraceTool/openLiveTraceTool';
 
 export function registerCommands(): void {
     registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.createInPortal', createServiceInportalWebPubSub);
@@ -26,6 +27,7 @@ export function registerCommands(): void {
     registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.copyConnectionString', copyConnectionString);
     registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.copyEndpoint', copyEndpoint);
     registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.openLiveTraceTool', openLiveTraceTool);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.checkHealth', checkHealth);
     registerCommandWithTelemetryWrapper('azureWebPubSub.hub.create', createHub);
     registerCommandWithTelemetryWrapper('azureWebPubSub.hub.delete', deleteHub);
     registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.restart', restartWebPubSub);
