@@ -1,5 +1,5 @@
-import { IPickWebPubSubContext } from "../../common/IPickWebPubSubContext";
+import { IPickServiceContext } from "../../common/IPickServiceContext";
 
-export interface ICheckHealthContext extends IPickWebPubSubContext {
+export interface ICheckHealthContext extends IPickServiceContext {
     endpoint?: string;
 }

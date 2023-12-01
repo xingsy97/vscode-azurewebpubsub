@@ -2,7 +2,7 @@ import { EventListener } from "@azure/arm-webpubsub";
 import { TreeElementBase, createContextValue } from "@microsoft/vscode-azext-utils";
 import { ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
 import * as vscode from 'vscode';
-import { treeUtils } from "../..";
+import { ThemeIcon } from "vscode";
 import { EventListenerItem } from "./EventListenerItem";
 
 
@@ -23,6 +23,14 @@ export class EventListenersItem implements TreeElementBase {
         return createContextValue(values);
     }
 
+    private get description(): string {
+        return `${this.eventListeners.length} Listeners`;
+    }
+
+    private get collapsibleState(): vscode.TreeItemCollapsibleState {
+        return this.eventListeners.length > 0 ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.None;
+    }
+
     async getChildren(): Promise<EventListenerItem[]> {
         const result: EventListenerItem[] = [];
         for (let i = 0; i < this.eventListeners.length; i++) {
@@ -34,10 +42,10 @@ export class EventListenersItem implements TreeElementBase {
     getTreeItem(): vscode.TreeItem {
         return {
             label: "Event Listeners",
-            iconPath: treeUtils.getIconPath('azure-web-pubsub'),
+            iconPath: new ThemeIcon("list-ordered"),
             contextValue: this.contextValue,
-            collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
-            description: `${this.eventListeners.length} Listeners`,
+            collapsibleState: this.collapsibleState,
+            description: this.description
         };
     }
 }

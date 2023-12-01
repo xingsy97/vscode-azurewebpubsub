@@ -11,7 +11,7 @@ import { getAzureResourcesExtensionApi } from '@microsoft/vscode-azureresources-
 import * as vscode from 'vscode';
 import { registerCommands } from './commands';
 import { ext } from './extensionVariables';
-import { HubsBranchDataProvider } from './tree';
+import { HubsBranchDataProvider } from "./tree/HubsBranchDataProvider";
 
 export async function activate(context: vscode.ExtensionContext, perfStats: { loadStartTime: number; loadEndTime: number }, ignoreBundle?: boolean): Promise<void> {
     // the entry point for vscode.dev is this activate, not main.js, so we need to instantiate perfStats here

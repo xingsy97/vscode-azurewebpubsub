@@ -4,18 +4,18 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-utils";
+import { createWebPubSubHubsAPIClient } from "src/utils/createControlPlaneClient";
 import * as vscode from 'vscode';
 import { window, type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
-import { createWebPubSubHubsAPIClient } from "../../../tree";
 import { createEndpointFromHostName, createLiveTraceToolUrl } from "../../../utils/createUrl";
 import { localize } from "../../../utils/localize";
-import { IPickWebPubSubContext } from "../../common/IPickWebPubSubContext";
+import { IPickServiceContext } from "../../common/IPickServiceContext";
 
-export class OpenLiveTraceToolStep extends AzureWizardExecuteStep<IPickWebPubSubContext> {
+export class OpenLiveTraceToolStep extends AzureWizardExecuteStep<IPickServiceContext> {
     public priority: number = 110;
 
-    public async execute(context: IPickWebPubSubContext, progress: Progress<{ message?: string | undefined; increment?: number | undefined }>): Promise<void> {
+    public async execute(context: IPickServiceContext, progress: Progress<{ message?: string | undefined; increment?: number | undefined }>): Promise<void> {
         const client = await createWebPubSubHubsAPIClient([context, context.subscription!]);
 
         const restarting: string = localize('openingLiveTraceTool', 'This may take several seconds...');
@@ -54,7 +54,7 @@ export class OpenLiveTraceToolStep extends AzureWizardExecuteStep<IPickWebPubSub
         ext.outputChannel.appendLog(copied);
     }
 
-    public shouldExecute(context: IPickWebPubSubContext): boolean {
+    public shouldExecute(context: IPickServiceContext): boolean {
         return !!context.webPubSubName && !!context.resourceGroupName;
     }
 }

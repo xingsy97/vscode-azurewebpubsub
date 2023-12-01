@@ -175,6 +175,11 @@
                 },
                 {
                     "command": "azureWebPubSub.hub.delete",
+                    "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubHubsItem/i",
+                    "group": "1@1"
+                },
+                {
+                    "command": "azureWebPubSub.hub.delete",
                     "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubHubItem/i",
                     "group": "1@1"
                 }

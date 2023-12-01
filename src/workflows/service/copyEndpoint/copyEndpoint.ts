@@ -5,17 +5,17 @@
 
 import { AzureWizard, createSubscriptionContext, type IActionContext } from "@microsoft/vscode-azext-utils";
 import { ext } from "../../../extensionVariables";
-import { WebPubSubItem } from "../../../tree/WebPubSubItem";
+import { ServiceItem } from "../../../tree/service/ServiceItem";
 import * as utils from "../../../utils";
 import { createActivityContext } from "../../../utils";
 import { createEndpointFromHostName } from "../../../utils/createUrl";
 import { localize } from "../../../utils/localize";
-import { pickWebPubSub } from "../../../utils/pickitem/pickWebPubSub";
+import { pickService } from "../../../utils/pickitem/pickService";
 import { CopyEndpointStep } from "./CopyEndpointStep";
 import { ICopyEndpointContext } from "./ICopyEndpointContext";
 
-export async function copyEndpoint(context: IActionContext, node?: WebPubSubItem): Promise<void> {
-    const { subscription, webPubSub } = node ?? await pickWebPubSub(context, {
+export async function copyEndpoint(context: IActionContext, node?: ServiceItem): Promise<void> {
+    const { subscription, webPubSub } = node ?? await pickService(context, {
         title: localize('copyEndpoint', 'Copy Endpoint'),
     });
 

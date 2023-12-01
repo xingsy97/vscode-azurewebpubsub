@@ -8,17 +8,17 @@ import { createAzureClient } from "@microsoft/vscode-azext-azureutils";
 import { AzureWizard, IActionContext, createSubscriptionContext } from "@microsoft/vscode-azext-utils";
 import { AzureSubscription } from "@microsoft/vscode-azureresources-api";
 import { ext } from "../../../extensionVariables";
-import { WebPubSubModel } from "../../../tree";
+import { WebPubSubModel } from "../../../tree/models";
 import * as utils from "../../../utils";
 import { createActivityContext } from "../../../utils";
 import { localize } from "../../../utils/localize";
-import { pickWebPubSub } from "../../../utils/pickitem/pickWebPubSub";
+import { pickService } from "../../../utils/pickitem/pickService";
 import { CreateHubStep } from "./CreateHubStep";
 import { ICreateHubContext } from "./ICreateHubContext";
 import { InputHubNameStep } from "./InputHubNameStep";
 
 export async function createHub(context: IActionContext, node?: { subscription: AzureSubscription, webPubSub: WebPubSubModel }): Promise<void> {
-    const { subscription, webPubSub } = node ?? await pickWebPubSub(context, {
+    const { subscription, webPubSub } = node ?? await pickService(context, {
         title: localize('deleteWebPubSub', 'Delete Web PubSub'),
     });
 

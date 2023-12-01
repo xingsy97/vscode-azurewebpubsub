@@ -3,8 +3,8 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { KnownServiceKind, ServiceKind, WebPubSubSkuTier } from "@azure/arm-webpubsub";
-import { AzureNameStep, AzureWizardPromptStep, IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import { WebPubSubSkuTier } from "@azure/arm-webpubsub";
+import { AzureNameStep } from "@microsoft/vscode-azext-utils";
 import { localize } from "../../../utils";
 import { ICreateServiceContext } from "./ICreateServiceContext";
 
@@ -54,7 +54,7 @@ export class InputServiceNameStep extends AzureNameStep<ICreateServiceContext> {
     }
 }
 
-const skuTierToName = (tier: WebPubSubSkuTier) => {
+export const getSkuTierFromSkuName = (tier: WebPubSubSkuTier) => {
     switch (tier) {
         case "Free": return "Free_F1";
         case "Standard": return "Standard_S1";
@@ -62,77 +62,3 @@ const skuTierToName = (tier: WebPubSubSkuTier) => {
         default: throw new Error("Invalid sku tier");
     }
 }
-
-export class InputWebPubSubSkuTierListStep extends AzureWizardPromptStep<ICreateServiceContext> {
-    public async prompt(context: ICreateServiceContext): Promise<void> {
-        const placeHolder: string = localize("tier", "Select price tier for Web PubSub");
-        const picks: IAzureQuickPickItem<WebPubSubSkuTier>[] = [
-            { label: "Free", data: "Free", description: "This is free tier desc", detail: "This is free tier detail" },
-            { label: "Standard", data: "Standard", description: "This is standard tier desc", detail: "This is standard tier detail" },
-            { label: "Premium", data: "Premium", description: "This is premium tier desc", detail: "This is premium tier detail" },
-        ];
-        const tier = (await context.ui.showQuickPick(picks, {
-            placeHolder,
-            suppressPersistence: true
-        })).data;
-        context.Sku!.sku!.tier = tier;
-        context.Sku!.sku!.name = skuTierToName(tier);
-    }
-
-    public shouldPrompt(context: ICreateServiceContext): boolean {
-        return true;
-    }
-}
-
-const paidUnitCountList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-
-export class InputWebPubSubSkuUnitCountListStep extends AzureWizardPromptStep<ICreateServiceContext> {
-    public async prompt(context: ICreateServiceContext): Promise<void> {
-        const placeHolder: string = localize("unit count", "Select a unit count");
-        var picks: IAzureQuickPickItem<number>[] = [];
-        switch (context.Sku!.sku!.tier) {
-            case "Free":
-                picks.push({ label: "1", data: 1 });
-                break;
-            case "Standard":
-                paidUnitCountList.forEach(element => { picks.push({ label: element.toString(), data: element }); });
-                break;
-            case "Premium":
-                paidUnitCountList.forEach(element => { picks.push({ label: element.toString(), data: element }); });
-                break;
-            default:
-                throw new Error("Invalid sku tier");
-        }
-
-        context.Sku!.sku!.capacity = (await context.ui.showQuickPick(picks, {
-            placeHolder,
-            suppressPersistence: true
-        })).data;
-    }
-
-    public shouldPrompt(context: ICreateServiceContext): boolean {
-        return true;
-    }
-}
-
-export class InputWebPubSubKindListStep extends AzureWizardPromptStep<ICreateServiceContext> {
-    public async prompt(context: ICreateServiceContext): Promise<void> {
-        const placeHolder: string = localize("kind", "Select resource kind");
-        const picks: IAzureQuickPickItem<ServiceKind>[] = [
-            { label: "Web PubSub", data: KnownServiceKind.WebPubSub, detail: "Supports the native Web PubSub API and provides SDKs in various languages" },
-            { label: "SocketIO", data: KnownServiceKind.SocketIO, detail: "Supports Socket.IO protocols and compatible with Socket.IO client and server SDKs" }
-        ];
-        const kind = (await context.ui.showQuickPick(picks, {
-            placeHolder,
-            suppressPersistence: true
-        })).data;
-        context.kind = kind;
-    }
-
-    public shouldPrompt(context: ICreateServiceContext): boolean {
-        return true;
-    }
-}
-
-
-

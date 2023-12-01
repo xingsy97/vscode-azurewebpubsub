@@ -13,7 +13,10 @@ import * as utils from "../../../utils";
 import { createActivityContext } from "../../../utils";
 import { CreateServiceStep } from "./CreateServiceStep";
 import { ICreateServiceContext } from "./ICreateServiceContext";
-import { InputServiceNameStep, InputWebPubSubKindListStep, InputWebPubSubSkuTierListStep, InputWebPubSubSkuUnitCountListStep } from "./InputServiceNameStep";
+import { InputSerivceSkuUnitCountStep } from "./InputSerivceSkuUnitCountStep";
+import { InputServiceKindStep } from "./InputServiceKindStep";
+import { InputServiceNameStep } from "./InputServiceNameStep";
+import { InputServiceSkuTierStep } from "./InputServiceSkuTierStep";
 
 export async function createService(context: IActionContext, node?: { subscription: AzureSubscription }): Promise<void> {
     const subscription = node?.subscription ?? await subscriptionExperience(context, ext.rgApiV2.resources.azureResourceTreeDataProvider);
@@ -36,9 +39,9 @@ export async function createService(context: IActionContext, node?: { subscripti
     const promptSteps: AzureWizardPromptStep<ICreateServiceContext>[] = [
         new ResourceGroupListStep(),
         new InputServiceNameStep(),
-        new InputWebPubSubKindListStep(),
-        new InputWebPubSubSkuTierListStep(),
-        new InputWebPubSubSkuUnitCountListStep(),
+        new InputServiceKindStep(),
+        new InputServiceSkuTierStep(),
+        new InputSerivceSkuUnitCountStep(),
     ];
 
     const subContext = createSubscriptionContext(subscription);

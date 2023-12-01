@@ -6,7 +6,7 @@
 import { IAzExtOutputChannel, IExperimentationServiceAdapter, TreeElementStateManager } from "@microsoft/vscode-azext-utils";
 import { AzureResourcesExtensionApi } from "@microsoft/vscode-azureresources-api";
 import { ExtensionContext } from "vscode";
-import { HubsBranchDataProvider } from "./tree";
+import { HubsBranchDataProvider } from "./tree/HubsBranchDataProvider";
 import { HubSettingFileSystem } from "./workflows/hub/update/HubSettingFileSystem";
 
 /**

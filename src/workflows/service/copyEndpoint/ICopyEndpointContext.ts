@@ -1,5 +1,5 @@
-import { IPickWebPubSubContext } from "../../common/IPickWebPubSubContext";
+import { IPickServiceContext } from "../../common/IPickServiceContext";
 
-export interface ICopyEndpointContext extends IPickWebPubSubContext {
+export interface ICopyEndpointContext extends IPickServiceContext {
     endpoint?: string;
 }

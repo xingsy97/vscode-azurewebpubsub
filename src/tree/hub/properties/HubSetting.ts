@@ -1,8 +1,9 @@
 import { WebPubSubHubProperties } from "@azure/arm-webpubsub";
-import { TreeElementBase, createContextValue } from "@microsoft/vscode-azext-utils";
+import { TreeElementBase, createContextValue, createGenericElement } from "@microsoft/vscode-azext-utils";
 import { ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
 import * as vscode from 'vscode';
-import { treeUtils } from "../..";
+import { ThemeIcon } from "vscode";
+import { localize } from "../../../utils/localize";
 import { EventHandlersItem } from "./EventHandlersItem";
 import { EventListenersItem } from "./EventListenersItem";
 
@@ -31,6 +32,13 @@ export class HubSettingItem implements TreeElementBase {
 
     async getChildren(): Promise<TreeElementBase[]> {
         const result: TreeElementBase[] = [];
+        const element = createGenericElement({
+            label: localize('allowAnnoyClients', 'Anonymous Clients Permission'),
+            description: this.HubSettings.anonymousConnectPolicy,
+            contextValue: "hubAllowAnnoymousClients",
+            iconPath: new ThemeIcon(this.HubSettings.anonymousConnectPolicy === "allow" ? "check" : "error"),
+        })
+        result.push(element);
         result.push(new EventHandlersItem(this.HubSettings.eventHandlers ?? []));
         result.push(new EventListenersItem(this.HubSettings.eventListeners ?? []));
         return result;
@@ -39,9 +47,9 @@ export class HubSettingItem implements TreeElementBase {
     getTreeItem(): vscode.TreeItem {
         return {
             label: "Hub Settings",
-            iconPath: treeUtils.getIconPath('azure-web-pubsub'),
+            iconPath: new ThemeIcon("settings-gear"),
             contextValue: this.contextValue,
-            collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+            collapsibleState: vscode.TreeItemCollapsibleState.Expanded,
         };
     }
 }

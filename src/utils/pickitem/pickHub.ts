@@ -9,7 +9,7 @@ import { ext } from "../../extensionVariables";
 import { HubItem } from "../../tree/hub/HubItem";
 import { localize } from "../../utils/localize";
 import { type PickItemOptions } from "./PickItemOptions";
-import { getPickWebPubSubSteps } from "./pickWebPubSub";
+import { getPickServiceSteps } from "./pickService";
 
 export async function pickHub(context: IActionContext, options?: PickItemOptions): Promise<HubItem> {
     const promptSteps: AzureWizardPromptStep<QuickPickWizardContext>[] = [...getPickHubSteps()];
@@ -35,7 +35,7 @@ export function getPickHubSteps(skipIfOne: boolean = false, hubName?: string | R
     }
 
     return [
-        ...getPickWebPubSubSteps(),
+        ...getPickServiceSteps(),
         new ContextValueQuickPickStep(ext.branchDataProvider,
             {
                 contextValueFilter: { include: hubFilter },

@@ -6,12 +6,12 @@
 import { AzureWizardPromptStep, DialogResponses, nonNullValue, UserCancelledError } from '@microsoft/vscode-azext-utils';
 import { settingUtils } from '../../../utils';
 import { localize } from "../../../utils/localize";
-import { IPickWebPubSubContext } from '../../common/IPickWebPubSubContext';
+import { IPickServiceContext } from '../../common/IPickServiceContext';
 
-export class RestartWebPubSubConfirmationStep extends AzureWizardPromptStep<IPickWebPubSubContext> {
+export class RestartWebPubSubConfirmationStep extends AzureWizardPromptStep<IPickServiceContext> {
     private webPubSubName: string | undefined;
 
-    public async prompt(context: IPickWebPubSubContext): Promise<void> {
+    public async prompt(context: IPickServiceContext): Promise<void> {
         this.webPubSubName = context.webPubSubName;
 
         const restartConfirmation: string | undefined = settingUtils.getSetting('restartConfirmation');

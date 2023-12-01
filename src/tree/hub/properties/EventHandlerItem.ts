@@ -2,7 +2,7 @@ import { EventHandler } from "@azure/arm-webpubsub";
 import { TreeElementBase, createContextValue } from "@microsoft/vscode-azext-utils";
 import { ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
 import * as vscode from 'vscode';
-import { treeUtils } from "../..";
+import { MarkdownString, ThemeIcon } from "vscode";
 
 
 export class EventHandlerItem implements TreeElementBase {
@@ -26,13 +26,19 @@ export class EventHandlerItem implements TreeElementBase {
         return [];
     }
 
+    private get toolTip(): MarkdownString {
+        return new MarkdownString(`**Url Template**: ${this.eventHandler.urlTemplate}\n\n\
+**System Events**: ${this.eventHandler.systemEvents}\n\n\
+**User Event Pattern**: ${this.eventHandler.userEventPattern}`)
+    }
+
     getTreeItem(): vscode.TreeItem {
         return {
             label: `Event Handler ${this.order}`,
-            iconPath: treeUtils.getIconPath('azure-web-pubsub'),
+            iconPath: new ThemeIcon("send"),
             contextValue: this.contextValue,
-            collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
-            tooltip: `Url Template: ${this.eventHandler.urlTemplate}`
+            collapsibleState: vscode.TreeItemCollapsibleState.None,
+            tooltip: this.toolTip
         };
     }
 }

@@ -1,16 +1,18 @@
-import { WebPubSubResource } from "@azure/arm-webpubsub";
+import { KnownServiceKind, WebPubSubResource } from "@azure/arm-webpubsub";
 import { getResourceGroupFromId, uiUtils } from "@microsoft/vscode-azext-azureutils";
-import { IActionContext, TreeElementBase, callWithTelemetryAndErrorHandling, createContextValue, createSubscriptionContext, nonNullValueAndProp } from "@microsoft/vscode-azext-utils";
-import { AzureResource, AzureSubscription } from '@microsoft/vscode-azureresources-api';
+import { IActionContext, TreeElementBase, TreeItemIconPath, createContextValue, createSubscriptionContext, nonNullValueAndProp } from "@microsoft/vscode-azext-utils";
+import { AzureResource, AzureSubscription, ViewPropertiesModel } from '@microsoft/vscode-azureresources-api';
 import * as vscode from 'vscode';
-import { WebPubSubModel, createWebPubSubHubsAPIClient, treeUtils } from ".";
-import { HubItem } from "./hub/HubItem";
-import { HubsItem } from "./hub/HubsItem";
+import { createWebPubSubHubsAPIClient } from "../../utils/createControlPlaneClient";
+import { HubsItem } from "../hub/HubsItem";
+import { WebPubSubModel } from "../models";
+import { treeUtils } from "../treeUtils";
+import { ServicePropertiesItem } from "./ServicePropertiesItem";
 
 
-export class WebPubSubItem implements TreeElementBase {
+export class ServiceItem implements TreeElementBase {
     static readonly contextValue: string = 'webPubSubItem';
-    static readonly contextValueRegExp: RegExp = new RegExp(WebPubSubItem.contextValue);
+    static readonly contextValueRegExp: RegExp = new RegExp(ServiceItem.contextValue);
 
     id: string;
     resourceGroup: string;
@@ -22,42 +24,47 @@ export class WebPubSubItem implements TreeElementBase {
         this.name = webPubSub.name;
     }
 
+    viewProperties: ViewPropertiesModel = {
+        data: this.webPubSub,
+        label: `Properties`
+    };
+
     private get contextValue(): string {
         const values: string[] = [];
 
         // Enable more granular tree item filtering by environment name
         values.push(nonNullValueAndProp(this.webPubSub, 'name'));
 
-        values.push(WebPubSubItem.contextValue);
+        values.push(ServiceItem.contextValue);
         return createContextValue(values);
     }
 
-    async getChildren(): Promise<HubsItem[]> {
-        const result = await callWithTelemetryAndErrorHandling('getChildren', async (context) => {
-            const hubs = await HubItem.List(context, this.subscription, this.resourceGroup, this.name, this.id);
-            return hubs
-                .map(hub => new HubItem(this.subscription, this.resourceGroup, this.name, hub))
-                .sort((a, b) => treeUtils.sortById(a, b));
-        });
+    async getChildren(): Promise<TreeElementBase[]> {
+        let childs: TreeElementBase[] = [];
+        childs.push(new HubsItem(this));
+        childs.push(new ServicePropertiesItem(this.webPubSub));
+        return childs;
+    }
 
-        return result ?? [];
+    get iconPath(): TreeItemIconPath {
+        return treeUtils.getIconPath(this.webPubSub.kind === KnownServiceKind.WebPubSub ? 'azure-web-pubsub' : 'azure-web-pubsub-socketio');
     }
 
     getTreeItem(): vscode.TreeItem {
         return {
             label: this.webPubSub.name,
             id: this.id,
-            iconPath: treeUtils.getIconPath('azure-web-pubsub'),
+            iconPath: this.iconPath,
             contextValue: this.contextValue,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
             tooltip: `${this.webPubSub.name}, ${this.webPubSub.sku?.tier} ${this.webPubSub.sku?.capacity} units, ${this.webPubSub.location}`,
         };
     }
 
-    static isWebPubSubItem(item: unknown): item is WebPubSubItem {
+    static isWebPubSubItem(item: unknown): item is ServiceItem {
         return typeof item === 'object' &&
-            typeof (item as WebPubSubItem).contextValue === 'string' &&
-            WebPubSubItem.contextValueRegExp.test((item as WebPubSubItem).contextValue);
+            typeof (item as ServiceItem).contextValue === 'string' &&
+            ServiceItem.contextValueRegExp.test((item as ServiceItem).contextValue);
     }
 
     static async List(context: IActionContext, subscription: AzureSubscription): Promise<WebPubSubResource[]> {
@@ -69,7 +76,7 @@ export class WebPubSubItem implements TreeElementBase {
     static async Get(context: IActionContext, subscription: AzureSubscription, resourceGroup: string, name: string): Promise<WebPubSubModel> {
         const subContext = createSubscriptionContext(subscription);
         const client = await createWebPubSubHubsAPIClient([context, subContext]);
-        return WebPubSubItem.CreateWebPubSubModel(await client.webPubSub.get(resourceGroup, name), name);
+        return ServiceItem.CreateWebPubSubModel(await client.webPubSub.get(resourceGroup, name), name);
     }
 
     private static CreateWebPubSubModel(webPubSub: WebPubSubResource, webPubSubname: string): WebPubSubModel {

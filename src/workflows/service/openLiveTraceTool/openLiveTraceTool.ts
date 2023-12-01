@@ -5,20 +5,20 @@
 
 import { AzureWizard, createSubscriptionContext, type IActionContext } from "@microsoft/vscode-azext-utils";
 import { ext } from "../../../extensionVariables";
-import { WebPubSubItem } from "../../../tree/WebPubSubItem";
+import { ServiceItem } from "../../../tree/service/ServiceItem";
 import * as utils from "../../../utils";
 import { createActivityContext } from "../../../utils";
 import { localize } from "../../../utils/localize";
-import { pickWebPubSub } from "../../../utils/pickitem/pickWebPubSub";
-import { IPickWebPubSubContext } from "../../common/IPickWebPubSubContext";
+import { pickService } from "../../../utils/pickitem/pickService";
+import { IPickServiceContext } from "../../common/IPickServiceContext";
 import { OpenLiveTraceToolStep } from "./OpenLiveTraceToolStep";
 
-export async function openLiveTraceTool(context: IActionContext, node?: WebPubSubItem): Promise<void> {
-    const { subscription, webPubSub } = node ?? await pickWebPubSub(context, {
+export async function openLiveTraceTool(context: IActionContext, node?: ServiceItem): Promise<void> {
+    const { subscription, webPubSub } = node ?? await pickService(context, {
         title: localize('openLiveTraceTool', 'Open LiveTrace Tool'),
     });
 
-    const wizardContext: IPickWebPubSubContext = {
+    const wizardContext: IPickServiceContext = {
         ...context,
         ...await createActivityContext(),
         subscription: createSubscriptionContext(subscription),
@@ -26,7 +26,7 @@ export async function openLiveTraceTool(context: IActionContext, node?: WebPubSu
         resourceGroupName: webPubSub.resourceGroup
     };
 
-    const wizard: AzureWizard<IPickWebPubSubContext> = new AzureWizard(wizardContext, {
+    const wizard: AzureWizard<IPickServiceContext> = new AzureWizard(wizardContext, {
         title: localize('openLiveTraceTool', 'Open LiveTrace Tool of "{0}"', webPubSub.name),
         promptSteps: [],
         executeSteps: [new OpenLiveTraceToolStep()]

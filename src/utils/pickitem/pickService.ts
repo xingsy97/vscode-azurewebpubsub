@@ -6,17 +6,17 @@
 import { ContextValueQuickPickStep, QuickPickAzureSubscriptionStep, QuickPickGroupStep, runQuickPickWizard, type AzureResourceQuickPickWizardContext, type AzureWizardPromptStep, type IActionContext, type QuickPickWizardContext } from "@microsoft/vscode-azext-utils";
 import { type ResourceGroupsTreeDataProvider } from "@microsoft/vscode-azureresources-api";
 import { ext } from "../../extensionVariables";
-import { WebPubSubItem } from "../../tree/WebPubSubItem";
-import { localize } from "../../utils/localize";
+import { ServiceItem } from "../../tree/service/ServiceItem";
+import { localize } from "../localize";
 import { type PickItemOptions } from "./PickItemOptions";
 
-export async function pickWebPubSub(context: IActionContext, options?: PickItemOptions): Promise<WebPubSubItem> {
-    const promptSteps: AzureWizardPromptStep<QuickPickWizardContext>[] = [...getPickWebPubSubSteps()];
+export async function pickService(context: IActionContext, options?: PickItemOptions): Promise<ServiceItem> {
+    const promptSteps: AzureWizardPromptStep<QuickPickWizardContext>[] = [...getPickServiceSteps()];
 
     return await runQuickPickWizard(context, { promptSteps, title: options?.title, showLoadingPrompt: options?.showLoadingPrompt });
 }
 
-export function getPickWebPubSubSteps(skipIfOne: boolean = false, webPubSubName?: string | RegExp): AzureWizardPromptStep<AzureResourceQuickPickWizardContext>[] {
+export function getPickServiceSteps(skipIfOne: boolean = false, webPubSubName?: string | RegExp): AzureWizardPromptStep<AzureResourceQuickPickWizardContext>[] {
     const tdp: ResourceGroupsTreeDataProvider = ext.rgApiV2.resources.azureResourceTreeDataProvider;
     const types = ["WebPubSub" as any];
     // const types = [AzExtResourceType.ContainerAppsEnvironment];
@@ -25,7 +25,7 @@ export function getPickWebPubSubSteps(skipIfOne: boolean = false, webPubSubName?
     if (webPubSubName) {
         webPubSubFilter = webPubSubName instanceof RegExp ? webPubSubName : new RegExp(`^${webPubSubName}$`);
     } else {
-        webPubSubFilter = WebPubSubItem.contextValueRegExp;
+        webPubSubFilter = ServiceItem.contextValueRegExp;
     }
 
     return [

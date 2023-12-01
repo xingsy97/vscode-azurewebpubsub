@@ -4,29 +4,37 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-utils";
-import { createWebPubSubHubsAPIClient } from "src/utils/createControlPlaneClient";
-import { type Progress } from "vscode";
+import * as vscode from 'vscode';
+import { env, type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
+import { createWebPubSubHubsAPIClient } from "../../../utils/createControlPlaneClient";
 import { localize } from "../../../utils/localize";
 import { IPickServiceContext } from "../../common/IPickServiceContext";
 
-export class DeleteServiceStep extends AzureWizardExecuteStep<IPickServiceContext> {
+export class CopyConnectionStringStep extends AzureWizardExecuteStep<IPickServiceContext> {
     public priority: number = 110;
 
     public async execute(context: IPickServiceContext, progress: Progress<{ message?: string | undefined; increment?: number | undefined }>): Promise<void> {
         const client = await createWebPubSubHubsAPIClient([context, context.subscription!]);
 
-        const deleting: string = localize('deletingWebPubSub', 'This may take several minutes...');
-        progress.report({ message: deleting });
+        const restarting: string = localize('copyingConnectionString', 'This may take several seconds...');
+        progress.report({ message: restarting });
 
         if (!context.webPubSubName || !context.resourceGroupName) {
             throw new Error(localize(
-                'deleteWebPubSubError',
-                `Failed to delete Web PubSub "${context.webPubSubName}", resource group "${context.resourceGroupName}"`)
+                'copyConnectionStringError',
+                `Failed to copy connection string "${context.webPubSubName}", resource group "${context.resourceGroupName}"`)
             );
         };
         try {
-            await client.webPubSub.beginDeleteAndWait(context.resourceGroupName, context.webPubSubName);
+            const connString = (await (client.webPubSub.listKeys(context.resourceGroupName, context.webPubSubName))).primaryConnectionString;
+            if (connString === undefined) {
+                vscode.window.showErrorMessage(localize('copyConnectionStringError', `Failed to copy connection string of ${context.webPubSubName}.`));
+            }
+            else {
+                env.clipboard.writeText(connString);
+                vscode.window.showInformationMessage(`Copied Connection String of ${context.webPubSubName} to Clipboard`);
+            }
         } catch (error) {
             const pError = parseError(error);
             // a 204 indicates a success, but sdk is catching it as an exception:
@@ -36,8 +44,8 @@ export class DeleteServiceStep extends AzureWizardExecuteStep<IPickServiceContex
             }
         }
 
-        const deleted: string = localize('deletedWebPubSub', 'Deleted Web PubSub "{0}".', context.webPubSubName);
-        ext.outputChannel.appendLog(deleted);
+        const copied: string = localize('copyConnectionString', 'Copied Connection String of "{0}".', context.webPubSubName);
+        ext.outputChannel.appendLog(copied);
     }
 
     public shouldExecute(context: IPickServiceContext): boolean {

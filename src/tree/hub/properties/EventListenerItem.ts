@@ -3,7 +3,7 @@ import { TreeElementBase, createContextValue } from "@microsoft/vscode-azext-uti
 import { ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
 import { HubsItem } from "src/tree/hub/HubsItem";
 import * as vscode from 'vscode';
-import { treeUtils } from "../..";
+import { MarkdownString, ThemeIcon } from "vscode";
 
 
 export class EventListenerItem implements TreeElementBase {
@@ -27,12 +27,19 @@ export class EventListenerItem implements TreeElementBase {
         return [];
     }
 
+
+    private get toolTip(): MarkdownString {
+        return new MarkdownString(`**Endpoint**: ${this.eventListener.endpoint}\n\n\
+**Filter**: ${this.eventListener.filter}`);
+    }
+
     getTreeItem(): vscode.TreeItem {
         return {
             label: `Event Listener ${this.order}`,
-            iconPath: treeUtils.getIconPath('azure-web-pubsub'),
+            iconPath: new ThemeIcon("send"),
             contextValue: this.contextValue,
-            collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+            collapsibleState: vscode.TreeItemCollapsibleState.None,
+            tooltip: this.toolTip
         };
     }
 }
