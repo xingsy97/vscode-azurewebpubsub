@@ -37,6 +37,7 @@ export class EventListenersItem implements TreeElementBase {
             iconPath: treeUtils.getIconPath('azure-web-pubsub'),
             contextValue: this.contextValue,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+            description: `${this.eventListeners.length} Listeners`,
         };
     }
 }

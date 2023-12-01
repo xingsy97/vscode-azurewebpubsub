@@ -50,7 +50,7 @@ export class WebPubSubItem implements TreeElementBase {
             iconPath: treeUtils.getIconPath('azure-web-pubsub'),
             contextValue: this.contextValue,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
-            tooltip: `Web PubSub resource ${this.webPubSub.name}`
+            tooltip: `${this.webPubSub.name}, ${this.webPubSub.sku?.tier} ${this.webPubSub.sku?.capacity} units, ${this.webPubSub.location}`,
         };
     }
 

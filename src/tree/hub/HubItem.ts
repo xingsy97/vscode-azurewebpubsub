@@ -6,10 +6,10 @@ import * as vscode from 'vscode';
 import { WebPubSubHubModel, createWebPubSubHubsAPIClient, createWebPubSubHubsClient, treeUtils } from "..";
 import { ext } from "../../../extension.bundle";
 import { createActivityContext } from "../../utils";
-import { createPortalUrl } from "../../utils/createPortalUrl";
+import { createPortalUrl } from "../../utils/createUrl";
 import { localize } from "../../utils/localize";
-import { IDeleteHubContext } from "../../workflows/deleteHub/IDeleteHubContext";
-import { DeleteWebPubSubStep } from "../../workflows/deleteWebPubSub/DeleteWebPubSubStep";
+import { IDeleteHubContext } from "../../workflows/hub/delete/IDeleteHubContext";
+import { DeleteServiceStep } from "../../workflows/service/delete/DeleteServiceStep";
 import { HubsItem } from "./HubsItem";
 import { HubSettingItem } from "./properties/HubSetting";
 
@@ -27,7 +27,7 @@ export class HubItem implements HubsItem {
 
     viewProperties: ViewPropertiesModel = {
         data: this.webPubSubHub,
-        label: this.webPubSubHub.hubName,
+        label: `${this.webPubSubHub.hubName}`,
     };
 
     portalUrl: vscode.Uri = createPortalUrl(this.subscription, this.webPubSubHub.id);
@@ -44,12 +44,6 @@ export class HubItem implements HubsItem {
     }
 
     private get description(): string | undefined {
-        // if (this.webPubSubHub.revisionsMode === KnownActiveRevisionsMode.Single && this.hasUnsavedChanges()) {
-        //     return localize('unsavedChanges', 'Unsaved changes');
-        // }
-        // if (this.webPubSubHub.provisioningState && this.webPubSubHub.provisioningState !== 'Succeeded') {
-        //     return this.webPubSubHub.provisioningState;
-        // }
         return undefined;
     }
 
@@ -71,6 +65,7 @@ export class HubItem implements HubsItem {
             contextValue: this.contextValue,
             description: this.description,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+            tooltip: `Hub ${this.webPubSubHub.hubName}`
         };
     }
 
@@ -119,7 +114,7 @@ export class HubItem implements HubsItem {
 
         const wizard: AzureWizard<IDeleteHubContext> = new AzureWizard(wizardContext, {
             promptSteps: [new DeleteConfirmationStep(confirmMessage)],
-            executeSteps: [new DeleteWebPubSubStep()]
+            executeSteps: [new DeleteServiceStep()]
         });
 
         if (!context.suppressPrompt) {

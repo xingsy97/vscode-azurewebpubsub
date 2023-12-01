@@ -38,6 +38,7 @@ export class EventHandlersItem implements TreeElementBase {
             iconPath: treeUtils.getIconPath('azure-web-pubsub'),
             contextValue: this.contextValue,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+            description: `${this.eventHandlers.length} Handlers`,
         };
     }
 }

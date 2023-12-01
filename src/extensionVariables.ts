@@ -7,7 +7,7 @@ import { IAzExtOutputChannel, IExperimentationServiceAdapter, TreeElementStateMa
 import { AzureResourcesExtensionApi } from "@microsoft/vscode-azureresources-api";
 import { ExtensionContext } from "vscode";
 import { HubsBranchDataProvider } from "./tree";
-import { HubSettingFileSystem } from "./workflows/updateHubSetting/HubSettingFileSystem";
+import { HubSettingFileSystem } from "./workflows/hub/update/HubSettingFileSystem";
 
 /**
  * Namespace for common variables used throughout the extension. They must be initialized in the activate() method of extension.ts

@@ -6,19 +6,26 @@
 import { CommandCallback, IActionContext, IParsedError, openUrl, parseError, registerCommandWithTreeNodeUnwrapping, registerErrorHandler, registerReportIssueCommand } from '@microsoft/vscode-azext-utils';
 import { instrumentOperation } from 'vscode-extension-telemetry-wrapper';
 import { showError } from './utils';
-import { createHub } from './workflows/createHub/createHub';
-import { createWebPubSub, helloWorld } from './workflows/createWebPubSub/createWebPubSub';
-import { deleteHub } from './workflows/deleteHub/deleteHub';
-import { deleteWebPubSub } from './workflows/deleteWebPubSub/deleteWebPubSub';
-import { restartWebPubSub } from './workflows/restartWebPubSub/restartWebPubSub';
+import { createHub } from './workflows/hub/create/createHub';
+import { deleteHub } from './workflows/hub/delete/deleteHub';
+import { createService } from './workflows/service/create/createService';
+import { deleteService } from './workflows/service/delete/deleteService';
+import { restartWebPubSub } from './workflows/service/restart/restartWebPubSub';
+import { copyConnectionString } from './workflows/trivial/copyConnectionString/copyConnectionString';
+import { copyEndpoint } from './workflows/trivial/copyEndpoint/copyEndpoint';
+import { helloWorld } from "./workflows/trivial/helloWorld";
+import { openLiveTraceTool } from './workflows/trivial/openLiveTraceTool/openLiveTraceTool';
 
 export function registerCommands(): void {
     registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.createInPortal', createServiceInportalWebPubSub);
     // Suppress "Report an Issue" button for all errors in favor of the command
     registerErrorHandler(c => c.errorHandling.suppressReportIssue = true);
     registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.helloWorld', helloWorld);
-    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.create', createWebPubSub);
-    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.delete', deleteWebPubSub);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.create', createService);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.delete', deleteService);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.copyConnectionString', copyConnectionString);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.copyEndpoint', copyEndpoint);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.openLiveTraceTool', openLiveTraceTool);
     registerCommandWithTelemetryWrapper('azureWebPubSub.hub.create', createHub);
     registerCommandWithTelemetryWrapper('azureWebPubSub.hub.delete', deleteHub);
     registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.restart', restartWebPubSub);
