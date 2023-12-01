@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+/*---------------------------------------------------------------------------------------------
+*  Copyright (c) Microsoft Corporation. All rights reserved.
+*  Licensed under the MIT License. See License.txt in the project root for license information.
+*--------------------------------------------------------------------------------------------*/
 
 'use strict';
 
@@ -17,13 +19,13 @@ export async function activate(context: vscode.ExtensionContext, perfStats: { lo
     perfStats ||= { loadStartTime: Date.now(), loadEndTime: Date.now() };
     ext.context = context;
     ext.ignoreBundle = ignoreBundle;
-    ext.outputChannel = createAzExtOutputChannel('Azure Container Apps', ext.prefix);
+    ext.outputChannel = createAzExtOutputChannel('Azure Web PubSub', ext.prefix);
     context.subscriptions.push(ext.outputChannel);
 
     registerUIExtensionVariables(ext);
     registerAzureUtilsExtensionVariables(ext);
 
-    await callWithTelemetryAndErrorHandling('containerApps.activate', async (activateContext: IActionContext) => {
+    await callWithTelemetryAndErrorHandling('webPubSub.activate', async (activateContext: IActionContext) => {
         activateContext.telemetry.properties.isActivationEvent = 'true';
         activateContext.telemetry.measurements.mainFileLoad = (perfStats.loadEndTime - perfStats.loadStartTime) / 1000;
 
@@ -34,6 +36,11 @@ export async function activate(context: vscode.ExtensionContext, perfStats: { lo
         ext.branchDataProvider = new HubsBranchDataProvider();
         // ext.rgApiV2.resources.registerAzureResourceBranchDataProvider(AzExtResourceType.ContainerAppsEnvironment, ext.branchDataProvider);
         ext.rgApiV2.resources.registerAzureResourceBranchDataProvider("WebPubSub" as any, ext.branchDataProvider);
+        const appResourceTree = ext.rgApiV2.resources.azureResourceTreeDataProvider;
+
+
+        // ext.hubSettingFileSystem = new HubSettingFileSystem(appResourceTree);
+        // context.subscriptions.push(vscode.workspace.registerFileSystemProvider(HubSettingFileSystem.scheme, ext.hubSettingFileSystem));
     });
 }
 

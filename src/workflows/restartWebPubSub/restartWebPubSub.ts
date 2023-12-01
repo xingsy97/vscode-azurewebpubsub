@@ -9,16 +9,16 @@ import { pickWebPubSub } from "src/utils/pickitem/pickWebPubSub";
 import { ext } from "../../extensionVariables";
 import { createActivityContext } from "../../utils";
 import { localize } from "../../utils/localize";
-import { DeleteWebPubSubConfirmationStep } from "./DeleteWebPubSubConfirmationStep";
-import { DeleteWebPubSubStep } from "./DeleteWebPubSubStep";
-import { IDeleteWebPubSubContext } from "./IDeleteWebPubSubContext";
+import { IRestartWebPubSubContext } from "./IRestartWebPubSubContext";
+import { RestartWebPubSubConfirmationStep } from "./RestartWebPubSubConfirmationStep";
+import { RestartWebPubSubStep } from "./RestartWebPubSubStep";
 
-export async function deleteWebPubSub(context: IActionContext, node?: WebPubSubItem): Promise<void> {
+export async function restartWebPubSub(context: IActionContext, node?: WebPubSubItem): Promise<void> {
     const { subscription, webPubSub } = node ?? await pickWebPubSub(context, {
         title: localize('deleteWebPubSub', 'Delete Web PubSub'),
     });
 
-    const wizardContext: IDeleteWebPubSubContext = {
+    const wizardContext: IRestartWebPubSubContext = {
         ...context,
         ...await createActivityContext(),
         subscription: createSubscriptionContext(subscription),
@@ -26,15 +26,15 @@ export async function deleteWebPubSub(context: IActionContext, node?: WebPubSubI
         webPubSubName: webPubSub.name
     };
 
-    const wizard: AzureWizard<IDeleteWebPubSubContext> = new AzureWizard(wizardContext, {
-        title: localize('deleteWebPubSub', 'Delete Web PubSub "{0}"', webPubSub.name),
-        promptSteps: [new DeleteWebPubSubConfirmationStep()],
-        executeSteps: [new DeleteWebPubSubStep()]
+    const wizard: AzureWizard<IRestartWebPubSubContext> = new AzureWizard(wizardContext, {
+        title: localize('restartWebPubSub', 'Restart Web PubSub "{0}"', webPubSub.name),
+        promptSteps: [new RestartWebPubSubConfirmationStep()],
+        executeSteps: [new RestartWebPubSubStep()]
     });
 
     await wizard.prompt();
 
-    await ext.state.showDeleting(webPubSub.id, async () => {
+    await ext.state.runWithTemporaryDescription(webPubSub.id, "Restarting...", async () => {
         await wizard.execute();
     });
 

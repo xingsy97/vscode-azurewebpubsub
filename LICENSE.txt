@@ -1,4 +1,4 @@
-    Azure Spring Apps Extension for Visual Studio Code
+    Azure Web PubSub Extension for Visual Studio Code
 
     MIT License
 

@@ -1,47 +1,42 @@
-import { WebPubSubHub, WebPubSubManagementClient } from "@azure/arm-webpubsub";
-import { createAzureClient, getResourceGroupFromId, uiUtils } from "@microsoft/vscode-azext-azureutils";
-import { AzureWizard, DeleteConfirmationStep, IActionContext, callWithTelemetryAndErrorHandling, createContextValue, createSubscriptionContext, nonNullProp, nonNullValueAndProp } from "@microsoft/vscode-azext-utils";
+import { WebPubSubHub } from "@azure/arm-webpubsub";
+import { getResourceGroupFromId, uiUtils } from "@microsoft/vscode-azext-azureutils";
+import { AzureWizard, DeleteConfirmationStep, IActionContext, TreeElementBase, callWithTelemetryAndErrorHandling, createContextValue, createSubscriptionContext, nonNullProp, nonNullValueAndProp } from "@microsoft/vscode-azext-utils";
 import { AzureSubscription, type ViewPropertiesModel } from '@microsoft/vscode-azureresources-api';
 import * as vscode from 'vscode';
-import { HubsItem, TreeElementBase, WebPubSubHubModel, createWebPubSubHubsAPIClient, createWebPubSubHubsClient, treeUtils } from ".";
-import { ext } from "../../extension.bundle";
-import { createActivityContext } from "../utils";
-import { createPortalUrl } from "../utils/createPortalUrl";
-import { localize } from "../utils/localize";
-import { DeleteWebPubSubStep } from "../workflows/deleteWebPubSub/DeleteWebPubSubStep";
-import { IDeleteWebPubSubHubWizardContext } from "../workflows/deleteWebPubSubHub/IDeleteWebPubSubHubWizardContext";
+import { WebPubSubHubModel, createWebPubSubHubsAPIClient, createWebPubSubHubsClient, treeUtils } from "..";
+import { ext } from "../../../extension.bundle";
+import { createActivityContext } from "../../utils";
+import { createPortalUrl } from "../../utils/createPortalUrl";
+import { localize } from "../../utils/localize";
+import { IDeleteHubContext } from "../../workflows/deleteHub/IDeleteHubContext";
+import { DeleteWebPubSubStep } from "../../workflows/deleteWebPubSub/DeleteWebPubSubStep";
+import { HubsItem } from "./HubsItem";
+import { HubSettingItem } from "./properties/HubSetting";
 
-export class WebPubSubHubItem implements HubsItem {
+export class HubItem implements HubsItem {
     static readonly contextValue: string = 'webPubSubHubItem';
-    static readonly contextValueRegExp: RegExp = new RegExp(WebPubSubHubItem.contextValue);
+    static readonly contextValueRegExp: RegExp = new RegExp(HubItem.contextValue);
 
+    public hubName: string;
     id: string;
 
-    private resourceGroup: string;
-    private name: string;
-
-    public get webPubSubHub(): WebPubSubHubModel {
-        return this._webPubSubHub;
-    }
-
-    constructor(public readonly subscription: AzureSubscription, private _webPubSubHub: WebPubSubHubModel) {
+    constructor(public readonly subscription: AzureSubscription, public readonly resourceGroup: string, public readonly webPubSubName: string, public readonly webPubSubHub: WebPubSubHubModel) {
         this.id = this.webPubSubHub.id;
-        this.resourceGroup = this.webPubSubHub.resourceGroup;
-        this.name = this.webPubSubHub.name;
+        this.hubName = this.webPubSubHub.hubName;
     }
 
     viewProperties: ViewPropertiesModel = {
         data: this.webPubSubHub,
-        label: this.webPubSubHub.name,
+        label: this.webPubSubHub.hubName,
     };
 
     portalUrl: vscode.Uri = createPortalUrl(this.subscription, this.webPubSubHub.id);
 
     private get contextValue(): string {
-        const values: string[] = [WebPubSubHubItem.contextValue];
+        const values: string[] = [HubItem.contextValue];
 
         // Enable more granular tree item filtering by container app name
-        values.push(nonNullValueAndProp(this.webPubSubHub, 'name'));
+        values.push(nonNullValueAndProp(this.webPubSubHub, 'hubName'));
 
         // values.push(this.webPubSubHub.revisionsMode === KnownActiveRevisionsMode.Single ? revisionModeSingleContextValue : revisionModeMultipleContextValue);
         // values.push(this.hasUnsavedChanges() ? unsavedChangesTrueContextValue : unsavedChangesFalseContextValue);
@@ -61,17 +56,7 @@ export class WebPubSubHubItem implements HubsItem {
     async getChildren(): Promise<TreeElementBase[]> {
         const result = await callWithTelemetryAndErrorHandling('getChildren', async (context) => {
             const children: TreeElementBase[] = [];
-            const client = createAzureClient([context, createSubscriptionContext(this.subscription)], WebPubSubManagementClient);
-
-
-            // if (this.webPubSubHub.revisionsMode === KnownActiveRevisionsMode.Single) {
-            //     const revision: Revision = await client.containerAppsRevisions.getRevision(this.resourceGroup, this.name, nonNullProp(this.webPubSubHub, 'latestRevisionName'));
-            //     children.push(...RevisionItem.getTemplateChildren(this.subscription, this.webPubSubHub, revision));
-            // } else {
-            //     children.push(new RevisionsItem(this.subscription, this.webPubSubHub));
-            // }
-            // children.push(new ConfigurationItem(this.subscription, this.webPubSubHub));
-            // children.push(new LogsGroupItem(this.subscription, this.webPubSubHub));
+            children.push(new HubSettingItem(this.webPubSubHub.properties));
             return children;
         });
 
@@ -81,7 +66,7 @@ export class WebPubSubHubItem implements HubsItem {
     getTreeItem(): vscode.TreeItem {
         return {
             id: this.id,
-            label: nonNullProp(this.webPubSubHub, 'name'),
+            label: nonNullProp(this.webPubSubHub, 'hubName'),
             iconPath: treeUtils.getIconPath('azure-web-pubsub-hub'),
             contextValue: this.contextValue,
             description: this.description,
@@ -89,10 +74,10 @@ export class WebPubSubHubItem implements HubsItem {
         };
     }
 
-    static isContainerAppItem(item: unknown): item is WebPubSubHubItem {
+    static isContainerAppItem(item: unknown): item is HubItem {
         return typeof item === 'object' &&
-            typeof (item as WebPubSubHubItem).contextValue === 'string' &&
-            WebPubSubHubItem.contextValueRegExp.test((item as WebPubSubHubItem).contextValue);
+            typeof (item as HubItem).contextValue === 'string' &&
+            HubItem.contextValueRegExp.test((item as HubItem).contextValue);
     }
 
     static async List(context: IActionContext, subscription: AzureSubscription, resourceGroup: string, resourceName: string, webPubSubId: string): Promise<WebPubSubHubModel[]> {
@@ -101,18 +86,18 @@ export class WebPubSubHubItem implements HubsItem {
         const hubs = client.webPubSubHubs.list(resourceGroup, resourceName);
         const hubsIter = await uiUtils.listAllIterator(hubs);
         return hubsIter.filter(hub => hub.id && hub.id.includes(webPubSubId))
-            .map(WebPubSubHubItem.CreateWebPubSubHubModel);
+            .map(HubItem.CreateWebPubSubHubModel);
     }
 
     static async Get(context: IActionContext, subscription: AzureSubscription, resourceGroup: string, resourceName: string, webPubSubHubName: string): Promise<WebPubSubHubModel> {
         const client = await createWebPubSubHubsClient(context, subscription);
-        return WebPubSubHubItem.CreateWebPubSubHubModel(await client.webPubSubHubs.get(webPubSubHubName, resourceGroup, resourceName));
+        return HubItem.CreateWebPubSubHubModel(await client.webPubSubHubs.get(webPubSubHubName, resourceGroup, resourceName));
     }
 
     static CreateWebPubSubHubModel(webPubSubHub: WebPubSubHub): WebPubSubHubModel {
         return {
             id: nonNullProp(webPubSubHub, 'id'),
-            name: nonNullProp(webPubSubHub, 'name'),
+            hubName: nonNullProp(webPubSubHub as any, 'name'),
             webPubSubId: nonNullProp(webPubSubHub, 'id'),
             resourceGroup: getResourceGroupFromId(nonNullProp(webPubSubHub, 'id')),
             ...webPubSubHub,
@@ -120,20 +105,19 @@ export class WebPubSubHubItem implements HubsItem {
     }
 
     async delete(context: IActionContext & { suppressPrompt?: boolean; }): Promise<void> {
-        const confirmMessage: string = localize('confirmDeleteWebPubSubHub', 'Are you sure you want to delete hub "{0}"?', this.name);
-        const deleteContainerApp: string = localize('deleteWebPubSubHub', 'Delete hub "{0}"', this.name);
+        const confirmMessage: string = localize('confirmDeleteWebPubSubHub', 'Are you sure you want to delete hub "{0}"?', this.hubName);
+        const deleteHub: string = localize('deleteWebPubSubHub', 'Delete hub "{0}"', this.hubName);
 
-        const wizardContext: IDeleteWebPubSubHubWizardContext = {
-            activityTitle: deleteContainerApp,
-            webPubSubHubNames: this.name,
+        const wizardContext: IDeleteHubContext = {
+            activityTitle: deleteHub,
+            webPubSubResourceName: this.webPubSubHub.webPubSubId,
             subscription: createSubscriptionContext(this.subscription),
             resourceGroupName: this.resourceGroup,
-            resourceName: this.name,
             ...context,
             ...await createActivityContext()
         };
 
-        const wizard: AzureWizard<IDeleteWebPubSubHubWizardContext> = new AzureWizard(wizardContext, {
+        const wizard: AzureWizard<IDeleteHubContext> = new AzureWizard(wizardContext, {
             promptSteps: [new DeleteConfirmationStep(confirmMessage)],
             executeSteps: [new DeleteWebPubSubStep()]
         });

@@ -6,29 +6,27 @@
 import { AzureWizardPromptStep, DialogResponses, nonNullValue, UserCancelledError } from '@microsoft/vscode-azext-utils';
 import { settingUtils } from '../../utils';
 import { localize } from "../../utils/localize";
-import { type IDeleteWebPubSubContext } from './IDeleteWebPubSubContext';
+import { IDeleteHubContext } from './IDeleteHubContext';
 
-export class DeleteWebPubSubConfirmationStep extends AzureWizardPromptStep<IDeleteWebPubSubContext> {
-    private webPubSubName: string | undefined;
+export class DeleteHubConfirmationStep extends AzureWizardPromptStep<IDeleteHubContext> {
+    private hubName?: string;
 
-    public async prompt(context: IDeleteWebPubSubContext): Promise<void> {
-        this.webPubSubName = context.webPubSubName;
-
-        const deleteEnv: string = localize('confirmDeleteWebPubSub', 'Are you sure you want to delete Web PubSub "{0}"?', this.webPubSubName);
+    public async prompt(context: IDeleteHubContext): Promise<void> {
+        this.hubName = context.hubName;
 
         const deleteConfirmation: string | undefined = settingUtils.getSetting('deleteConfirmation');
         if (deleteConfirmation === 'ClickButton') {
-            const message: string = deleteEnv;
+            const message: string = localize('confirmDeleteHub', 'Are you sure you want to delete Hub "{0}"?', this.hubName);
             await context.ui.showWarningMessage(message, { modal: true, stepName: 'confirmDelete' }, DialogResponses.deleteResponse); // no need to check result - cancel will throw error
         } else {
-            const prompt: string = localize('enterToDelete', 'Enter "{0}" to delete this Web PubSub. ', this.webPubSubName);
+            const prompt: string = localize('enterToDelete', 'Enter "{0}" to delete this hub.', this.hubName);
 
             const result: string = await context.ui.showInputBox({
                 prompt,
                 validateInput: (val: string | undefined) => this.validateInput(val, prompt)
             });
 
-            if (!this.isNameEqualToResource(result)) { // Check again just in case `validateInput` didn't prevent the input box from closing
+            if (!this.isNameEqualToHub(result)) { // Check again just in case `validateInput` didn't prevent the input box from closing
                 context.telemetry.properties.cancelStep = 'mismatchDelete';
                 throw new UserCancelledError();
             }
@@ -40,10 +38,10 @@ export class DeleteWebPubSubConfirmationStep extends AzureWizardPromptStep<IDele
     }
 
     private validateInput(val: string | undefined, prompt: string): string | undefined {
-        return this.isNameEqualToResource(val) ? undefined : prompt;
+        return this.isNameEqualToHub(val) ? undefined : prompt;
     }
 
-    private isNameEqualToResource(val: string | undefined): boolean {
-        return !!val && val.toLowerCase() === nonNullValue(this.webPubSubName).toLowerCase();
+    private isNameEqualToHub(val: string | undefined): boolean {
+        return !!val && val.toLowerCase() === nonNullValue(this.hubName).toLowerCase();
     }
 }

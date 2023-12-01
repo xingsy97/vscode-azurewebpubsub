@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+/*---------------------------------------------------------------------------------------------
+*  Copyright (c) Microsoft Corporation. All rights reserved.
+*  Licensed under the MIT License. See License.txt in the project root for license information.
+*--------------------------------------------------------------------------------------------*/
 
 import { WebPubSubManagementClient } from "@azure/arm-webpubsub";
 import { AzureWizardExecuteStep } from "@microsoft/vscode-azext-utils";
@@ -17,7 +19,7 @@ export class CreateWebPubSubStep extends AzureWizardExecuteStep<ICreateWebPubSub
     }
 
     public async execute(context: ICreateWebPubSubContext, progress: Progress<{ message?: string; increment?: number }>): Promise<void> {
-        const message: string = localize('creatingNewWebPubSub', 'Creating new WebPubSub "{0}"...', context.webPubSubName);
+        const message: string = localize('creatingNewWebPubSub', 'Creating new resource "{0}"...', context.webPubSubName);
         progress.report({ message });
         const webPubSubName: string = nonNullProp(context, 'webPubSubName');
         const response = await this.client.webPubSub.beginCreateOrUpdateAndWait(

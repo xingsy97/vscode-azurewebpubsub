@@ -1,10 +1,11 @@
 import { WebPubSubResource } from "@azure/arm-webpubsub";
-import { uiUtils } from "@microsoft/vscode-azext-azureutils";
-import { IActionContext, callWithTelemetryAndErrorHandling, createContextValue, createSubscriptionContext, nonNullValueAndProp } from "@microsoft/vscode-azext-utils";
+import { getResourceGroupFromId, uiUtils } from "@microsoft/vscode-azext-azureutils";
+import { IActionContext, TreeElementBase, callWithTelemetryAndErrorHandling, createContextValue, createSubscriptionContext, nonNullValueAndProp } from "@microsoft/vscode-azext-utils";
 import { AzureResource, AzureSubscription } from '@microsoft/vscode-azureresources-api';
 import * as vscode from 'vscode';
-import { HubsItem, TreeElementBase, WebPubSubModel, createAzureResourceModel, createWebPubSubHubsAPIClient, treeUtils } from ".";
-import { WebPubSubHubItem } from "./WebPubSubHubItem";
+import { WebPubSubModel, createWebPubSubHubsAPIClient, treeUtils } from ".";
+import { HubItem } from "./hub/HubItem";
+import { HubsItem } from "./hub/HubsItem";
 
 
 export class WebPubSubItem implements TreeElementBase {
@@ -33,9 +34,9 @@ export class WebPubSubItem implements TreeElementBase {
 
     async getChildren(): Promise<HubsItem[]> {
         const result = await callWithTelemetryAndErrorHandling('getChildren', async (context) => {
-            const hubs = await WebPubSubHubItem.List(context, this.subscription, this.resourceGroup, this.name, this.id);
+            const hubs = await HubItem.List(context, this.subscription, this.resourceGroup, this.name, this.id);
             return hubs
-                .map(ca => new WebPubSubHubItem(this.subscription, ca))
+                .map(hub => new HubItem(this.subscription, this.resourceGroup, this.name, hub))
                 .sort((a, b) => treeUtils.sortById(a, b));
         });
 
@@ -49,10 +50,11 @@ export class WebPubSubItem implements TreeElementBase {
             iconPath: treeUtils.getIconPath('azure-web-pubsub'),
             contextValue: this.contextValue,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+            tooltip: `Web PubSub resource ${this.webPubSub.name}`
         };
     }
 
-    static isManagedEnvironmentItem(item: unknown): item is WebPubSubItem {
+    static isWebPubSubItem(item: unknown): item is WebPubSubItem {
         return typeof item === 'object' &&
             typeof (item as WebPubSubItem).contextValue === 'string' &&
             WebPubSubItem.contextValueRegExp.test((item as WebPubSubItem).contextValue);
@@ -67,10 +69,19 @@ export class WebPubSubItem implements TreeElementBase {
     static async Get(context: IActionContext, subscription: AzureSubscription, resourceGroup: string, name: string): Promise<WebPubSubModel> {
         const subContext = createSubscriptionContext(subscription);
         const client = await createWebPubSubHubsAPIClient([context, subContext]);
-        return WebPubSubItem.CreateWebPubSubModel(await client.webPubSub.get(resourceGroup, name));
+        return WebPubSubItem.CreateWebPubSubModel(await client.webPubSub.get(resourceGroup, name), name);
     }
 
-    private static CreateWebPubSubModel(webPubSub: WebPubSubResource): WebPubSubModel {
-        return createAzureResourceModel(webPubSub);
+    private static CreateWebPubSubModel(webPubSub: WebPubSubResource, webPubSubname: string): WebPubSubModel {
+        if (!webPubSub.id) {
+            throw new Error(`Invalid webPubSub.id: ${webPubSub.id}`);
+        }
+        return {
+            name: webPubSubname,
+            resourceGroup: getResourceGroupFromId(webPubSub.id),
+            id: webPubSub.id,
+            ...webPubSub
+        }
+        // return createAzureResourceModel(webPubSub);
     }
 }

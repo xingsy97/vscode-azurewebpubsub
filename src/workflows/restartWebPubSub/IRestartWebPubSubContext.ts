@@ -5,7 +5,7 @@
 
 import { ExecuteActivityContext, IActionContext, ISubscriptionContext } from "@microsoft/vscode-azext-utils";
 
-export interface IDeleteWebPubSubContext extends IActionContext, ExecuteActivityContext {
+export interface IRestartWebPubSubContext extends IActionContext, ExecuteActivityContext {
     subscription?: ISubscriptionContext;
     resourceGroupName?: string;
     webPubSubName?: string;

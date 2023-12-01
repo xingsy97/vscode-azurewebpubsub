@@ -1,3 +1,8 @@
+/*---------------------------------------------------------------------------------------------
+*  Copyright (c) Microsoft Corporation. All rights reserved.
+*  Licensed under the MIT License. See License.txt in the project root for license information.
+*--------------------------------------------------------------------------------------------*/
+
 import { ResourceSku, WebPubSubManagementClient } from "@azure/arm-webpubsub";
 import { LocationListStep, ResourceGroupListStep, VerifyProvidersStep, createAzureClient } from "@microsoft/vscode-azext-azureutils";
 import { AzureWizard, AzureWizardExecuteStep, AzureWizardPromptStep, IActionContext, createSubscriptionContext, subscriptionExperience } from "@microsoft/vscode-azext-utils";
@@ -15,8 +20,7 @@ export async function helloWorld(context: IActionContext): Promise<void> {
 }
 
 export async function createWebPubSub(context: IActionContext, node?: { subscription: AzureSubscription }): Promise<void> {
-    const tdp = ext.rgApiV2.resources.azureResourceTreeDataProvider;
-    const subscription = node?.subscription ?? await subscriptionExperience(context, tdp);
+    const subscription = node?.subscription ?? await subscriptionExperience(context, ext.rgApiV2.resources.azureResourceTreeDataProvider);
 
     const wizardContext: ICreateWebPubSubContext = {
         ...context,
@@ -63,4 +67,9 @@ export async function createWebPubSub(context: IActionContext, node?: { subscrip
     await wizard.prompt();
     wizardContext.activityTitle = utils.localize('createWebPubSub', 'Create Azure Web PubSub "{0}"', wizardContext.webPubSubName);
     await wizard.execute();
+    context.ui.showWarningMessage("Successfully created Web PubSub resource. \
+You will need to: \
+1. Create a hub and configure its settings. \
+2. Start local tunnel or other tool to enable deployment or test. \n\
+Click button to create and configure a hub.")
 }

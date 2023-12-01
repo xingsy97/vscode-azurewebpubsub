@@ -1,11 +1,12 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+/*---------------------------------------------------------------------------------------------
+*  Copyright (c) Microsoft Corporation. All rights reserved.
+*  Licensed under the MIT License. See License.txt in the project root for license information.
+*--------------------------------------------------------------------------------------------*/
 
 // tslint:disable-next-line:no-require-imports no-implicit-dependencies
 import { OpenInPortalOptions } from "@microsoft/vscode-azext-azureutils";
 import { ExecuteActivityContext, IGenericTreeItemOptions, TreeItemIconPath } from "@microsoft/vscode-azext-utils";
 import { type AzureResourcesExtensionApiWithActivity } from "@microsoft/vscode-azext-utils/activity";
-import { AppResourceFilter } from "@microsoft/vscode-azext-utils/hostapi";
 import { AzureSubscription } from "@microsoft/vscode-azureresources-api";
 import * as fs from "fs";
 import * as path from 'path';
@@ -22,9 +23,9 @@ let EXTENSION_AI_KEY: string;
 
 export const localize: nls.LocalizeFunc = nls.loadMessageBundle();
 
-export const springAppsFilter: AppResourceFilter = {
-    type: 'microsoft.appplatform/spring'
-};
+// export const springAppsFilter: AppResourceFilter = {
+//     type: 'microsoft.appplatform/spring'
+// };
 
 export function wait(delay: number): Promise<void> {
     return new Promise(res => setTimeout(res, delay));

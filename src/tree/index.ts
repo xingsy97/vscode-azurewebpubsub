@@ -1,17 +1,17 @@
 import { Resource, WebPubSubHub, WebPubSubManagementClient, WebPubSubResource } from "@azure/arm-webpubsub";
-import { AzExtClientContext, createAzureClient, getResourceGroupFromId } from "@microsoft/vscode-azext-azureutils";
-import { IActionContext, TreeItemIconPath, callWithTelemetryAndErrorHandling, createSubscriptionContext, nonNullProp } from "@microsoft/vscode-azext-utils";
-import { AzureResource, AzureResourceBranchDataProvider, AzureSubscription, type ResourceModelBase, type ViewPropertiesModel } from '@microsoft/vscode-azureresources-api';
+import { AzExtClientContext, createAzureClient } from "@microsoft/vscode-azext-azureutils";
+import { IActionContext, TreeElementBase, TreeItemIconPath, callWithTelemetryAndErrorHandling, createSubscriptionContext, nonNullProp } from "@microsoft/vscode-azext-utils";
+import { AzureResource, AzureResourceBranchDataProvider, AzureSubscription } from '@microsoft/vscode-azureresources-api';
 import * as vscode from 'vscode';
 import { ext } from "../../extension.bundle";
 import { WebPubSubItem } from "./WebPubSubItem";
 
-export interface TreeElementBase extends ResourceModelBase {
-    getChildren?(): vscode.ProviderResult<TreeElementBase[]>;
-    getTreeItem(): vscode.TreeItem | Thenable<vscode.TreeItem>;
+// export interface TreeElementBase extends ResourceModelBase {
+//     getChildren?(): vscode.ProviderResult<TreeElementBase[]>;
+//     getTreeItem(): vscode.TreeItem | Thenable<vscode.TreeItem>;
 
-    viewProperties?: ViewPropertiesModel;
-}
+//     viewProperties?: ViewPropertiesModel;
+// }
 
 interface ResourceModel extends Resource {
     id: string;
@@ -21,20 +21,19 @@ interface ResourceModel extends Resource {
 
 export interface WebPubSubHubModel extends WebPubSubHub {
     id: string;
-    name: string;
+    hubName: string;
     resourceGroup: string;
     webPubSubId: string;
 }
 
-export function createAzureResourceModel<T extends Resource>(resource: T): T & ResourceModel {
-    const id = nonNullProp(resource, 'id');
-    return {
-        id,
-        name: nonNullProp(resource, 'name'),
-        resourceGroup: getResourceGroupFromId(id),
-        ...resource,
-    }
-}
+// export function createAzureResourceModel<T extends Resource>(resource: T): T & ResourceModel {
+//     return {
+//         id: nonNullProp(resource, 'id'),
+//         name: nonNullProp(resource, 'name'),
+//         resourceGroup: getResourceGroupFromId(id),
+//         ...resource,
+//     }
+// }
 
 export type WebPubSubModel = WebPubSubResource & ResourceModel;
 
@@ -44,11 +43,6 @@ export async function createWebPubSubHubsAPIClient(context: AzExtClientContext):
 
 export async function createWebPubSubHubsClient(context: IActionContext, subscription: AzureSubscription): Promise<WebPubSubManagementClient> {
     return createWebPubSubHubsAPIClient([context, createSubscriptionContext(subscription)]);
-}
-
-export interface HubsItem extends TreeElementBase {
-    subscription: AzureSubscription;
-    webPubSubHub: WebPubSubHubModel;
 }
 
 export class HubsBranchDataProvider extends vscode.Disposable implements AzureResourceBranchDataProvider<TreeElementBase> {

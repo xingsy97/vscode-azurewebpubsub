@@ -3,8 +3,11 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-export const webPubSubId = 'WebPubSub';
-export const webPubSubProvider: string = 'Microsoft.SignalRService';
-export const vscodeFolder: string = '.vscode';
-export const settingsFile: string = 'settings.json';
-export const relativeSettingsFilePath: string = `${vscodeFolder}/${settingsFile}`;
+import { ExecuteActivityContext, IActionContext, ISubscriptionContext } from "@microsoft/vscode-azext-utils";
+
+export interface IDeleteHubContext extends IActionContext, ExecuteActivityContext {
+    subscription?: ISubscriptionContext;
+    resourceGroupName?: string;
+    webPubSubResourceName?: string;
+    hubName?: string;
+}

@@ -8,25 +8,25 @@ import { type Progress } from "vscode";
 import { ext } from "../../extensionVariables";
 import { createWebPubSubHubsAPIClient } from "../../tree";
 import { localize } from "../../utils/localize";
-import { IDeleteWebPubSubContext } from "./IDeleteWebPubSubContext";
+import { IDeleteHubContext } from "./IDeleteHubContext";
 
-export class DeleteWebPubSubStep extends AzureWizardExecuteStep<IDeleteWebPubSubContext> {
+export class DeleteHubStep extends AzureWizardExecuteStep<IDeleteHubContext> {
     public priority: number = 110;
 
-    public async execute(context: IDeleteWebPubSubContext, progress: Progress<{ message?: string | undefined; increment?: number | undefined }>): Promise<void> {
+    public async execute(context: IDeleteHubContext, progress: Progress<{ message?: string | undefined; increment?: number | undefined }>): Promise<void> {
         const client = await createWebPubSubHubsAPIClient([context, context.subscription!]);
 
-        const deleting: string = localize('deletingWebPubSub', 'This may take several minutes...');
+        const deleting: string = localize('deletingHub', 'Deleting Hub ...');
         progress.report({ message: deleting });
 
-        if (!context.webPubSubName || !context.resourceGroupName) {
+        if (!context.hubName || !context.resourceGroupName || !context.webPubSubResourceName) {
             throw new Error(localize(
-                'deleteWebPubSubError',
-                `Failed to delete Web PubSub "${context.webPubSubName}", resource group "${context.resourceGroupName}"`)
+                'deleteHubError',
+                `Failed to delete Hub "${context.hubName}", resource group "${context.resourceGroupName}", webPubSubResourceName "${context.webPubSubResourceName}"`)
             );
-        };
+        }
         try {
-            await client.webPubSub.beginDeleteAndWait(context.resourceGroupName, context.webPubSubName);
+            await client.webPubSubHubs.beginDeleteAndWait(context.hubName, context.resourceGroupName, context.webPubSubResourceName);
         } catch (error) {
             const pError = parseError(error);
             // a 204 indicates a success, but sdk is catching it as an exception:
@@ -36,11 +36,12 @@ export class DeleteWebPubSubStep extends AzureWizardExecuteStep<IDeleteWebPubSub
             }
         }
 
-        const deleted: string = localize('deletedWebPubSub', 'Deleted Web PubSub "{0}".', context.webPubSubName);
+        const deleted: string = localize('deleteHub', 'Deleted Hub "{0}".', context.webPubSubResourceName);
         ext.outputChannel.appendLog(deleted);
     }
 
-    public shouldExecute(context: IDeleteWebPubSubContext): boolean {
-        return !!context.webPubSubName && !!context.resourceGroupName;
+    public shouldExecute(context: IDeleteHubContext): boolean {
+        // return !!context.resourceName && !!context.resourceGroupName;
+        return true;
     }
 }

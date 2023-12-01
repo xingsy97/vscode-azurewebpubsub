@@ -93,7 +93,7 @@
             },
             {
                 "command": "azureWebPubSub.webPubSub.restart",
-                "title": "%azureWebPubSub.common.restart%",
+                "title": "%azureWebPubSub.webPubSub.restart%",
                 "category": "Azure Web PubSub",
                 "icon": "$(debug-restart)"
             },
@@ -102,11 +102,39 @@
                 "title": "%azureWebPubSub.hub.create%",
                 "category": "Azure Web PubSub",
                 "icon": "$(add)"
+            },
+            {
+                "command": "azureWebPubSub.hub.delete",
+                "title": "%azureWebPubSub.hub.delete%",
+                "category": "Azure Web PubSub",
+                "icon": "$(remove)"
             }
         ],
         "menus": {
             "commandPalette": [],
-            "explorer/context": []
+            "explorer/context": [],
+            "view/item/context": [
+                {
+                    "command": "azureWebPubSub.webPubSub.delete",
+                    "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubItem/i",
+                    "group": "1@1"
+                },
+                {
+                    "command": "azureWebPubSub.webPubSub.restart",
+                    "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubItem/i",
+                    "group": "1@1"
+                },
+                {
+                    "command": "azureWebPubSub.hub.create",
+                    "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubItem/i",
+                    "group": "1@1"
+                },
+                {
+                    "command": "azureWebPubSub.hub.delete",
+                    "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubHubItem/i",
+                    "group": "1@1"
+                }
+            ]
         },
         "keybindings": [
             {

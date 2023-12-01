@@ -6,22 +6,20 @@
 import { AzureWizardPromptStep, DialogResponses, nonNullValue, UserCancelledError } from '@microsoft/vscode-azext-utils';
 import { settingUtils } from '../../utils';
 import { localize } from "../../utils/localize";
-import { type IDeleteWebPubSubContext } from './IDeleteWebPubSubContext';
+import { IRestartWebPubSubContext } from './IRestartWebPubSubContext';
 
-export class DeleteWebPubSubConfirmationStep extends AzureWizardPromptStep<IDeleteWebPubSubContext> {
+export class RestartWebPubSubConfirmationStep extends AzureWizardPromptStep<IRestartWebPubSubContext> {
     private webPubSubName: string | undefined;
 
-    public async prompt(context: IDeleteWebPubSubContext): Promise<void> {
+    public async prompt(context: IRestartWebPubSubContext): Promise<void> {
         this.webPubSubName = context.webPubSubName;
 
-        const deleteEnv: string = localize('confirmDeleteWebPubSub', 'Are you sure you want to delete Web PubSub "{0}"?', this.webPubSubName);
-
-        const deleteConfirmation: string | undefined = settingUtils.getSetting('deleteConfirmation');
-        if (deleteConfirmation === 'ClickButton') {
-            const message: string = deleteEnv;
-            await context.ui.showWarningMessage(message, { modal: true, stepName: 'confirmDelete' }, DialogResponses.deleteResponse); // no need to check result - cancel will throw error
+        const restartConfirmation: string | undefined = settingUtils.getSetting('restartConfirmation');
+        if (restartConfirmation === 'ClickButton') {
+            const message: string = localize('confirmRestartWebPubSub', 'Are you sure you want to restart Web PubSub "{0}"?', this.webPubSubName);
+            await context.ui.showWarningMessage(message, { modal: true, stepName: 'confirmRestart' }, DialogResponses.deleteResponse); // no need to check result - cancel will throw error
         } else {
-            const prompt: string = localize('enterToDelete', 'Enter "{0}" to delete this Web PubSub. ', this.webPubSubName);
+            const prompt: string = localize('enterToRestart', 'Enter "{0}" to restart this Web PubSub. ', this.webPubSubName);
 
             const result: string = await context.ui.showInputBox({
                 prompt,
@@ -29,7 +27,7 @@ export class DeleteWebPubSubConfirmationStep extends AzureWizardPromptStep<IDele
             });
 
             if (!this.isNameEqualToResource(result)) { // Check again just in case `validateInput` didn't prevent the input box from closing
-                context.telemetry.properties.cancelStep = 'mismatchDelete';
+                context.telemetry.properties.cancelStep = 'mismatchRestart';
                 throw new UserCancelledError();
             }
         }
