@@ -125,4 +125,4 @@ VS Code collects usage data and sends it to Microsoft to help improve our produc
 
 ## License
 
-[MIT](LICENSE.md)
+[MIT](LICENSE.txt)
