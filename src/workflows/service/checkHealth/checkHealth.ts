@@ -14,7 +14,7 @@ import { pickService } from "../../../utils/pickitem/pickService";
 import { CheckHealthStep } from "./CheckHealthStep";
 import { ICheckHealthContext } from "./ICheckHealthContext";
 
-export async function checkHealth(context: IActionContext, node?: ServiceItem): Promise<void> {
+export async function checkServiceHealth(context: IActionContext, node?: ServiceItem): Promise<void> {
     const { subscription, webPubSub } = node ?? await pickService(context, {
         title: localize('checkHealth', 'Check Web PubSub Health'),
     });

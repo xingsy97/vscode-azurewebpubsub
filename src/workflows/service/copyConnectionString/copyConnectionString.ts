@@ -13,7 +13,7 @@ import { pickService } from "../../../utils/pickitem/pickService";
 import { IPickServiceContext } from "../../common/IPickServiceContext";
 import { CopyConnectionStringStep } from "./CopyConnectionStringStep";
 
-export async function copyConnectionString(context: IActionContext, node?: ServiceItem): Promise<void> {
+export async function copyServiceConnectionString(context: IActionContext, node?: ServiceItem): Promise<void> {
     const { subscription, webPubSub } = node ?? await pickService(context, {
         title: localize('copyConnectionString', 'Copy Connection String'),
     });

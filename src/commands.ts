@@ -8,9 +8,9 @@ import { instrumentOperation } from 'vscode-extension-telemetry-wrapper';
 import { showError } from './utils';
 import { createHub } from './workflows/hub/create/createHub';
 import { deleteHub } from './workflows/hub/delete/deleteHub';
-import { checkHealth } from './workflows/service/checkHealth/checkHealth';
-import { copyConnectionString } from './workflows/service/copyConnectionString/copyConnectionString';
-import { copyEndpoint } from './workflows/service/copyEndpoint/copyEndpoint';
+import { checkServiceHealth } from './workflows/service/checkHealth/checkHealth';
+import { copyServiceConnectionString } from './workflows/service/copyConnectionString/copyConnectionString';
+import { copyServiceEndpoint } from './workflows/service/copyEndpoint/copyEndpoint';
 import { createService } from './workflows/service/create/createService';
 import { deleteService } from './workflows/service/delete/deleteService';
 import { openLiveTraceTool } from './workflows/service/openLiveTraceTool/openLiveTraceTool';
@@ -18,20 +18,21 @@ import { restartWebPubSub } from './workflows/service/restart/restartWebPubSub';
 import { helloWorld } from "./workflows/trivial/helloWorld";
 
 export function registerCommands(): void {
-    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.createInPortal', createServiceInportalWebPubSub);
-    // Suppress "Report an Issue" button for all errors in favor of the command
-    registerErrorHandler(c => c.errorHandling.suppressReportIssue = true);
-    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.helloWorld', helloWorld);
-    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.create', createService);
-    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.delete', deleteService);
-    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.copyConnectionString', copyConnectionString);
-    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.copyEndpoint', copyEndpoint);
-    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.openLiveTraceTool', openLiveTraceTool);
-    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.checkHealth', checkHealth);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.common.helloWorld', helloWorld);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.service.create', createService);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.service.createInPortal', createServiceInPortal);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.service.delete', deleteService);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.service.copyConnectionString', copyServiceConnectionString);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.service.copyEndpoint', copyServiceEndpoint);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.service.openLiveTraceTool', openLiveTraceTool);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.service.checkHealth', checkServiceHealth);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.service.restart', restartWebPubSub);
     registerCommandWithTelemetryWrapper('azureWebPubSub.hub.create', createHub);
     registerCommandWithTelemetryWrapper('azureWebPubSub.hub.delete', deleteHub);
-    registerCommandWithTelemetryWrapper('azureWebPubSub.webPubSub.restart', restartWebPubSub);
-    registerReportIssueCommand('azureWebPubSub.reportIssue');
+    // Suppress "Report an Issue" button for all errors in favor of the command
+    registerErrorHandler(c => c.errorHandling.suppressReportIssue = true);
+    registerReportIssueCommand('azureWebPubSub.common.reportIssue');
+
 }
 
 function registerCommandWithTelemetryWrapper(commandId: string, callback: CommandCallback): void {
@@ -51,7 +52,7 @@ function registerCommandWithTelemetryWrapper(commandId: string, callback: Comman
     registerCommandWithTreeNodeUnwrapping(commandId, callbackWithTroubleshooting);
 }
 
-export async function createServiceInportalWebPubSub(_context: IActionContext): Promise<void> {
+export async function createServiceInPortal(_context: IActionContext): Promise<void> {
     await openUrl('https://portal.azure.com/#create/Microsoft.AzureWebPubSub');
 }
 

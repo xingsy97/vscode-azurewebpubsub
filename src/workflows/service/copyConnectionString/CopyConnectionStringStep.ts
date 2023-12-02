@@ -4,10 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-utils";
-import { createWebPubSubHubsAPIClient } from "src/utils/createControlPlaneClient";
 import * as vscode from 'vscode';
 import { env, type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
+import { createWebPubSubHubsAPIClient } from "../../../utils/createControlPlaneClient";
 import { localize } from "../../../utils/localize";
 import { IPickServiceContext } from "../../common/IPickServiceContext";
 

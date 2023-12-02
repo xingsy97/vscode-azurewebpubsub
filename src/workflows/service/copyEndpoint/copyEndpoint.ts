@@ -14,7 +14,7 @@ import { pickService } from "../../../utils/pickitem/pickService";
 import { CopyEndpointStep } from "./CopyEndpointStep";
 import { ICopyEndpointContext } from "./ICopyEndpointContext";
 
-export async function copyEndpoint(context: IActionContext, node?: ServiceItem): Promise<void> {
+export async function copyServiceEndpoint(context: IActionContext, node?: ServiceItem): Promise<void> {
     const { subscription, webPubSub } = node ?? await pickService(context, {
         title: localize('copyEndpoint', 'Copy Endpoint'),
     });
