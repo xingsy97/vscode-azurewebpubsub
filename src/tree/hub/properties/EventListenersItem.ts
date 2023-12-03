@@ -7,7 +7,7 @@ import { EventListenerItem } from "./EventListenerItem";
 
 
 export class EventListenersItem implements TreeElementBase {
-    static readonly contextValue: string = 'eventListenersItem';
+    static readonly contextValue: string = 'webPubSubHubEventListenersItem';
     static readonly contextValueRegExp: RegExp = new RegExp(EventListenersItem.contextValue);
 
     constructor(public readonly eventListeners: EventListener[]) { }
@@ -34,7 +34,7 @@ export class EventListenersItem implements TreeElementBase {
     async getChildren(): Promise<EventListenerItem[]> {
         const result: EventListenerItem[] = [];
         for (let i = 0; i < this.eventListeners.length; i++) {
-            result.push(new EventListenerItem(this.eventListeners[i], i + 1));
+            result.push(new EventListenerItem(this.eventListeners[i], i));
         }
         return result;
     }

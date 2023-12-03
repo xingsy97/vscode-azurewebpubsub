@@ -1,29 +1,28 @@
+import { KnownWebPubSubSkuTier } from "@azure/arm-webpubsub";
 import { AzureWizardPromptStep, IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import { tierToUnitCountList } from "../../../constants";
 import { localize } from "../../../utils";
 import { ICreateServiceContext } from "./ICreateServiceContext";
 
-const paidUnitCountList = {
-    "Free": [1],
-    "Standard": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-    "Premium": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-}
-
 export class InputSerivceSkuUnitCountStep extends AzureWizardPromptStep<ICreateServiceContext> {
     public async prompt(context: ICreateServiceContext): Promise<void> {
-        const placeHolder: string = localize("selectUnitCount", "Select a unit count");
+        const placeHolder: string = localize("selectUnitCount", "Select the unit count for your service");
         var picks: IAzureQuickPickItem<number>[] = [];
-        const tier: string | undefined = context.Sku!.sku!.tier
+        if (!context.Sku || !context.Sku.sku) {
+            throw new Error("Failed to fetch sku of the service");
+        }
+        const tier: string | undefined = context.Sku.sku.tier
         switch (tier) {
-            case "Free":
-            case "Standard":
-            case "Premium":
-                paidUnitCountList[tier].forEach(element => { picks.push({ label: element.toString(), data: element }); });
+            case KnownWebPubSubSkuTier.Free:
+            case KnownWebPubSubSkuTier.Standard:
+            case KnownWebPubSubSkuTier.Premium:
+                tierToUnitCountList[tier].forEach(element => { picks.push({ label: `Unit ${element}`, data: element }); });
                 break;
             default:
-                throw new Error(`Invalid sku tier ${tier}`);
+                throw new Error(`Invalid Sku Tier ${tier}`);
         }
 
-        context.Sku!.sku!.capacity = (await context.ui.showQuickPick(picks, {
+        context.Sku.sku.capacity = (await context.ui.showQuickPick(picks, {
             placeHolder,
             suppressPersistence: true
         })).data;

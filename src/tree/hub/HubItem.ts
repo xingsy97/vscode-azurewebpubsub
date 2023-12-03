@@ -10,6 +10,7 @@ import { localize } from "../../utils/localize";
 import { IDeleteHubContext } from "../../workflows/hub/delete/IDeleteHubContext";
 import { DeleteServiceStep } from "../../workflows/service/delete/DeleteServiceStep";
 import { CreateWebPubSubHubModel, WebPubSubHubModel } from "../models";
+import { ServiceItem } from "../service/ServiceItem";
 import { HubSettingItem } from "./properties/HubSetting";
 
 export class HubItem implements TreeElementBase {
@@ -19,23 +20,23 @@ export class HubItem implements TreeElementBase {
     public hubName: string;
     id: string;
 
-    constructor(public readonly subscription: AzureSubscription, public readonly resourceGroup: string, public readonly webPubSubName: string, public readonly webPubSubHub: WebPubSubHubModel) {
-        this.id = this.webPubSubHub.id;
-        this.hubName = this.webPubSubHub.hubName;
+    constructor(public readonly service: ServiceItem, public readonly hub: WebPubSubHubModel) {
+        this.id = this.hub.id;
+        this.hubName = this.hub.hubName;
     }
 
     viewProperties: ViewPropertiesModel = {
-        data: this.webPubSubHub,
-        label: `${this.webPubSubHub.hubName}`,
+        data: this.hub,
+        label: `${this.hub.hubName}`,
     };
 
-    portalUrl: vscode.Uri = createPortalUrl(this.subscription, this.webPubSubHub.id);
+    portalUrl: vscode.Uri = createPortalUrl(this.service.subscription, this.hub.id);
 
     private get contextValue(): string {
         const values: string[] = [HubItem.contextValue];
 
         // Enable more granular tree item filtering by container app name
-        values.push(nonNullValueAndProp(this.webPubSubHub, 'hubName'));
+        values.push(nonNullValueAndProp(this.hub, 'hubName'));
 
         // values.push(this.webPubSubHub.revisionsMode === KnownActiveRevisionsMode.Single ? revisionModeSingleContextValue : revisionModeMultipleContextValue);
         // values.push(this.hasUnsavedChanges() ? unsavedChangesTrueContextValue : unsavedChangesFalseContextValue);
@@ -49,7 +50,7 @@ export class HubItem implements TreeElementBase {
     async getChildren(): Promise<TreeElementBase[]> {
         const result = await callWithTelemetryAndErrorHandling('getChildren', async (context) => {
             const children: TreeElementBase[] = [];
-            children.push(new HubSettingItem(this.webPubSubHub.properties));
+            children.push(new HubSettingItem(this.hub.properties, this));
             return children;
         });
 
@@ -59,12 +60,12 @@ export class HubItem implements TreeElementBase {
     getTreeItem(): vscode.TreeItem {
         return {
             id: this.id,
-            label: `${this.webPubSubHub.hubName}`,
+            label: `${this.hub.hubName}`,
             iconPath: new ThemeIcon("inbox"),
             contextValue: this.contextValue,
             description: this.description,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
-            tooltip: `Hub ${this.webPubSubHub.hubName}`
+            tooltip: `Hub ${this.hub.hubName}`
         };
     }
 
@@ -94,9 +95,9 @@ export class HubItem implements TreeElementBase {
 
         const wizardContext: IDeleteHubContext = {
             activityTitle: deleteHub,
-            webPubSubResourceName: this.webPubSubHub.webPubSubId,
-            subscription: createSubscriptionContext(this.subscription),
-            resourceGroupName: this.resourceGroup,
+            webPubSubResourceName: this.hub.webPubSubId,
+            subscription: createSubscriptionContext(this.service.subscription),
+            resourceGroupName: this.hub.resourceGroup,
             ...context,
             ...await createActivityContext()
         };
@@ -110,9 +111,9 @@ export class HubItem implements TreeElementBase {
             await wizard.prompt();
         }
 
-        await ext.state.showDeleting(this.webPubSubHub.id, async () => {
+        await ext.state.showDeleting(this.hub.id, async () => {
             await wizard.execute();
         });
-        ext.state.notifyChildrenChanged(this.webPubSubHub.webPubSubId);
+        ext.state.notifyChildrenChanged(this.hub.webPubSubId);
     }
 }

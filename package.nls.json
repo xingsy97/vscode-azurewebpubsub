@@ -14,6 +14,8 @@
     "azureWebPubSub.service.checkHealth": "Check Service Health",
     "azureWebPubSub.hub.create": "Create Hub",
     "azureWebPubSub.hub.delete": "Delete Hub",
+    "azureWebPubSub.hub.eventHandler.create": "Create Event Handler",
+    "azureWebPubSub.hub.eventHandler.delete": "Delete Event Handler",
     "azureWebPubSub.service.createInPortal": "Create Web PubSub Service in Portal",
     "azureWebPubSub.service.createInPortal.info": "Create Web PubSub Service in Azure Portal.",
     "azureWebPubSub.service.scaleUp": "Scale Up",

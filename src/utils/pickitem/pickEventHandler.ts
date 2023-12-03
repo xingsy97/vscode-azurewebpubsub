@@ -6,13 +6,13 @@
 import { ContextValueQuickPickStep, runQuickPickWizard, type AzureResourceQuickPickWizardContext, type AzureWizardPromptStep, type IActionContext, type QuickPickWizardContext } from "@microsoft/vscode-azext-utils";
 import { type ResourceGroupsTreeDataProvider } from "@microsoft/vscode-azureresources-api";
 import { ext } from "../../extensionVariables";
-import { HubItem } from "../../tree/hub/HubItem";
+import { EventHandlerItem } from "../../tree/hub/properties/EventHandlerItem";
 import { localize } from "../../utils/localize";
 import { type PickItemOptions } from "./PickItemOptions";
-import { getPickServiceSteps } from "./pickService";
+import { getPickHubSteps } from "./pickHub";
 
-export async function pickHub(context: IActionContext, options?: PickItemOptions): Promise<HubItem> {
-    const promptSteps: AzureWizardPromptStep<QuickPickWizardContext>[] = [...getPickHubSteps()];
+export async function pickEventHandler(context: IActionContext, options?: PickItemOptions): Promise<EventHandlerItem> {
+    const promptSteps: AzureWizardPromptStep<QuickPickWizardContext>[] = [...getPickEventHandlerSteps()];
 
     return await runQuickPickWizard(context,
         {
@@ -22,29 +22,28 @@ export async function pickHub(context: IActionContext, options?: PickItemOptions
         });
 }
 
-export function getPickHubSteps(skipIfOne: boolean = false, hubName?: string | RegExp): AzureWizardPromptStep<AzureResourceQuickPickWizardContext>[] {
+export function getPickEventHandlerSteps(skipIfOne: boolean = false): AzureWizardPromptStep<AzureResourceQuickPickWizardContext>[] {
     const tdp: ResourceGroupsTreeDataProvider = ext.rgApiV2.resources.azureResourceTreeDataProvider;
     // const types = [AzExtResourceType.ContainerAppsEnvironment];
     const types = ["WebPubSub"];
 
-    let hubFilter: RegExp | undefined;
-    if (hubName) {
-        hubFilter = hubName instanceof RegExp ? hubName : new RegExp(`^${hubName}$`);
-    } else {
-        hubFilter = HubItem.contextValueRegExp;
-    }
+    let eventHandlerFilter: RegExp | undefined;
+    // if (hubName) {
+    //     hubFilter = hubName instanceof RegExp ? hubName : new RegExp(`^${hubName}$`);
+    // } else {
+    eventHandlerFilter = EventHandlerItem.contextValueRegExp;
+    // }
 
     return [
-        ...getPickServiceSteps(),
-        // new ContextValueQuickPickStep(ext.branchDataProvider,
-        new ContextValueQuickPickStep(ext.rgApiV2.resources.azureResourceTreeDataProvider,
+        ...getPickHubSteps(),
+        new ContextValueQuickPickStep(ext.branchDataProvider,
             {
-                contextValueFilter: { include: hubFilter },
+                contextValueFilter: { include: eventHandlerFilter },
                 skipIfOne,
             },
             {
-                placeHolder: localize('selectHub', 'Select a Hub'),
-                noPicksMessage: localize('noHub', 'Current Web PubSub serivce has no hub'),
+                placeHolder: localize('selectEventHandler', 'Select an event handler'),
+                noPicksMessage: localize('noEventHandler', 'Current hub has no event handler'),
             }
         )
     ];

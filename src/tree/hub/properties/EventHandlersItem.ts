@@ -3,14 +3,15 @@ import { TreeElementBase, createContextValue } from "@microsoft/vscode-azext-uti
 import { ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
 import * as vscode from 'vscode';
 import { ThemeIcon } from "vscode";
+import { HubItem } from "../HubItem";
 import { EventHandlerItem } from "./EventHandlerItem";
 
 
 export class EventHandlersItem implements TreeElementBase {
-    static readonly contextValue: string = 'eventHandlersItem';
+    static readonly contextValue: string = 'webPubSubHubEventHandlersItem';
     static readonly contextValueRegExp: RegExp = new RegExp(EventHandlersItem.contextValue);
 
-    constructor(public readonly eventHandlers: EventHandler[]) { }
+    constructor(public readonly eventHandlers: EventHandler[], public readonly hubItem: HubItem) { }
 
     viewProperties: ViewPropertiesModel = {
         data: this.eventHandlers,
@@ -34,7 +35,7 @@ export class EventHandlersItem implements TreeElementBase {
     async getChildren(): Promise<TreeElementBase[]> {
         const result: EventHandlerItem[] = [];
         for (let i = 0; i < this.eventHandlers.length; i++) {
-            result.push(new EventHandlerItem(this.eventHandlers[i], i + 1));
+            result.push(new EventHandlerItem(this, this.eventHandlers[i], i));
         }
         return result;
 

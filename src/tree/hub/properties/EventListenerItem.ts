@@ -7,7 +7,7 @@ import { MarkdownString, ThemeIcon } from "vscode";
 
 
 export class EventListenerItem implements TreeElementBase {
-    static readonly contextValue: string = 'eventListenerItem';
+    static readonly contextValue: string = 'webPubSubHubEventListenerItem';
     static readonly contextValueRegExp: RegExp = new RegExp(EventListenerItem.contextValue);
 
     constructor(public readonly eventListener: EventListener, public readonly order: number) { }

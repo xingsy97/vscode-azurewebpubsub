@@ -4,22 +4,18 @@ import { ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
 import * as vscode from 'vscode';
 import { ThemeIcon } from "vscode";
 import { localize } from "../../../utils/localize";
+import { HubItem } from "../HubItem";
 import { EventHandlersItem } from "./EventHandlersItem";
 import { EventListenersItem } from "./EventListenersItem";
 
 
 export class HubSettingItem implements TreeElementBase {
-    static readonly contextValue: string = 'hubSettingItem';
+    static readonly contextValue: string = 'webPubSubHubSettingItem';
     static readonly contextValueRegExp: RegExp = new RegExp(HubSettingItem.contextValue);
 
-    constructor(public readonly HubSettings: WebPubSubHubProperties) { }
+    constructor(public readonly hubSettings: WebPubSubHubProperties, public readonly hubItem: HubItem) { }
 
-
-    viewProperties: ViewPropertiesModel = {
-        data: this.HubSettings,
-        label: "Event Listeners"
-    };
-
+    viewProperties: ViewPropertiesModel = { data: this.hubSettings, label: "Event Listeners" };
 
     private get contextValue(): string {
         const values: string[] = [];
@@ -34,13 +30,13 @@ export class HubSettingItem implements TreeElementBase {
         const result: TreeElementBase[] = [];
         const element = createGenericElement({
             label: localize('allowAnnoyClients', 'Anonymous Clients Permission'),
-            description: this.HubSettings.anonymousConnectPolicy,
+            description: this.hubSettings.anonymousConnectPolicy,
             contextValue: "hubAllowAnnoymousClients",
-            iconPath: new ThemeIcon(this.HubSettings.anonymousConnectPolicy === "allow" ? "check" : "error"),
+            iconPath: new ThemeIcon(this.hubSettings.anonymousConnectPolicy === "allow" ? "check" : "error"),
         })
         result.push(element);
-        result.push(new EventHandlersItem(this.HubSettings.eventHandlers ?? []));
-        result.push(new EventListenersItem(this.HubSettings.eventListeners ?? []));
+        result.push(new EventHandlersItem(this.hubSettings.eventHandlers ?? [], this.hubItem));
+        result.push(new EventListenersItem(this.hubSettings.eventListeners ?? []));
         return result;
     }
 

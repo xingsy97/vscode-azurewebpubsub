@@ -8,6 +8,8 @@ import { instrumentOperation } from 'vscode-extension-telemetry-wrapper';
 import { showError } from './utils';
 import { createHub } from './workflows/hub/create/createHub';
 import { deleteHub } from './workflows/hub/delete/deleteHub';
+import { createEventHandler } from './workflows/hubSetting/eventHandler/create/createEventHandler';
+import { deleteEventHandler } from './workflows/hubSetting/eventHandler/delete/deleteEventHandler';
 import { checkServiceHealth } from './workflows/service/checkHealth/checkHealth';
 import { copyServiceConnectionString } from './workflows/service/copyConnectionString/copyConnectionString';
 import { copyServiceEndpoint } from './workflows/service/copyEndpoint/copyEndpoint';
@@ -29,6 +31,8 @@ export function registerCommands(): void {
     registerCommandWithTelemetryWrapper('azureWebPubSub.service.restart', restartWebPubSub);
     registerCommandWithTelemetryWrapper('azureWebPubSub.hub.create', createHub);
     registerCommandWithTelemetryWrapper('azureWebPubSub.hub.delete', deleteHub);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.hub.eventHandler.create', createEventHandler);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.hub.eventHandler.delete', deleteEventHandler);
     // Suppress "Report an Issue" button for all errors in favor of the command
     registerErrorHandler(c => c.errorHandling.suppressReportIssue = true);
     registerReportIssueCommand('azureWebPubSub.common.reportIssue');

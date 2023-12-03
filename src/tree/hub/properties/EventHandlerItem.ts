@@ -3,17 +3,18 @@ import { TreeElementBase, createContextValue } from "@microsoft/vscode-azext-uti
 import { ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
 import * as vscode from 'vscode';
 import { MarkdownString, ThemeIcon } from "vscode";
+import { EventHandlersItem } from "./EventHandlersItem";
 
 
 export class EventHandlerItem implements TreeElementBase {
-    static readonly contextValue: string = 'eventHandlerItem';
+    static readonly contextValue: string = 'webPubSubHubEventHandlerItem';
     static readonly contextValueRegExp: RegExp = new RegExp(EventHandlerItem.contextValue);
 
-    constructor(public readonly eventHandler: EventHandler, public readonly order: number) { }
+    constructor(public readonly eventHandlersItem: EventHandlersItem, public readonly eventHandler: EventHandler, public readonly indexInHub: number) { }
 
     viewProperties: ViewPropertiesModel = {
         data: this.eventHandler,
-        label: `Event Handler ${this.order}`
+        label: `Event Handler ${this.indexInHub}`
     };
 
     private get contextValue(): string {
@@ -34,7 +35,7 @@ export class EventHandlerItem implements TreeElementBase {
 
     getTreeItem(): vscode.TreeItem {
         return {
-            label: `Event Handler ${this.order}`,
+            label: `Event Handler ${this.indexInHub}`,
             iconPath: new ThemeIcon("send"),
             contextValue: this.contextValue,
             collapsibleState: vscode.TreeItemCollapsibleState.None,

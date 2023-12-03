@@ -16,16 +16,16 @@ import { IDeleteHubContext } from "./IDeleteHubContext";
 
 
 export async function deleteHub(context: IActionContext, node?: HubItem): Promise<void> {
-    const { subscription, webPubSubName, webPubSubHub } = node ?? await pickHub(context, {
+    const { service, hub: webPubSubHub } = node ?? await pickHub(context, {
         title: localize('deleteWebPubSub', 'Delete Web PubSub'),
     });
 
     const wizardContext: IDeleteHubContext = {
         ...context,
         ...await createActivityContext(),
-        subscription: createSubscriptionContext(subscription),
+        subscription: createSubscriptionContext(service.subscription),
         hubName: webPubSubHub.hubName,
-        webPubSubResourceName: webPubSubName,
+        webPubSubResourceName: service.name,
         resourceGroupName: webPubSubHub.resourceGroup
     };
 
