@@ -16,7 +16,7 @@ let perfStats = {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 
-const extension = require('./out/extension.bundle');
+const extension = require('./dist/extension.bundle');
 
 async function activate(ctx) {
     return await extension.activate(ctx, perfStats, true /*ignoreBundle*/);

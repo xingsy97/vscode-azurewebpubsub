@@ -1,0 +1,61 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  buildAndRelease:
+    runs-on: ubuntu-latest
+    env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Run npm build
+      run: npm run build
+
+    - name: Run npm package
+      run: npm run package
+
+    - name: Extract Version from package.json
+      id: version_step
+      run: |
+        package_version=$(node -p "require('./package.json').version")
+        echo "package_version=${package_version}" >> $GITHUB_OUTPUT
+
+    - name: Set vsix_filename
+      id: filename_step
+      run: echo "vsix_filename=$(ls *.vsix)" >> $GITHUB_OUTPUT
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@latest
+      with:
+        tag_name: ${{ steps.version_step.outputs.package_version }}
+        release_name: Release ${{ steps.version_step.outputs.package_version }}
+        body: Release notes for ${{ steps.version_step.outputs.package_version }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ steps.filename_step.outputs.vsix_filename }}
+        asset_name: ${{ steps.filename_step.outputs.vsix_filename }}
+        asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
