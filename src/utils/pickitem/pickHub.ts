@@ -7,6 +7,7 @@ import { ContextValueQuickPickStep, runQuickPickWizard, type AzureResourceQuickP
 import { type ResourceGroupsTreeDataProvider } from "@microsoft/vscode-azureresources-api";
 import { ext } from "../../extensionVariables";
 import { HubItem } from "../../tree/hub/HubItem";
+import { HubsItem } from "../../tree/hub/HubsItem";
 import { localize } from "../../utils/localize";
 import { type PickItemOptions } from "./PickItemOptions";
 import { getPickServiceSteps } from "./pickService";
@@ -21,11 +22,11 @@ export async function pickHub(context: IActionContext, options?: PickItemOptions
             showLoadingPrompt: options?.showLoadingPrompt
         });
 }
+// const types = [AzExtResourceType.ContainerAppsEnvironment];
+// const types = ["WebPubSub"];
 
 export function getPickHubSteps(skipIfOne: boolean = false, hubName?: string | RegExp): AzureWizardPromptStep<AzureResourceQuickPickWizardContext>[] {
     const tdp: ResourceGroupsTreeDataProvider = ext.rgApiV2.resources.azureResourceTreeDataProvider;
-    // const types = [AzExtResourceType.ContainerAppsEnvironment];
-    const types = ["WebPubSub"];
 
     let hubFilter: RegExp | undefined;
     if (hubName) {
@@ -36,11 +37,20 @@ export function getPickHubSteps(skipIfOne: boolean = false, hubName?: string | R
 
     return [
         ...getPickServiceSteps(),
-        // new ContextValueQuickPickStep(ext.branchDataProvider,
+        new ContextValueQuickPickStep(ext.rgApiV2.resources.azureResourceTreeDataProvider,
+            {
+                contextValueFilter: { include: [HubsItem.contextValueRegExp] },
+                skipIfOne: true,
+            },
+            {
+                placeHolder: localize('selectHub', 'Select a Hub'),
+                noPicksMessage: localize('noHub', 'Current Web PubSub serivce has no hub'),
+            }
+        ),
         new ContextValueQuickPickStep(ext.rgApiV2.resources.azureResourceTreeDataProvider,
             {
                 contextValueFilter: { include: hubFilter },
-                skipIfOne,
+                skipIfOne: true,
             },
             {
                 placeHolder: localize('selectHub', 'Select a Hub'),

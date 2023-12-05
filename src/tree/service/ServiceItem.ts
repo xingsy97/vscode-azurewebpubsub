@@ -1,6 +1,6 @@
 import { KnownServiceKind, WebPubSubResource } from "@azure/arm-webpubsub";
 import { getResourceGroupFromId, uiUtils } from "@microsoft/vscode-azext-azureutils";
-import { IActionContext, TreeElementBase, TreeItemIconPath, createContextValue, createSubscriptionContext, nonNullValueAndProp } from "@microsoft/vscode-azext-utils";
+import { IActionContext, TreeElementBase, TreeItemIconPath, createContextValue, createSubscriptionContext } from "@microsoft/vscode-azext-utils";
 import { AzureResource, AzureSubscription, ViewPropertiesModel } from '@microsoft/vscode-azureresources-api';
 import * as vscode from 'vscode';
 import { createWebPubSubHubsAPIClient } from "../../utils/createControlPlaneClient";
@@ -17,11 +17,15 @@ export class ServiceItem implements TreeElementBase {
     id: string;
     resourceGroup: string;
     name: string;
+    hubs: HubsItem;
+    properties: ServicePropertiesItem;
 
     constructor(public readonly subscription: AzureSubscription, public readonly resource: AzureResource, public readonly webPubSub: WebPubSubModel) {
         this.id = webPubSub.id;
         this.resourceGroup = webPubSub.resourceGroup;
         this.name = webPubSub.name;
+        this.hubs = new HubsItem(this);
+        this.properties = new ServicePropertiesItem(this.webPubSub);
     }
 
     viewProperties: ViewPropertiesModel = {
@@ -33,17 +37,14 @@ export class ServiceItem implements TreeElementBase {
         const values: string[] = [];
 
         // Enable more granular tree item filtering by environment name
-        values.push(nonNullValueAndProp(this.webPubSub, 'name'));
+        // values.push(nonNullValueAndProp(this.webPubSub, 'name'));
 
         values.push(ServiceItem.contextValue);
         return createContextValue(values);
     }
 
     async getChildren(): Promise<TreeElementBase[]> {
-        let childs: TreeElementBase[] = [];
-        childs.push(new HubsItem(this));
-        childs.push(new ServicePropertiesItem(this.webPubSub));
-        return childs;
+        return [this.hubs, this.properties];
     }
 
     get iconPath(): TreeItemIconPath {

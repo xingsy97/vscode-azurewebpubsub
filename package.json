@@ -195,7 +195,7 @@
                     "group": "3@1"
                 },
                 {
-                    "command": "azureWebPubSub.hub.delete",
+                    "command": "azureWebPubSub.hub.create",
                     "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubHubsItem/i",
                     "group": "1@1"
                 },
@@ -207,7 +207,7 @@
                 {
                     "command": "azureWebPubSub.hub.eventHandler.create",
                     "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubHubItem/i",
-                    "group": "1@1"
+                    "group": "2@1"
                 },
                 {
                     "command": "azureWebPubSub.hub.eventHandler.create",

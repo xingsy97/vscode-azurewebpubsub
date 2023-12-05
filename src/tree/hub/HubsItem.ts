@@ -13,11 +13,8 @@ export class HubsItem implements TreeElementBase {
     static readonly contextValue: string = 'webPubSubHubsItem';
     static readonly contextValueRegExp: RegExp = new RegExp(HubsItem.contextValue);
     // Note: DO NOT remove this, otherwise `pickWebPubSub` will be parsed with null `subscription`
-    public subscription: AzureSubscription;
 
-    constructor(public readonly service: ServiceItem) {
-        this.subscription = service.subscription;
-    }
+    constructor(public readonly service: ServiceItem) { }
 
     viewProperties: ViewPropertiesModel = {
         data: {},
@@ -28,12 +25,6 @@ export class HubsItem implements TreeElementBase {
 
     private get contextValue(): string {
         const values: string[] = [HubsItem.contextValue];
-
-        // Enable more granular tree item filtering by container app name
-        // values.push(nonNullValueAndProp(this.service, 'name'));
-
-        // values.push(this.webPubSubHub.revisionsMode === KnownActiveRevisionsMode.Single ? revisionModeSingleContextValue : revisionModeMultipleContextValue);
-        // values.push(this.hasUnsavedChanges() ? unsavedChangesTrueContextValue : unsavedChangesFalseContextValue);
         return createContextValue(values);
     }
 
@@ -41,8 +32,8 @@ export class HubsItem implements TreeElementBase {
         return undefined;
     }
 
-    async getChildren(): Promise<TreeElementBase[]> {
-        let childs: TreeElementBase[] = [];
+    async getChildren(): Promise<HubItem[]> {
+        let childs: HubItem[] = [];
         const hubChilds = await callWithTelemetryAndErrorHandling('getChildren', async (context) => {
             const hubs = await this.List(context);
             return hubs
@@ -77,7 +68,7 @@ export class HubsItem implements TreeElementBase {
 
     // async List(context: IActionContext, subscription: AzureSubscription, resourceGroup: string, resourceName: string, webPubSubId: string): Promise<WebPubSubHubModel[]> {
     async List(context: IActionContext): Promise<WebPubSubHubModel[]> {
-        const hubs = await HubsItem.getHubs(context, this.subscription, this.service.resourceGroup, this.service.name, this.service.id);
+        const hubs = await HubsItem.getHubs(context, this.service.subscription, this.service.resourceGroup, this.service.name, this.service.id);
         const hubIterator = await uiUtils.listAllIterator(hubs);
         return hubIterator
             .filter(hub => hub.id && hub.id.includes(this.service.id))

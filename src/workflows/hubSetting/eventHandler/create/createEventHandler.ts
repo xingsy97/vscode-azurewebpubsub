@@ -61,5 +61,5 @@ export async function createEventHandler(context: IActionContext, node?: HubItem
     await ext.state.runWithTemporaryDescription(hub!.id, `Creating Event Handler...`, async () => {
         await wizard.execute();
     });
-    ext.branchDataProvider.refresh(hub!);
+    ext.branchDataProvider.refresh();
 }

@@ -1,5 +1,5 @@
 import { WebPubSubHubProperties } from "@azure/arm-webpubsub";
-import { TreeElementBase, createContextValue, createGenericElement } from "@microsoft/vscode-azext-utils";
+import { TreeElementBase, createGenericElement } from "@microsoft/vscode-azext-utils";
 import { ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
 import * as vscode from 'vscode';
 import { ThemeIcon } from "vscode";
@@ -22,8 +22,8 @@ export class HubSettingItem implements TreeElementBase {
 
         // values.push(nonNullValueAndProp(this.webPubSub, 'name'));
 
-        values.push(HubSettingItem.contextValue);
-        return createContextValue(values);
+        // values.push(HubSettingItem.contextValue);
+        return "";
     }
 
     async getChildren(): Promise<TreeElementBase[]> {

@@ -75,5 +75,14 @@ You will need to: \
 1. Create a hub and configure its settings. \
 2. Start local tunnel or other tool to enable deployment or test. \n\
 Click button to create and configure a hub.";
-    vscode.window.showInformationMessage(message);
+    vscode.window.showInformationMessage(
+        message,
+        ...["Create a hub", "Ignore"]
+    ).then(async (selection) => {
+        // const selectedItem = selection as string;
+        // if (selectedItem !== "Ignore") {
+        //     createHub(context, )
+        //     vscode.window.showInformationMessage(`Create event handler for ${hub.hubName}`);
+        // }
+    });
 }

@@ -15,7 +15,7 @@ import { DeleteServiceStep } from "./DeleteServiceStep";
 
 export async function deleteService(context: IActionContext, node?: ServiceItem): Promise<void> {
     const { subscription, webPubSub } = node ?? await pickService(context, {
-        title: localize('deleteWebPubSub', 'Delete Web PubSub'),
+        title: localize('deleteWebPubSub', 'Delete Web PubSub Service'),
     });
 
     const wizardContext: IPickServiceContext = {
@@ -27,7 +27,7 @@ export async function deleteService(context: IActionContext, node?: ServiceItem)
     };
 
     const wizard: AzureWizard<IPickServiceContext> = new AzureWizard(wizardContext, {
-        title: localize('deleteWebPubSub', 'Delete Web PubSub "{0}"', webPubSub.name),
+        title: localize('deleteWebPubSub', 'Delete Web PubSub Service "{0}"', webPubSub.name),
         promptSteps: [new DeleteServiceConfirmStep()],
         executeSteps: [new DeleteServiceStep()]
     });
