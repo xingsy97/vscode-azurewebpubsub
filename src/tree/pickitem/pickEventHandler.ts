@@ -6,8 +6,8 @@
 import { ContextValueQuickPickStep, runQuickPickWizard, type AzureResourceQuickPickWizardContext, type AzureWizardPromptStep, type IActionContext, type QuickPickWizardContext } from "@microsoft/vscode-azext-utils";
 import { type ResourceGroupsTreeDataProvider } from "@microsoft/vscode-azureresources-api";
 import { ext } from "../../extensionVariables";
-import { EventHandlerItem } from "../../tree/hub/properties/EventHandlerItem";
-import { localize } from "../../utils/localize";
+import { localize } from "../../utils";
+import { EventHandlerItem } from "../hub/properties/EventHandlerItem";
 import { type PickItemOptions } from "./PickItemOptions";
 import { getPickHubSteps } from "./pickHub";
 

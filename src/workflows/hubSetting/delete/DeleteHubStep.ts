@@ -3,17 +3,17 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+
 import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-utils";
 import { type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
-import { createWebPubSubHubsAPIClient } from "../../../utils/createControlPlaneClient";
-import { localize } from "../../../utils/localize";
-import { IDeleteHubContext } from "./IDeleteHubContext";
+import { createWebPubSubHubsAPIClient, localize } from '../../../utils';
+import { IDeleteHubSettingContext } from "./IDeleteHubContext";
 
-export class DeleteHubStep extends AzureWizardExecuteStep<IDeleteHubContext> {
+export class DeleteHubSettingStep extends AzureWizardExecuteStep<IDeleteHubSettingContext> {
     public priority: number = 110;
 
-    public async execute(context: IDeleteHubContext, progress: Progress<{ message?: string | undefined; increment?: number | undefined }>): Promise<void> {
+    public async execute(context: IDeleteHubSettingContext, progress: Progress<{ message?: string | undefined; increment?: number | undefined }>): Promise<void> {
         const client = await createWebPubSubHubsAPIClient([context, context.subscription!]);
 
         const deleting: string = localize('deletingHub', 'Deleting Hub ...');
@@ -36,12 +36,14 @@ export class DeleteHubStep extends AzureWizardExecuteStep<IDeleteHubContext> {
             }
         }
 
-        const deleted: string = localize('deleteHub', 'Deleted Hub "{0}".', context.webPubSubResourceName);
+        const deleted: string = localize('deleteHubSetting', 'Deleted Hub Setting "{0}".', context.webPubSubResourceName);
         ext.outputChannel.appendLog(deleted);
     }
 
-    public shouldExecute(context: IDeleteHubContext): boolean {
-        // return !!context.resourceName && !!context.resourceGroupName;
+    public shouldExecute(context: IDeleteHubSettingContext): boolean {
+        if (!context.resourceGroupName || !context.resourceGroupName) {
+            throw new Error(`Invalid resourceGroupName = ${context.resourceGroupName} or resourceName = ${context.resourceGroupName}`);
+        }
         return true;
     }
 }

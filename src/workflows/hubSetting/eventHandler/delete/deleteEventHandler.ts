@@ -8,10 +8,9 @@ import { createAzureClient } from "@microsoft/vscode-azext-azureutils";
 import { AzureWizard, IActionContext, createSubscriptionContext } from "@microsoft/vscode-azext-utils";
 import { ext } from "../../../../extensionVariables";
 import { EventHandlerItem } from "../../../../tree/hub/properties/EventHandlerItem";
+import { pickEventHandler } from "../../../../tree/pickitem/pickEventHandler";
 import * as utils from "../../../../utils";
-import { createActivityContext } from "../../../../utils";
-import { localize } from "../../../../utils/localize";
-import { pickEventHandler } from "../../../../utils/pickitem/pickEventHandler";
+import { createActivityContext, localize } from "../../../../utils";
 import { DeleteEventHandlerStep } from "./DeleteEventHandlerStep";
 import { IDeleteEventHandlerContext } from "./IDeleteEventHandlerContext";
 
@@ -38,7 +37,6 @@ export async function deleteEventHandler(context: IActionContext, node?: EventHa
 
     const wizard: AzureWizard<IDeleteEventHandlerContext> = new AzureWizard(wizardContext, {
         title: localize('deleteEventHandler', `Delete Event Handler In ${hubItem.hubName}`),
-        promptSteps: [],
         executeSteps: [new DeleteEventHandlerStep(client)]
     });
 

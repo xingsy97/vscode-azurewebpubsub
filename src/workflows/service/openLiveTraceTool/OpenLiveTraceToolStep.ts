@@ -4,13 +4,11 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-utils";
+import { IPickServiceContext } from "src/workflows/common/contexts";
 import * as vscode from 'vscode';
 import { window, type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
-import { createWebPubSubHubsAPIClient } from "../../../utils/createControlPlaneClient";
-import { createEndpointFromHostName, createLiveTraceToolUrl } from "../../../utils/createUrl";
-import { localize } from "../../../utils/localize";
-import { IPickServiceContext } from "../../common/IPickServiceContext";
+import { createEndpointFromHostName, createLiveTraceToolUrl, createWebPubSubHubsAPIClient, localize } from '../../../utils';
 
 export class OpenLiveTraceToolStep extends AzureWizardExecuteStep<IPickServiceContext> {
     public priority: number = 110;

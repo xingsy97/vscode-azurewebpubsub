@@ -1,8 +1,8 @@
 {
     "name": "vscode-azurewebpubsub",
     "displayName": "Azure Web PubSub",
-    "description": "%azureWebPubSub.common.description%",
-    "version": "0.0.1-beta.1",
+    "description": "%azureWebPubSub.description%",
+    "version": "0.0.1-beta.2",
     "publisher": "ms-azuretools",
     "icon": "resources/azure-web-pubsub.png",
     "aiKey": "0c6ae279ed8443289764825290e4f9e2-1a736e7c-1324-4338-be46-fc2a58ae4d14-7255",
@@ -71,8 +71,8 @@
         },
         "commands": [
             {
-                "command": "azureWebPubSub.common.reportIssue",
-                "title": "%azureWebPubSub.common.reportIssue%",
+                "command": "azureWebPubSub.reportIssue",
+                "title": "%azureWebPubSub.reportIssue%",
                 "category": "Azure Web PubSub",
                 "icon": "$(report)"
             },
@@ -131,26 +131,38 @@
                 "icon": "$(debug-restart)"
             },
             {
-                "command": "azureWebPubSub.hub.create",
-                "title": "%azureWebPubSub.hub.create%",
+                "command": "azureWebPubSub.hubSetting.create",
+                "title": "%azureWebPubSub.hubSetting.create%",
                 "category": "Azure Web PubSub",
                 "icon": "$(add)"
             },
             {
-                "command": "azureWebPubSub.hub.delete",
-                "title": "%azureWebPubSub.hub.delete%",
+                "command": "azureWebPubSub.hubSetting.hub.create",
+                "title": "%azureWebPubSub.hubSetting.hub.create%",
+                "category": "Azure Web PubSub",
+                "icon": "$(add)"
+            },
+            {
+                "command": "azureWebPubSub.hubSetting.hub.delete",
+                "title": "%azureWebPubSub.hubSetting.hub.delete%",
                 "category": "Azure Web PubSub",
                 "icon": "$(remove)"
             },
             {
-                "command": "azureWebPubSub.hub.eventHandler.create",
-                "title": "%azureWebPubSub.hub.eventHandler.create%",
+                "command": "azureWebPubSub.hubSetting.startLocalTunnel",
+                "title": "%azureWebPubSub.hubSetting.startLocalTunnel%",
                 "category": "Azure Web PubSub",
                 "icon": "$(add)"
             },
             {
-                "command": "azureWebPubSub.hub.eventHandler.delete",
-                "title": "%azureWebPubSub.hub.eventHandler.delete%",
+                "command": "azureWebPubSub.hubSetting.eventHandler.create",
+                "title": "%azureWebPubSub.hubSetting.eventHandler.create%",
+                "category": "Azure Web PubSub",
+                "icon": "$(add)"
+            },
+            {
+                "command": "azureWebPubSub.hubSetting.eventHandler.delete",
+                "title": "%azureWebPubSub.hubSetting.eventHandler.delete%",
                 "category": "Azure Web PubSub",
                 "icon": "$(remove)"
             }
@@ -180,7 +192,7 @@
                     "group": "1@4"
                 },
                 {
-                    "command": "azureWebPubSub.hub.create",
+                    "command": "azureWebPubSub.hubSetting.create",
                     "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubItem/i",
                     "group": "2@1"
                 },
@@ -195,27 +207,32 @@
                     "group": "3@1"
                 },
                 {
-                    "command": "azureWebPubSub.hub.create",
+                    "command": "azureWebPubSub.hubSetting.create",
                     "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubHubsItem/i",
-                    "group": "1@1"
+                    "group": "2@1"
                 },
                 {
-                    "command": "azureWebPubSub.hub.delete",
+                    "command": "azureWebPubSub.hubSetting.hub.delete",
                     "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubHubItem/i",
                     "group": "1@1"
                 },
                 {
-                    "command": "azureWebPubSub.hub.eventHandler.create",
+                    "command": "azureWebPubSub.hubSetting.startLocalTunnel",
+                    "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubHubItem/i",
+                    "group": "1@1"
+                },
+                {
+                    "command": "azureWebPubSub.hubSetting.eventHandler.create",
                     "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubHubItem/i",
                     "group": "2@1"
                 },
                 {
-                    "command": "azureWebPubSub.hub.eventHandler.create",
+                    "command": "azureWebPubSub.hubSetting.eventHandler.create",
                     "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubHubEventHandlersItem/i",
                     "group": "1@1"
                 },
                 {
-                    "command": "azureWebPubSub.hub.eventHandler.delete",
+                    "command": "azureWebPubSub.hubSetting.eventHandler.delete",
                     "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubHubEventHandlerItem/i",
                     "group": "1@1"
                 }

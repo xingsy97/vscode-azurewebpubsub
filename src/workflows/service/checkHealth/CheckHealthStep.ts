@@ -8,7 +8,7 @@ import fetch from "node-fetch";
 import * as vscode from 'vscode';
 import { type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
-import { localize } from "../../../utils/localize";
+import { localize } from "../../../utils";
 import { ICheckHealthContext } from "./ICheckHealthContext";
 
 export class CheckHealthStep extends AzureWizardExecuteStep<ICheckHealthContext> {

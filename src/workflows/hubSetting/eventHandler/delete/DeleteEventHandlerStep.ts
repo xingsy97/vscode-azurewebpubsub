@@ -36,7 +36,9 @@ export class DeleteEventHandlerStep extends AzureWizardExecuteStep<IDeleteEventH
     }
 
     public shouldExecute(context: IDeleteEventHandlerContext): boolean {
-        if (!context) throw new Error(`Invalid Context`);
+        if (!context.hubName || !context.resourceGroupName || !context.webPubSubResourceName) {
+            throw new Error(`Invalid hubName = ${context.hubName} or resourceGroupName = ${context.resourceGroupName} or webPubSubResourceName = ${context.webPubSubResourceName}`);
+        }
         return true;
     }
 }

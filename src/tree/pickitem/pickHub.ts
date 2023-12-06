@@ -3,17 +3,17 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
+
 import { ContextValueQuickPickStep, runQuickPickWizard, type AzureResourceQuickPickWizardContext, type AzureWizardPromptStep, type IActionContext, type QuickPickWizardContext } from "@microsoft/vscode-azext-utils";
 import { type ResourceGroupsTreeDataProvider } from "@microsoft/vscode-azureresources-api";
 import { ext } from "../../extensionVariables";
-import { HubItem } from "../../tree/hub/HubItem";
-import { HubsItem } from "../../tree/hub/HubsItem";
-import { localize } from "../../utils/localize";
+import { localize } from "../../utils";
+import { HubItem } from "../hub/HubItem";
 import { type PickItemOptions } from "./PickItemOptions";
 import { getPickServiceSteps } from "./pickService";
 
 export async function pickHub(context: IActionContext, options?: PickItemOptions): Promise<HubItem> {
-    const promptSteps: AzureWizardPromptStep<QuickPickWizardContext>[] = [...getPickHubSteps()];
+    const promptSteps: AzureWizardPromptStep<QuickPickWizardContext>[] = [...getPickHubSteps(true)];
 
     return await runQuickPickWizard(context,
         {
@@ -39,7 +39,7 @@ export function getPickHubSteps(skipIfOne: boolean = false, hubName?: string | R
         ...getPickServiceSteps(),
         new ContextValueQuickPickStep(ext.rgApiV2.resources.azureResourceTreeDataProvider,
             {
-                contextValueFilter: { include: [HubsItem.contextValueRegExp] },
+                contextValueFilter: { include: [HubItem.contextValueRegExp] },
                 skipIfOne: true,
             },
             {

@@ -3,7 +3,7 @@ import { getResourceGroupFromId, uiUtils } from "@microsoft/vscode-azext-azureut
 import { IActionContext, TreeElementBase, TreeItemIconPath, createContextValue, createSubscriptionContext } from "@microsoft/vscode-azext-utils";
 import { AzureResource, AzureSubscription, ViewPropertiesModel } from '@microsoft/vscode-azureresources-api';
 import * as vscode from 'vscode';
-import { createWebPubSubHubsAPIClient } from "../../utils/createControlPlaneClient";
+import { createWebPubSubHubsAPIClient } from "../../utils";
 import { HubsItem } from "../hub/HubsItem";
 import { WebPubSubModel } from "../models";
 import { treeUtils } from "../treeUtils";

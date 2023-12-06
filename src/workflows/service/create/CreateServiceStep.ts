@@ -28,7 +28,7 @@ export class CreateServiceStep extends AzureWizardExecuteStep<ICreateServiceCont
             {
                 sku: context.Sku?.sku,
                 kind: context.kind,
-                location: context.location ?? context.resourceGroup?.location!,
+                location: context.location!
             }
         );
     }

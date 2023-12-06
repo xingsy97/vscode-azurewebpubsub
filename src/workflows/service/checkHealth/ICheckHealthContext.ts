@@ -1,4 +1,4 @@
-import { IPickServiceContext } from "../../common/IPickServiceContext";
+import { IPickServiceContext } from "src/workflows/common/contexts";
 
 export interface ICheckHealthContext extends IPickServiceContext {
     endpoint?: string;

@@ -3,9 +3,10 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { WebPubSubHub } from "@azure/arm-webpubsub";
-import { IPickHubContext } from "../../common/IPickHubContext";
+import { WebPubSubHubProperties } from "@azure/arm-webpubsub";
+import { IPickServiceContext } from "src/workflows/common/contexts";
 
-export interface ICreateHubContext extends IPickHubContext {
-    hubSetting?: WebPubSubHub;
+export interface ICreateOrUpdateHubSettingContext extends IPickServiceContext {
+    hubName?: string;
+    hubProperties?: WebPubSubHubProperties;
 }

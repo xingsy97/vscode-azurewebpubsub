@@ -3,7 +3,7 @@ import { IActionContext, TreeElementBase, callWithTelemetryAndErrorHandling, cre
 import { AzureSubscription, type ViewPropertiesModel } from '@microsoft/vscode-azureresources-api';
 import * as vscode from 'vscode';
 import { ThemeIcon } from "vscode";
-import { createWebPubSubHubsAPIClient } from "../../utils/createControlPlaneClient";
+import { createWebPubSubHubsAPIClient } from "../../utils";
 import { CreateWebPubSubHubModel, WebPubSubHubModel } from "../models";
 import { ServiceItem } from "../service/ServiceItem";
 import { treeUtils } from "../treeUtils";
@@ -46,7 +46,7 @@ export class HubsItem implements TreeElementBase {
 
     getTreeItem(): vscode.TreeItem {
         return {
-            label: `Hubs`,
+            label: `Hub Settings`,
             iconPath: new ThemeIcon("server"),
             contextValue: this.contextValue,
             description: this.description,

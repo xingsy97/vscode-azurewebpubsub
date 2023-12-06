@@ -4,14 +4,13 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizardPromptStep, DialogResponses, nonNullValue, UserCancelledError } from '@microsoft/vscode-azext-utils';
-import { settingUtils } from '../../../utils';
-import { localize } from "../../../utils/localize";
-import { IDeleteHubContext } from './IDeleteHubContext';
+import { localize, settingUtils } from "../../../utils";
+import { IDeleteHubSettingContext } from './IDeleteHubContext';
 
-export class DeleteHubConfirmationStep extends AzureWizardPromptStep<IDeleteHubContext> {
+export class DeleteHubConfirmationStep extends AzureWizardPromptStep<IDeleteHubSettingContext> {
     private hubName?: string;
 
-    public async prompt(context: IDeleteHubContext): Promise<void> {
+    public async prompt(context: IDeleteHubSettingContext): Promise<void> {
         this.hubName = context.hubName;
 
         const deleteConfirmation: string | undefined = settingUtils.getSetting('deleteConfirmation');

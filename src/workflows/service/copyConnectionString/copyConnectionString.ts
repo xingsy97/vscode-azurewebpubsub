@@ -4,13 +4,12 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizard, createSubscriptionContext, type IActionContext } from "@microsoft/vscode-azext-utils";
+import { IPickServiceContext } from "src/workflows/common/contexts";
 import { ext } from "../../../extensionVariables";
+import { pickService } from "../../../tree/pickitem/pickService";
 import { ServiceItem } from "../../../tree/service/ServiceItem";
 import * as utils from "../../../utils";
-import { createActivityContext } from "../../../utils";
-import { localize } from "../../../utils/localize";
-import { pickService } from "../../../utils/pickitem/pickService";
-import { IPickServiceContext } from "../../common/IPickServiceContext";
+import { createActivityContext, localize } from "../../../utils";
 import { CopyConnectionStringStep } from "./CopyConnectionStringStep";
 
 export async function copyServiceConnectionString(context: IActionContext, node?: ServiceItem): Promise<void> {

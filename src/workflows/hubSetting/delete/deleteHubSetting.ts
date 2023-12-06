@@ -6,37 +6,36 @@
 import { AzureWizard, createSubscriptionContext, type IActionContext } from "@microsoft/vscode-azext-utils";
 import { ext } from "../../../extensionVariables";
 import { HubItem } from "../../../tree/hub/HubItem";
+import { pickHub } from "../../../tree/pickitem/pickHub";
 import * as utils from "../../../utils";
-import { createActivityContext } from "../../../utils";
-import { localize } from "../../../utils/localize";
-import { pickHub } from "../../../utils/pickitem/pickHub";
+import { createActivityContext, localize } from "../../../utils";
 import { DeleteHubConfirmationStep } from "./DeleteHubConfirmationStep";
-import { DeleteHubStep } from "./DeleteHubStep";
-import { IDeleteHubContext } from "./IDeleteHubContext";
+import { DeleteHubSettingStep } from "./DeleteHubStep";
+import { IDeleteHubSettingContext } from "./IDeleteHubContext";
 
 
-export async function deleteHub(context: IActionContext, node?: HubItem): Promise<void> {
+export async function deleteHubSetting(context: IActionContext, node?: HubItem): Promise<void> {
     const { service, hub: webPubSubHub } = node ?? await pickHub(context, {
         title: localize('deleteWebPubSub', 'Delete Web PubSub Hub'),
     });
 
-    const wizardContext: IDeleteHubContext = {
+    const wizardContext: IDeleteHubSettingContext = {
         ...context,
         ...await createActivityContext(),
         subscription: createSubscriptionContext(service.subscription),
+        resourceGroupName: webPubSubHub.resourceGroup,
         hubName: webPubSubHub.hubName,
-        webPubSubResourceName: service.name,
-        resourceGroupName: webPubSubHub.resourceGroup
+        webPubSubResourceName: service.name
     };
 
-    const wizard: AzureWizard<IDeleteHubContext> = new AzureWizard(wizardContext, {
-        title: localize('deleteHub', 'Delete Hub "{0}"', webPubSubHub.hubName),
+    const wizard: AzureWizard<IDeleteHubSettingContext> = new AzureWizard(wizardContext, {
+        title: localize('deleteHubSetting', 'Delete Hub Setting "{0}"', webPubSubHub.hubName),
         promptSteps: [new DeleteHubConfirmationStep()],
-        executeSteps: [new DeleteHubStep()]
+        executeSteps: [new DeleteHubSettingStep()]
     });
 
     await wizard.prompt();
-    wizardContext.activityTitle = utils.localize('deleteWebPubSubHub', 'Delete Web PubSub Hub "{0}"', wizardContext.hubName);
+    wizardContext.activityTitle = utils.localize('deleteWebPubSubHubSetting', 'Delete Web PubSub Hub Setting "{0}"', wizardContext.hubName);
     await ext.state.showDeleting(webPubSubHub.id, async () => {
         await wizard.execute();
     });

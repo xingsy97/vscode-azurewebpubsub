@@ -3,6 +3,7 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { IPickHubContext } from "../../common/IPickHubContext";
 
-export interface IDeleteHubContext extends IPickHubContext { }
+import { IPickHubContext } from "src/workflows/common/contexts";
+
+export interface IDeleteHubSettingContext extends IPickHubContext { }

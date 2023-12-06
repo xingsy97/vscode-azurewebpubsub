@@ -4,11 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-utils";
+import { IPickServiceContext } from "src/workflows/common/contexts";
 import { type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
-import { createWebPubSubHubsAPIClient } from "../../../utils/createControlPlaneClient";
-import { localize } from "../../../utils/localize";
-import { IPickServiceContext } from "../../common/IPickServiceContext";
+import { createWebPubSubHubsAPIClient, localize } from '../../../utils';
 
 export class RestartWebPubSubStep extends AzureWizardExecuteStep<IPickServiceContext> {
     public priority: number = 110;

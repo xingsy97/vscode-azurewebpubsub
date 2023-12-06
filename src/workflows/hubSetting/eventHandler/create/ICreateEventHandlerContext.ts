@@ -4,7 +4,7 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { EventHandler, WebPubSubHubProperties } from "@azure/arm-webpubsub";
-import { IPickHubContext } from "../../../common/IPickHubContext";
+import { IPickHubContext } from "src/workflows/common/contexts";
 
 export interface ICreateEventHandlerContext extends IPickHubContext {
     eventHandler: EventHandler;

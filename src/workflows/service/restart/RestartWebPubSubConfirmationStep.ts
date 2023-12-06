@@ -4,9 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizardPromptStep, DialogResponses, nonNullValue, UserCancelledError } from '@microsoft/vscode-azext-utils';
-import { settingUtils } from '../../../utils';
-import { localize } from "../../../utils/localize";
-import { IPickServiceContext } from '../../common/IPickServiceContext';
+import { IPickServiceContext } from "src/workflows/common/contexts";
+import { localize, settingUtils } from "../../../utils";
 
 export class RestartWebPubSubConfirmationStep extends AzureWizardPromptStep<IPickServiceContext> {
     private webPubSubName: string | undefined;

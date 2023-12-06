@@ -7,8 +7,7 @@ import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-util
 import * as vscode from 'vscode';
 import { env, window, type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
-import { createWebPubSubHubsAPIClient } from "../../../utils/createControlPlaneClient";
-import { localize } from "../../../utils/localize";
+import { createWebPubSubHubsAPIClient, localize } from '../../../utils';
 import { ICopyEndpointContext } from "./ICopyEndpointContext";
 
 export class CopyEndpointStep extends AzureWizardExecuteStep<ICopyEndpointContext> {

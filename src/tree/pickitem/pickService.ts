@@ -6,8 +6,8 @@
 import { ContextValueQuickPickStep, QuickPickAzureSubscriptionStep, QuickPickGroupStep, runQuickPickWizard, type AzureResourceQuickPickWizardContext, type AzureWizardPromptStep, type IActionContext, type QuickPickWizardContext } from "@microsoft/vscode-azext-utils";
 import { type ResourceGroupsTreeDataProvider } from "@microsoft/vscode-azureresources-api";
 import { ext } from "../../extensionVariables";
-import { ServiceItem } from "../../tree/service/ServiceItem";
-import { localize } from "../localize";
+import { localize } from "../../utils";
+import { ServiceItem } from "../service/ServiceItem";
 import { type PickItemOptions } from "./PickItemOptions";
 
 export async function pickService(context: IActionContext, options?: PickItemOptions): Promise<ServiceItem> {

@@ -6,11 +6,11 @@ import { ICreateServiceContext } from "./ICreateServiceContext";
 
 export class InputSerivceSkuUnitCountStep extends AzureWizardPromptStep<ICreateServiceContext> {
     public async prompt(context: ICreateServiceContext): Promise<void> {
-        const placeHolder: string = localize("selectUnitCount", "Select the unit count for your service");
-        var picks: IAzureQuickPickItem<number>[] = [];
-        if (!context.Sku || !context.Sku.sku) {
-            throw new Error("Failed to fetch sku of the service");
+        if (!(context.Sku?.sku)) {
+            throw new Error("Invalid context or sku");
         }
+
+        var picks: IAzureQuickPickItem<number>[] = [];
         const tier: string | undefined = context.Sku.sku.tier
         switch (tier) {
             case KnownWebPubSubSkuTier.Free:
@@ -23,8 +23,9 @@ export class InputSerivceSkuUnitCountStep extends AzureWizardPromptStep<ICreateS
         }
 
         context.Sku.sku.capacity = (await context.ui.showQuickPick(picks, {
-            placeHolder,
-            suppressPersistence: true
+            placeHolder: localize("selectUnitCount", `Select the unit count for your service. Click "?" in the top right corner to learn more`),
+            suppressPersistence: true,
+            learnMoreLink: "https://azure.microsoft.com/en-us/pricing/details/web-pubsub/"
         })).data;
     }
 

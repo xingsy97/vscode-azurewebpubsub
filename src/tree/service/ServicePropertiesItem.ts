@@ -3,7 +3,7 @@ import { TreeElementBase, TreeItemIconPath, createContextValue, createGenericEle
 import { ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
 import * as vscode from 'vscode';
 import { ThemeIcon } from "vscode";
-import { localize } from "../../utils/localize";
+import { localize } from "../../utils";
 import { WebPubSubModel } from "../models";
 
 
@@ -37,36 +37,36 @@ export class ServicePropertiesItem implements TreeElementBase {
 
     async getChildren(): Promise<TreeElementBase[]> {
         const childs: TreeElementBase[] = [];
-        childs.push(createGenericElement({
-            label: localize('serviceKind', 'Kind'),
-            description: this.webPubSub.kind,
-            contextValue: "serviceKind",
-            iconPath: new ThemeIcon("three-bars")
-        }));
+        // childs.push(createGenericElement({
+        //     label: localize('serviceKind', 'Kind'),
+        //     description: this.webPubSub.kind,
+        //     contextValue: "serviceKind",
+        //     iconPath: new ThemeIcon("three-bars")
+        // }));
         childs.push(createGenericElement({
             label: localize('serviceLocation', 'Location'),
             description: this.webPubSub.location,
             contextValue: "serviceLocation",
             iconPath: new ThemeIcon("location")
         }));
-        childs.push(createGenericElement({
-            label: localize('serviceDataPlaneStatus', 'Data Plane State'),
-            description: this.webPubSub.resourceStopped === "true" ? "Shutdown" : "Started",
-            contextValue: "serviceStatus",
-            iconPath: new ThemeIcon(this.webPubSub.resourceStopped === "true" ? "error" : "check")
-        }));
+        // childs.push(createGenericElement({
+        //     label: localize('serviceDataPlaneStatus', 'Data Plane State'),
+        //     description: this.webPubSub.resourceStopped === "true" ? "Shutdown" : "Started",
+        //     contextValue: "serviceStatus",
+        //     iconPath: new ThemeIcon(this.webPubSub.resourceStopped === "true" ? "error" : "check")
+        // }));
         childs.push(createGenericElement({
             label: localize('serviceProvisioningState', 'Provisioning State'),
             description: this.webPubSub.provisioningState,
             contextValue: "serviceStatus",
             iconPath: this.getIconPathForProvisoningState(this.webPubSub.provisioningState)
         }));
-        childs.push(createGenericElement({
-            label: localize('serviceAadAuth', 'AAD Auth'),
-            description: this.webPubSub.disableAadAuth ? "Disabled" : "Enabled",
-            contextValue: "servicePropertyDisableAadAuth",
-            iconPath: new ThemeIcon(this.webPubSub.disableAadAuth ? "error" : "check"),
-        }));
+        // childs.push(createGenericElement({
+        //     label: localize('serviceAadAuth', 'AAD Auth'),
+        //     description: this.webPubSub.disableAadAuth ? "Disabled" : "Enabled",
+        //     contextValue: "servicePropertyDisableAadAuth",
+        //     iconPath: new ThemeIcon(this.webPubSub.disableAadAuth ? "error" : "check"),
+        // }));
         childs.push(createGenericElement({
             label: localize('serviceLocalAuth', 'Local Auth'),
             description: this.webPubSub.disableLocalAuth ? "Disabled" : "Enabled",

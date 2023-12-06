@@ -12,11 +12,17 @@ const skuTierPickItems: IAzureQuickPickItem<WebPubSubSkuTier>[] = [
 
 export class InputServiceSkuTierStep extends AzureWizardPromptStep<ICreateServiceContext> {
     public async prompt(context: ICreateServiceContext): Promise<void> {
-        const placeHolder: string = localize("tier", "Select price tier for Web PubSub");
-        const chosenItem = await context.ui.showQuickPick(skuTierPickItems, { placeHolder, suppressPersistence: true });
+        if (!(context?.Sku?.sku)) {
+            throw new Error(`Invalid context ${context}, Sku or Sku.sku is undefined`);
+        }
+        const chosenItem = await context.ui.showQuickPick(skuTierPickItems, {
+            placeHolder: localize("tier", `Select price tier for Web PubSub, Click "?" in the top right corner to learn more`),
+            suppressPersistence: true,
+            learnMoreLink: "https://azure.microsoft.com/en-us/pricing/details/web-pubsub/"
+        });
         const tier = chosenItem.data;
-        context.Sku!.sku!.tier = tier;
-        context.Sku!.sku!.name = getSkuTierFromSkuName(tier);
+        context.Sku.sku.tier = tier;
+        context.Sku.sku.name = getSkuTierFromSkuName(tier);
     }
 
     public shouldPrompt(context: ICreateServiceContext): boolean {

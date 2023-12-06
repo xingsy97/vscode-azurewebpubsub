@@ -6,37 +6,36 @@
 import { WebPubSubManagementClient } from "@azure/arm-webpubsub";
 import { AzureWizardExecuteStep } from "@microsoft/vscode-azext-utils";
 import { Progress } from "vscode";
-import { localize, nonNullProp } from "../../../../utils";
-import { ICreateEventHandlerContext } from "./ICreateEventHandlerContext";
+import { localize, nonNullProp } from "../../../utils";
+import { ICreateOrUpdateHubSettingContext } from "../create/ICreateEventHandlerContext";
 
-export class CreateEventHandlerStep extends AzureWizardExecuteStep<ICreateEventHandlerContext> {
+export class CreateOrUpdateHubSettingStep extends AzureWizardExecuteStep<ICreateOrUpdateHubSettingContext> {
     public priority: number = 135;
 
-    constructor(private readonly client: WebPubSubManagementClient) {
-        super();
-    }
+    constructor(private readonly client: WebPubSubManagementClient) { super(); }
 
-    public async execute(context: ICreateEventHandlerContext, progress: Progress<{ message?: string; increment?: number }>): Promise<void> {
+    public async execute(context: ICreateOrUpdateHubSettingContext, progress: Progress<{ message?: string; increment?: number }>): Promise<void> {
         const message: string = localize('creatingEventHandler', `Creating Event Handler in Hub ${context.hubName}`);
         progress.report({ message });
+        if (!context.hubProperties) throw new Error("hubProperties is null");
+
         var hubProperties = context.hubProperties;
         if (!hubProperties.eventHandlers) hubProperties.eventHandlers = [];
+        if (!hubProperties.eventListeners) hubProperties.eventListeners = [];
 
-        hubProperties.eventHandlers.push(context.eventHandler);
         const response = await this.client.webPubSubHubs.beginCreateOrUpdateAndWait(
             nonNullProp(context, 'hubName'),
             nonNullProp(context, 'resourceGroupName'),
-            nonNullProp(context, 'webPubSubResourceName'),
+            nonNullProp(context, 'webPubSubName'),
             {
                 properties: hubProperties
             }
         );
     }
 
-    public shouldExecute(context: ICreateEventHandlerContext): boolean {
-        if (!context.eventHandler || !context.resourceGroupName || !context.webPubSubResourceName || !context.hubName) {
-            throw new Error(`Invalid context for creating event handler`)
-        }
+    public shouldExecute(context: ICreateOrUpdateHubSettingContext): boolean {
+        if (!context.hubName || !context.resourceGroupName || !context.webPubSubName || !context.hubProperties)
+            throw new Error(`Invalid context = ${context}`);
         return true;
     }
 }

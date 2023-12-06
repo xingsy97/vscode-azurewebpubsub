@@ -5,12 +5,10 @@
 
 import { AzureWizard, createSubscriptionContext, type IActionContext } from "@microsoft/vscode-azext-utils";
 import { ext } from "../../../extensionVariables";
+import { pickService } from "../../../tree/pickitem/pickService";
 import { ServiceItem } from "../../../tree/service/ServiceItem";
 import * as utils from "../../../utils";
-import { createActivityContext } from "../../../utils";
-import { createEndpointFromHostName } from "../../../utils/createUrl";
-import { localize } from "../../../utils/localize";
-import { pickService } from "../../../utils/pickitem/pickService";
+import { createActivityContext, createEndpointFromHostName, localize } from "../../../utils";
 import { CheckHealthStep } from "./CheckHealthStep";
 import { ICheckHealthContext } from "./ICheckHealthContext";
 

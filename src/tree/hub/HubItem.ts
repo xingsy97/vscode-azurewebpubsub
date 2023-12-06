@@ -1,17 +1,15 @@
-import { AzureWizard, DeleteConfirmationStep, IActionContext, TreeElementBase, callWithTelemetryAndErrorHandling, createContextValue, createSubscriptionContext, nonNullValueAndProp } from "@microsoft/vscode-azext-utils";
+import { AzureWizard, DeleteConfirmationStep, IActionContext, TreeElementBase, createContextValue, createGenericElement, createSubscriptionContext, nonNullValueAndProp } from "@microsoft/vscode-azext-utils";
 import { AzureSubscription, type ViewPropertiesModel } from '@microsoft/vscode-azureresources-api';
 import * as vscode from 'vscode';
 import { ThemeIcon } from "vscode";
 import { ext } from "../../../extension.bundle";
-import { createActivityContext } from "../../utils";
-import { createWebPubSubHubsClient } from "../../utils/createControlPlaneClient";
-import { createPortalUrl } from "../../utils/createUrl";
-import { localize } from "../../utils/localize";
-import { IDeleteHubContext } from "../../workflows/hub/delete/IDeleteHubContext";
+import { createActivityContext, createPortalUrl, createWebPubSubHubsClient, localize } from '../../utils';
+import { IDeleteHubSettingContext } from "../../workflows/hubSetting/delete/IDeleteHubContext";
 import { DeleteServiceStep } from "../../workflows/service/delete/DeleteServiceStep";
 import { CreateWebPubSubHubModel, WebPubSubHubModel } from "../models";
 import { ServiceItem } from "../service/ServiceItem";
-import { HubSettingItem } from "./properties/HubSetting";
+import { EventHandlersItem } from "./properties/EventHandlersItem";
+import { EventListenersItem } from "./properties/EventListenersItem";
 
 export class HubItem implements TreeElementBase {
     static readonly contextValue: string = 'webPubSubHubItem';
@@ -48,13 +46,18 @@ export class HubItem implements TreeElementBase {
     }
 
     async getChildren(): Promise<TreeElementBase[]> {
-        const result = await callWithTelemetryAndErrorHandling('getChildren', async (context) => {
-            const children: TreeElementBase[] = [];
-            children.push(new HubSettingItem(this.hub.properties, this));
-            return children;
-        });
+        const result: TreeElementBase[] = [];
+        const isAllowAnnoy: boolean = this.hub.properties.anonymousConnectPolicy === "allow";
+        const element = createGenericElement({
+            label: localize('allowAnnoyClients', `${isAllowAnnoy ? "Allow" : "Deny"} Anonymous Clients`),
 
-        return result ?? [];
+            contextValue: "hubAllowAnnoymousClients",
+            iconPath: new ThemeIcon(isAllowAnnoy ? "check" : "error"),
+        })
+        result.push(element);
+        result.push(new EventHandlersItem(this.hub.properties.eventHandlers ?? [], this));
+        result.push(new EventListenersItem(this.hub.properties.eventListeners ?? []));
+        return result;
     }
 
     getTreeItem(): vscode.TreeItem {
@@ -93,7 +96,7 @@ export class HubItem implements TreeElementBase {
         const confirmMessage: string = localize('confirmDeleteWebPubSubHub', 'Are you sure you want to delete hub "{0}"?', this.hubName);
         const deleteHub: string = localize('deleteWebPubSubHub', 'Delete hub "{0}"', this.hubName);
 
-        const wizardContext: IDeleteHubContext = {
+        const wizardContext: IDeleteHubSettingContext = {
             activityTitle: deleteHub,
             webPubSubResourceName: this.hub.webPubSubId,
             subscription: createSubscriptionContext(this.service.subscription),
@@ -102,7 +105,7 @@ export class HubItem implements TreeElementBase {
             ...await createActivityContext()
         };
 
-        const wizard: AzureWizard<IDeleteHubContext> = new AzureWizard(wizardContext, {
+        const wizard: AzureWizard<IDeleteHubSettingContext> = new AzureWizard(wizardContext, {
             promptSteps: [new DeleteConfirmationStep(confirmMessage)],
             executeSteps: [new DeleteServiceStep()]
         });

@@ -3,11 +3,16 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
+export const signalrProvider: string = 'Microsoft.SignalRService';
 export const webPubSubId = 'WebPubSub';
-export const webPubSubProvider: string = 'Microsoft.SignalRService';
+export const webPubSubWebProvider: string = `${signalrProvider}/${webPubSubId}`;
 export const vscodeFolder: string = '.vscode';
 export const settingsFile: string = 'settings.json';
 export const relativeSettingsFilePath: string = `${vscodeFolder}/${settingsFile}`;
+
+export const localTunnelTerminalName = "Web PubSub Tunnel Tool";
+export const localTunnelPackageName = "@azure/web-pubsub-tunnel-tool";
+
 export const tierToUnitCountList = {
     "Free": [1],
     "Standard": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],

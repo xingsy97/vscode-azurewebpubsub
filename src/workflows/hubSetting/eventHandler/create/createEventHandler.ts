@@ -9,16 +9,13 @@ import { AzureWizard, IActionContext, createSubscriptionContext } from "@microso
 import { ext } from "../../../../extensionVariables";
 import { HubItem } from "../../../../tree/hub/HubItem";
 import { EventHandlersItem } from "../../../../tree/hub/properties/EventHandlersItem";
+import { pickHub } from "../../../../tree/pickitem/pickHub";
 import { ServiceItem } from "../../../../tree/service/ServiceItem";
 import * as utils from "../../../../utils";
-import { createActivityContext } from "../../../../utils";
-import { localize } from "../../../../utils/localize";
-import { pickHub } from "../../../../utils/pickitem/pickHub";
+import { createActivityContext, localize } from "../../../../utils";
+import { InputUrlTemplateStep, InputUserEventsStep, SelectSystemEventsStep } from "../../create/InputHubSettingStep";
 import { CreateEventHandlerStep } from "./CreateEventHandlerStep";
 import { ICreateEventHandlerContext } from "./ICreateEventHandlerContext";
-import { InputUrlTemplateStep } from "./InputUrlTemplateStep";
-import { InputUserEventsStep } from "./InputUserEventsStep";
-import { SelectSystemEventsStep } from "./SelectSystemEventsStep";
 
 export async function createEventHandler(context: IActionContext, node?: HubItem | EventHandlersItem): Promise<void> {
     let serivce: ServiceItem, hub: HubItem;
