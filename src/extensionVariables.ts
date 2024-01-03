@@ -6,7 +6,7 @@
 import { IAzExtOutputChannel, IExperimentationServiceAdapter, TreeElementStateManager } from "@microsoft/vscode-azext-utils";
 import { AzureResourcesExtensionApi } from "@microsoft/vscode-azureresources-api";
 import { ExtensionContext } from "vscode";
-import { HubsBranchDataProvider } from "./tree/HubsBranchDataProvider";
+import { ServicesDataProvider } from "./tree/ServicesDataProvider";
 import { HubSettingFileSystem } from "./workflows/hub/update/HubSettingFileSystem";
 
 /**
@@ -15,7 +15,7 @@ import { HubSettingFileSystem } from "./workflows/hub/update/HubSettingFileSyste
 // tslint:disable-next-line: export-name
 export namespace ext {
     export const prefix: string = 'webPubSub';
-    export let branchDataProvider: HubsBranchDataProvider;
+    export let branchDataProvider: ServicesDataProvider;
     export let context: ExtensionContext;
     export let outputChannel: IAzExtOutputChannel;
     export let ignoreBundle: boolean | undefined;

@@ -11,7 +11,7 @@ import { getAzureResourcesExtensionApi } from '@microsoft/vscode-azureresources-
 import * as vscode from 'vscode';
 import { registerCommands } from './commands';
 import { ext } from './extensionVariables';
-import { HubsBranchDataProvider } from "./tree/HubsBranchDataProvider";
+import { ServicesDataProvider } from "./tree/ServicesDataProvider";
 
 export async function activate(context: vscode.ExtensionContext, perfStats: { loadStartTime: number; loadEndTime: number }, ignoreBundle?: boolean): Promise<void> {
     // the entry point for vscode.dev is this activate, not main.js, so we need to instantiate perfStats here
@@ -33,12 +33,10 @@ export async function activate(context: vscode.ExtensionContext, perfStats: { lo
         ext.experimentationService = await createExperimentationService(context);
         ext.state = new TreeElementStateManager();
         ext.rgApiV2 = await getAzureResourcesExtensionApi(context, '2.0.0');
-        ext.branchDataProvider = new HubsBranchDataProvider();
+        ext.branchDataProvider = new ServicesDataProvider();
         // ext.rgApiV2.resources.registerAzureResourceBranchDataProvider(AzExtResourceType.ContainerAppsEnvironment, ext.branchDataProvider);
         ext.rgApiV2.resources.registerAzureResourceBranchDataProvider("WebPubSub" as any, ext.branchDataProvider);
         const appResourceTree = ext.rgApiV2.resources.azureResourceTreeDataProvider;
-
-
         // ext.hubSettingFileSystem = new HubSettingFileSystem(appResourceTree);
         // context.subscriptions.push(vscode.workspace.registerFileSystemProvider(HubSettingFileSystem.scheme, ext.hubSettingFileSystem));
     });

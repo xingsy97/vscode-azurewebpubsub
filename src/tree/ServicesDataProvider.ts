@@ -5,7 +5,7 @@ import { ext } from "../../extension.bundle";
 import { ServiceItem } from "./service/ServiceItem";
 
 
-export class HubsBranchDataProvider extends vscode.Disposable implements AzureResourceBranchDataProvider<TreeElementBase> {
+export class ServicesDataProvider extends vscode.Disposable implements AzureResourceBranchDataProvider<TreeElementBase> {
     private readonly onDidChangeTreeDataEmitter = new vscode.EventEmitter<TreeElementBase | undefined>();
 
     constructor() {
@@ -50,5 +50,5 @@ export class HubsBranchDataProvider extends vscode.Disposable implements AzureRe
         this.onDidChangeTreeDataEmitter.fire(element);
     }
 }
-export const branchDataProvider = new HubsBranchDataProvider();
+export const branchDataProvider = new ServicesDataProvider();
 

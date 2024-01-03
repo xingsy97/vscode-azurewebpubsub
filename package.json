@@ -56,7 +56,7 @@
                     "command": "azureWebPubSub.service.createInPortal",
                     "title": "%azureWebPubSub.service.createInPortal%",
                     "type": "WebPubSub",
-                    "detail": "%azureWebPubSub.service.createInPortal.info%",
+                    "detail": "%azureWebPubSub.service.createInPortal.detail%",
                     "icon": "resources/azure-web-pubsub.svg"
                 }
             ],

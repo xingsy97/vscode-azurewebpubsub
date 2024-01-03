@@ -19,7 +19,7 @@
     "azureWebPubSub.hubSetting.eventHandler.delete": "Delete Event Handler",
     "azureWebPubSub.hubSetting.startLocalTunnel": "Start Local Tunnel",
     "azureWebPubSub.service.createInPortal": "Create Web PubSub Service in Portal",
-    "azureWebPubSub.service.createInPortal.info": "Create Web PubSub Service in Azure Portal.",
+    "azureWebPubSub.service.createInPortal.detail": "A fully managed service that supports WebSockets for real-time application development.",
     "azureWebPubSub.service.scaleUp": "Scale Up",
     "azureWebPubSub.service.scaleOut": "Scale Out",
     "azureWebPubSub.deleteConfirmation": "The behavior to use when confirming delete of a Azure Web PubSub.",
