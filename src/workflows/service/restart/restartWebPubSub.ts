@@ -5,7 +5,6 @@
 
 import { AzureWizard, createSubscriptionContext, type IActionContext } from "@microsoft/vscode-azext-utils";
 import { IPickServiceContext } from "src/workflows/common/contexts";
-import { ext } from "../../../extensionVariables";
 import { pickService } from "../../../tree/pickitem/pickService";
 import { ServiceItem } from "../../../tree/service/ServiceItem";
 import { createActivityContext, localize } from "../../../utils";
@@ -32,10 +31,5 @@ export async function restartWebPubSub(context: IActionContext, node?: ServiceIt
     });
 
     await wizard.prompt();
-
-    await ext.state.runWithTemporaryDescription(webPubSub.id, "Restarting...", async () => {
-        await wizard.execute();
-    });
-
-    ext.branchDataProvider.refresh();
+    await wizard.execute();
 }

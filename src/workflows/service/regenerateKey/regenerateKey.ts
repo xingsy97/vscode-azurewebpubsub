@@ -4,18 +4,17 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizard, createSubscriptionContext, type IActionContext } from "@microsoft/vscode-azext-utils";
-import { IPickKeyContext, IPickServiceContext } from "src/workflows/common/contexts";
-import { ext } from "../../../extensionVariables";
+import { IPickKeyContext } from "src/workflows/common/contexts";
 import { pickService } from "../../../tree/pickitem/pickService";
 import { ServiceItem } from "../../../tree/service/ServiceItem";
 import * as utils from "../../../utils";
 import { createActivityContext, localize } from "../../../utils";
 import { GetKeyTypeStep } from "../../common/getKeyTypeStep";
-import { CopyConnectionStringStep } from "./CopyConnectionStringStep";
+import { RegenerateKeyStep } from "./RegenerateKeyStep";
 
-export async function copyServiceConnectionString(context: IActionContext, node?: ServiceItem): Promise<void> {
+export async function regenerateKey(context: IActionContext, node?: ServiceItem): Promise<void> {
     const { subscription, webPubSub } = node ?? await pickService(context, {
-        title: localize('copyConnectionString', 'Copy Connection String'),
+        title: localize('regenerateKey', 'Regenerate Key'),
     });
 
     const wizardContext: IPickKeyContext = {
@@ -26,17 +25,13 @@ export async function copyServiceConnectionString(context: IActionContext, node?
         resourceGroupName: webPubSub.resourceGroup
     };
 
-    const wizard: AzureWizard<IPickServiceContext> = new AzureWizard(wizardContext, {
-        title: localize('copyConnectionString', 'Copy connection string of "{0}"', webPubSub.name),
+    const wizard = new AzureWizard(wizardContext, {
+        title: localize('regenerateKey', 'Regenerate Key of "{0}"', webPubSub.name),
         promptSteps: [new GetKeyTypeStep()],
-        executeSteps: [new CopyConnectionStringStep()]
+        executeSteps: [new RegenerateKeyStep()]
     });
 
     await wizard.prompt();
-    wizardContext.activityTitle = utils.localize('copyTypedConnectionString', 'Copy {0} connection string of "{1}"', wizardContext.keyType, wizardContext.webPubSubName);
-    await ext.state.runWithTemporaryDescription(webPubSub.id, "Retrieving Keys...", async () => {
-        await wizard.execute();
-    });
-
-    // ext.branchDataProvider.refresh();
+    wizardContext.activityTitle = utils.localize('regenerateKeyWithType', 'Regenerate {0} key of "{1}"', wizardContext.keyType, wizardContext.webPubSubName);
+    await wizard.execute();
 }
