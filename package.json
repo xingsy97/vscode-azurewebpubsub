@@ -107,6 +107,12 @@
                 "icon": "$(remove)"
             },
             {
+                "command": "azureWebPubSub.service.viewMetrics",
+                "title": "%azureWebPubSub.service.viewMetrics%",
+                "category": "Azure Web PubSub",
+                "icon": "$(remove)"
+            },
+            {
                 "command": "azureWebPubSub.service.copyEndpoint",
                 "title": "%azureWebPubSub.service.copyEndpoint%",
                 "category": "Azure Web PubSub",
@@ -188,19 +194,24 @@
                     "group": "1@2"
                 },
                 {
-                    "command": "azureWebPubSub.service.copyEndpoint",
+                    "command": "azureWebPubSub.service.viewMetrics",
                     "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubItem/i",
                     "group": "1@3"
                 },
                 {
-                    "command": "azureWebPubSub.service.openLiveTraceTool",
+                    "command": "azureWebPubSub.service.copyEndpoint",
                     "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubItem/i",
                     "group": "1@4"
                 },
                 {
-                    "command": "azureWebPubSub.service.checkHealth",
+                    "command": "azureWebPubSub.service.openLiveTraceTool",
                     "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubItem/i",
                     "group": "1@5"
+                },
+                {
+                    "command": "azureWebPubSub.service.checkHealth",
+                    "when": "view =~ /(azureResourceGroups|azureFocusView)/ && viewItem =~ /webPubSubItem/i",
+                    "group": "1@6"
                 },
                 {
                     "command": "azureWebPubSub.hubSetting.create",
@@ -308,6 +319,7 @@
         "webpack-cli": "^4.6.0"
     },
     "dependencies": {
+        "@azure/arm-monitor": "^7.0.0",
         "@azure/arm-resources": "^5.0.1",
         "@azure/arm-webpubsub": "^2.0.0-beta.2",
         "@azure/container-registry": "1.0.0-beta.5",

@@ -19,6 +19,7 @@ import { deleteService } from './workflows/service/delete/deleteService';
 import { openLiveTraceTool } from './workflows/service/openLiveTraceTool/openLiveTraceTool';
 import { regenerateKey } from './workflows/service/regenerateKey/regenerateKey';
 import { restartWebPubSub } from './workflows/service/restart/restartWebPubSub';
+import { viewMetrics } from './workflows/service/viewMetric/viewMetrics';
 import { helloWorld } from "./workflows/trivial/helloWorld";
 
 export function registerCommands(): void {
@@ -29,6 +30,7 @@ export function registerCommands(): void {
     registerCommandWithTelemetryWrapper('azureWebPubSub.service.createInPortal', createServiceInPortal);
     registerCommandWithTelemetryWrapper('azureWebPubSub.service.delete', deleteService);
     registerCommandWithTelemetryWrapper('azureWebPubSub.service.copyConnectionString', copyServiceConnectionString);
+    registerCommandWithTelemetryWrapper('azureWebPubSub.service.viewMetrics', viewMetrics);
     registerCommandWithTelemetryWrapper('azureWebPubSub.service.regenerateKey', regenerateKey);
     registerCommandWithTelemetryWrapper('azureWebPubSub.service.copyEndpoint', copyServiceEndpoint);
     registerCommandWithTelemetryWrapper('azureWebPubSub.service.openLiveTraceTool', openLiveTraceTool);

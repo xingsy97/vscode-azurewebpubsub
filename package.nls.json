@@ -10,6 +10,7 @@
     "azureWebPubSub.service.delete": "Delete Service",
     "azureWebPubSub.service.openLiveTraceTool": "Open Live Trace Tool",
     "azureWebPubSub.service.copyConnectionString": "Copy Connection String",
+    "azureWebPubSub.service.viewMetrics": "View Metrics",
     "azureWebPubSub.service.regenerateKey": "Regenerate key",
     "azureWebPubSub.service.copyEndpoint": "Copy Service Endpoint",
     "azureWebPubSub.service.checkHealth": "Check Service Health",

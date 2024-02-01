@@ -233,6 +233,11 @@ export const localize: nls.LocalizeFunc = nls.loadMessageBundle();
 export async function createWebPubSubHubsAPIClient(context: AzExtClientContext): Promise<WebPubSubManagementClient> {
     return createAzureClient(context, WebPubSubManagementClient);
 }
+
+// export async function createMonitorAPIClient(context: AzExtClientContext): Promise<MonitorClient> {
+//     return createAzureClient(context, MonitorClient);
+// }
+
 export async function createWebPubSubHubsClient(context: IActionContext, subscription: AzureSubscription): Promise<WebPubSubManagementClient> {
     return createWebPubSubHubsAPIClient([context, createSubscriptionContext(subscription)]);
 }
