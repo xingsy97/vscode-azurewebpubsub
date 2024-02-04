@@ -37,6 +37,4 @@ export async function copyServiceConnectionString(context: IActionContext, node?
     await ext.state.runWithTemporaryDescription(webPubSub.id, "Retrieving Keys...", async () => {
         await wizard.execute();
     });
-
-    // ext.branchDataProvider.refresh();
 }
