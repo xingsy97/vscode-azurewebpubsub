@@ -4,9 +4,9 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { WebPubSubHubProperties } from "@azure/arm-webpubsub";
-import { IPickHubContext } from "src/workflows/common/contexts";
+import { IPickHubSettingContext } from "src/workflows/common/contexts";
 
-export interface IDeleteEventHandlerContext extends IPickHubContext {
+export interface IDeleteEventHandlerContext extends IPickHubSettingContext {
     indexInHub: number;
     hubProperties: WebPubSubHubProperties;
 }

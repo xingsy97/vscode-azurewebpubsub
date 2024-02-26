@@ -14,7 +14,7 @@ export interface IPickServiceContext extends IActionContext, ExecuteActivityCont
     webPubSubName?: string;
 }
 
-export interface IPickHubContext extends IPickServiceContext {
+export interface IPickHubSettingContext extends IPickServiceContext {
     subscription?: ISubscriptionContext;
     resourceGroupName?: string;
     webPubSubResourceName?: string;
@@ -39,7 +39,7 @@ export interface IPickMetricsContext extends IPickServiceContext {
     aggregationType?: AggregationType;
 }
 
-export interface IPickEventHandlerContext extends IPickHubContext {
+export interface IPickEventHandlerContext extends IPickHubSettingContext {
     eventHandlerSetting: EventHandler;
 }
 
