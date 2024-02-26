@@ -3,11 +3,11 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { WebPubSubManagementClient } from "@azure/arm-webpubsub";
+import  { type WebPubSubManagementClient } from "@azure/arm-webpubsub";
 import { AzureWizardExecuteStep } from "@microsoft/vscode-azext-utils";
-import { Progress } from "vscode";
+import  { type Progress } from "vscode";
 import { localize, nonNullProp } from "../../../../utils";
-import { IDeleteEventHandlerContext } from "./IDeleteEventHandlerContext";
+import  { type IDeleteEventHandlerContext } from "./IDeleteEventHandlerContext";
 
 export class DeleteEventHandlerStep extends AzureWizardExecuteStep<IDeleteEventHandlerContext> {
     public priority: number = 135;
@@ -20,7 +20,7 @@ export class DeleteEventHandlerStep extends AzureWizardExecuteStep<IDeleteEventH
         const message: string = localize('deletingEventHandler', `Deleting Event Handler in Hub ${context.hubName}`);
         progress.report({ message });
 
-        var hubProperties = context.hubProperties;
+        const hubProperties = context.hubProperties;
         if (hubProperties.eventHandlers) {
             hubProperties.eventHandlers.splice(context.indexInHub, 1);
         }

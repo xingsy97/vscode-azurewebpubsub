@@ -8,7 +8,7 @@ import * as vscode from 'vscode';
 import { env, window, type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
 import { createWebPubSubHubsAPIClient, localize } from '../../../utils';
-import { ICopyEndpointContext } from "./ICopyEndpointContext";
+import  { type ICopyEndpointContext } from "./ICopyEndpointContext";
 
 export class CopyEndpointStep extends AzureWizardExecuteStep<ICopyEndpointContext> {
     public priority: number = 110;
@@ -24,7 +24,7 @@ export class CopyEndpointStep extends AzureWizardExecuteStep<ICopyEndpointContex
                 'copyEndpointError',
                 `Failed to copy connection string "${context.webPubSubName}", resource group "${context.resourceGroupName}"`)
             );
-        };
+        }
         try {
             if (context.endpoint === undefined) {
                 window.showErrorMessage(localize('copyEndpointError', `Failed to copy endpoint of ${context.webPubSubName}.`));

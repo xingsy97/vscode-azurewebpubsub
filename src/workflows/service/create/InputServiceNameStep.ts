@@ -3,10 +3,10 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { WebPubSubSkuTier } from "@azure/arm-webpubsub";
+import  { type WebPubSubSkuTier } from "@azure/arm-webpubsub";
 import { AzureNameStep } from "@microsoft/vscode-azext-utils";
 import { localize } from "../../../utils";
-import { ICreateServiceContext } from "./ICreateServiceContext";
+import  { type ICreateServiceContext } from "./ICreateServiceContext";
 
 export class InputServiceNameStep extends AzureNameStep<ICreateServiceContext> {
     //refer: https://dev.azure.com/msazure/AzureDMSS/_git/AzureDMSS-PortalExtension?path=%2Fsrc%2FSpringCloudPortalExt%2FClient%2FCreateApplication%2FCreateApplicationBlade.ts&version=GBdev&line=463&lineEnd=463&lineStartColumn=25&lineEndColumn=55&lineStyle=plain&_a=contents

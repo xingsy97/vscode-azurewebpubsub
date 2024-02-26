@@ -6,9 +6,10 @@
 'use strict';
 
 import { registerAzureUtilsExtensionVariables } from '@microsoft/vscode-azext-azureutils';
-import { IActionContext, TreeElementStateManager, callWithTelemetryAndErrorHandling, createAzExtOutputChannel, createExperimentationService, registerUIExtensionVariables } from '@microsoft/vscode-azext-utils';
+import  { type IActionContext} from '@microsoft/vscode-azext-utils';
+import { TreeElementStateManager, callWithTelemetryAndErrorHandling, createAzExtOutputChannel, createExperimentationService, registerUIExtensionVariables } from '@microsoft/vscode-azext-utils';
 import { getAzureResourcesExtensionApi } from '@microsoft/vscode-azureresources-api';
-import * as vscode from 'vscode';
+import type * as vscode from 'vscode';
 import { registerCommands } from './commands';
 import { ext } from './extensionVariables';
 import { ServicesDataProvider } from "./tree/ServicesDataProvider";

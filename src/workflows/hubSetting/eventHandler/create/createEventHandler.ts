@@ -5,17 +5,18 @@
 
 import { WebPubSubManagementClient } from "@azure/arm-webpubsub";
 import { createAzureClient } from "@microsoft/vscode-azext-azureutils";
-import { AzureWizard, IActionContext, createSubscriptionContext } from "@microsoft/vscode-azext-utils";
+import  { type IActionContext} from "@microsoft/vscode-azext-utils";
+import { AzureWizard, createSubscriptionContext } from "@microsoft/vscode-azext-utils";
 import { ext } from "../../../../extensionVariables";
 import { HubItem } from "../../../../tree/hub/HubItem";
 import { EventHandlersItem } from "../../../../tree/hub/properties/EventHandlersItem";
 import { pickHub } from "../../../../tree/pickitem/pickHub";
-import { ServiceItem } from "../../../../tree/service/ServiceItem";
+import  { type ServiceItem } from "../../../../tree/service/ServiceItem";
 import * as utils from "../../../../utils";
 import { createActivityContext, localize } from "../../../../utils";
 import { InputUrlTemplateStep, InputUserEventsStep, SelectSystemEventsStep } from "../../create/InputHubSettingStep";
 import { CreateEventHandlerStep } from "./CreateEventHandlerStep";
-import { ICreateEventHandlerContext } from "./ICreateEventHandlerContext";
+import  { type ICreateEventHandlerContext } from "./ICreateEventHandlerContext";
 
 export async function createEventHandler(context: IActionContext, node?: HubItem | EventHandlersItem): Promise<void> {
     let serivce: ServiceItem, hub: HubItem;

@@ -3,11 +3,11 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { IAzExtOutputChannel, IExperimentationServiceAdapter, TreeElementStateManager } from "@microsoft/vscode-azext-utils";
-import { AzureResourcesExtensionApi } from "@microsoft/vscode-azureresources-api";
-import { ExtensionContext } from "vscode";
-import { ServicesDataProvider } from "./tree/ServicesDataProvider";
-import { HubSettingFileSystem } from "./workflows/hub/update/HubSettingFileSystem";
+import  { type IAzExtOutputChannel, type IExperimentationServiceAdapter, type TreeElementStateManager } from "@microsoft/vscode-azext-utils";
+import  { type AzureResourcesExtensionApi } from "@microsoft/vscode-azureresources-api";
+import  { type ExtensionContext } from "vscode";
+import  { type ServicesDataProvider } from "./tree/ServicesDataProvider";
+import  { type HubSettingFileSystem } from "./workflows/hub/update/HubSettingFileSystem";
 
 /**
  * Namespace for common variables used throughout the extension. They must be initialized in the activate() method of extension.ts

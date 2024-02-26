@@ -6,8 +6,8 @@
 import { AzureNameStep } from "@microsoft/vscode-azext-utils";
 import { KnownUserEvents, eventHandlerSystemEvents, eventHandlerUserEvents } from "../../../constants";
 import { localize } from "../../../utils";
-import { IUpdateEventHandlerContext } from "../common/IUpdateEventHandlerContext";
-import { ICreateOrUpdateHubSettingContext } from "./ICreateEventHandlerContext";
+import  { type IUpdateEventHandlerContext } from "../common/IUpdateEventHandlerContext";
+import  { type ICreateOrUpdateHubSettingContext } from "./ICreateEventHandlerContext";
 
 
 export class InputHubSettingStep extends AzureNameStep<ICreateOrUpdateHubSettingContext> {
@@ -104,7 +104,7 @@ export class InputUserEventsStep extends AzureNameStep<IUpdateEventHandlerContex
             placeHolder: placeHodler,
         })
         const userEvent = (await pickBox).data;
-        var userEventPattern: string = "";
+        let userEventPattern: string = "";
         switch (userEvent) {
             case KnownUserEvents.All: userEventPattern = "*"; break;
             case KnownUserEvents.None: userEventPattern = ""; break;

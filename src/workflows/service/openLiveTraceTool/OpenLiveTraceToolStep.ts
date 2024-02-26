@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-utils";
-import { IPickServiceContext } from "src/workflows/common/contexts";
+import  { type IPickServiceContext } from "src/workflows/common/contexts";
 import * as vscode from 'vscode';
 import { window, type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
@@ -24,7 +24,7 @@ export class OpenLiveTraceToolStep extends AzureWizardExecuteStep<IPickServiceCo
                 'openLiveTraceToolError',
                 `Failed to open LiveTrace Tool "${context.webPubSubName}", resource group "${context.resourceGroupName}"`)
             );
-        };
+        }
         try {
             const resource = (await (client.webPubSub.get(context.resourceGroupName, context.webPubSubName)));
             const connectionString = (await (client.webPubSub.listKeys(context.resourceGroupName, context.webPubSubName))).primaryConnectionString;

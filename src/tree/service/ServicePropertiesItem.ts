@@ -1,10 +1,12 @@
-import { KnownWebPubSubSkuTier, ProvisioningState } from "@azure/arm-webpubsub";
-import { TreeElementBase, TreeItemIconPath, createContextValue, createGenericElement } from "@microsoft/vscode-azext-utils";
-import { ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
+import  { type ProvisioningState } from "@azure/arm-webpubsub";
+import { KnownWebPubSubSkuTier } from "@azure/arm-webpubsub";
+import  { type TreeElementBase, type TreeItemIconPath} from "@microsoft/vscode-azext-utils";
+import { createContextValue, createGenericElement } from "@microsoft/vscode-azext-utils";
+import  { type ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
 import * as vscode from 'vscode';
 import { ThemeIcon } from "vscode";
 import { localize } from "../../utils";
-import { WebPubSubModel } from "../models";
+import  { type WebPubSubModel } from "../models";
 
 
 export class ServicePropertiesItem implements TreeElementBase {

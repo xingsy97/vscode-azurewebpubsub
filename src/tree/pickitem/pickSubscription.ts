@@ -3,8 +3,9 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { AzureWizard, QuickPickAzureSubscriptionStep, TreeElementBase, type IActionContext } from "@microsoft/vscode-azext-utils";
-import { AzureResourceBranchDataProvider, AzureSubscription } from "@microsoft/vscode-azureresources-api";
+import  { type TreeElementBase} from "@microsoft/vscode-azext-utils";
+import { AzureWizard, QuickPickAzureSubscriptionStep, type IActionContext } from "@microsoft/vscode-azext-utils";
+import  { type AzureResourceBranchDataProvider, type AzureSubscription } from "@microsoft/vscode-azureresources-api";
 
 // Modified from function subscriptionExperience(context, tdp)
 

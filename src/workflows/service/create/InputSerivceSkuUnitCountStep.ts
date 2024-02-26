@@ -1,8 +1,9 @@
 import { KnownWebPubSubSkuTier } from "@azure/arm-webpubsub";
-import { AzureWizardPromptStep, IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import  { type IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import { AzureWizardPromptStep } from "@microsoft/vscode-azext-utils";
 import { tierToUnitCountList } from "../../../constants";
 import { localize } from "../../../utils";
-import { ICreateServiceContext } from "./ICreateServiceContext";
+import  { type ICreateServiceContext } from "./ICreateServiceContext";
 
 export class InputSerivceSkuUnitCountStep extends AzureWizardPromptStep<ICreateServiceContext> {
     public async prompt(context: ICreateServiceContext): Promise<void> {
@@ -10,7 +11,7 @@ export class InputSerivceSkuUnitCountStep extends AzureWizardPromptStep<ICreateS
             throw new Error("Invalid context or sku");
         }
 
-        var picks: IAzureQuickPickItem<number>[] = [];
+        const picks: IAzureQuickPickItem<number>[] = [];
         const tier: string | undefined = context.Sku.sku.tier
         switch (tier) {
             case KnownWebPubSubSkuTier.Free:

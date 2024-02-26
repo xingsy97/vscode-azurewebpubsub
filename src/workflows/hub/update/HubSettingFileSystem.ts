@@ -1,11 +1,14 @@
-import { WebPubSubHubProperties, WebPubSubManagementClient } from "@azure/arm-webpubsub";
+import  { type WebPubSubHubProperties} from "@azure/arm-webpubsub";
+import { WebPubSubManagementClient } from "@azure/arm-webpubsub";
 import { createAzureClient } from "@microsoft/vscode-azext-azureutils";
 import { ext } from "@microsoft/vscode-azext-github";
-import { AzExtTreeFileSystem, AzExtTreeFileSystemItem, IActionContext, createSubscriptionContext } from "@microsoft/vscode-azext-utils";
-import { AzureSubscription } from "@microsoft/vscode-azureresources-api";
+import  { type AzExtTreeFileSystemItem, type IActionContext} from "@microsoft/vscode-azext-utils";
+import { AzExtTreeFileSystem, createSubscriptionContext } from "@microsoft/vscode-azext-utils";
+import  { type AzureSubscription } from "@microsoft/vscode-azureresources-api";
 import * as jsonc from 'jsonc-parser';
 import * as os from "os";
-import { Diagnostic, DiagnosticSeverity, FileStat, FileType, MessageItem, Uri, commands, languages, window } from "vscode";
+import  { type Diagnostic, type FileStat, type MessageItem, type Uri} from "vscode";
+import { DiagnosticSeverity, FileType, commands, languages, window } from "vscode";
 import { localize } from "../../../utils";
 
 const insertKeyHere: string = localize('insertTagName', '<Insert tag name>');

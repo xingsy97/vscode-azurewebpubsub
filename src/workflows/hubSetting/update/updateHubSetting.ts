@@ -8,12 +8,12 @@ import { WebPubSubManagementClient } from "@azure/arm-webpubsub";
 import { createAzureClient } from "@microsoft/vscode-azext-azureutils";
 import { AzureWizard, createSubscriptionContext, type IActionContext } from "@microsoft/vscode-azext-utils";
 import { ext } from "../../../extensionVariables";
-import { HubItem } from "../../../tree/hub/HubItem";
+import  { type HubItem } from "../../../tree/hub/HubItem";
 import { pickHub } from "../../../tree/pickitem/pickHub";
 import * as utils from "../../../utils";
 import { createActivityContext, localize } from "../../../utils";
 import { CreateOrUpdateHubSettingStep } from "../common/CreateOrUpdateHubSettingStep";
-import { ICreateOrUpdateHubSettingContext } from "../create/ICreateEventHandlerContext";
+import  { type ICreateOrUpdateHubSettingContext } from "../create/ICreateEventHandlerContext";
 
 export async function updateHubSetting(context: IActionContext, node?: HubItem): Promise<void> {
     const { service, hub: webPubSubHub } = node ?? await pickHub(context, {

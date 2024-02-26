@@ -1,7 +1,9 @@
-import { KnownWebPubSubSkuTier, WebPubSubSkuTier } from "@azure/arm-webpubsub";
-import { AzureWizardPromptStep, IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import  { type WebPubSubSkuTier } from "@azure/arm-webpubsub";
+import { KnownWebPubSubSkuTier } from "@azure/arm-webpubsub";
+import  { type IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import { AzureWizardPromptStep } from "@microsoft/vscode-azext-utils";
 import { localize } from "../../../utils";
-import { ICreateServiceContext } from "./ICreateServiceContext";
+import  { type ICreateServiceContext } from "./ICreateServiceContext";
 import { getSkuTierFromSkuName } from "./InputServiceNameStep";
 
 const skuTierPickItems: IAzureQuickPickItem<WebPubSubSkuTier>[] = [

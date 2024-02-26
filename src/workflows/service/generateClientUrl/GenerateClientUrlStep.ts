@@ -6,7 +6,7 @@
 import { KnownKeyType } from "@azure/arm-webpubsub";
 import { WebPubSubServiceClient } from "@azure/web-pubsub";
 import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-utils";
-import { IPickKeyContext } from "src/workflows/common/contexts";
+import  { type IPickKeyContext } from "src/workflows/common/contexts";
 import * as vscode from 'vscode';
 import { env, type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
@@ -25,7 +25,7 @@ export class GenerateClientUrlStep extends AzureWizardExecuteStep<IPickKeyContex
                 'invalidCopyConnectionStringParms',
                 `Failed to copy connection string of "${context.webPubSubName}" in resource group "${context.resourceGroupName}"`)
             );
-        };
+        }
         try {
             const serviceClient = new WebPubSubServiceClient(
                 "<ConnectionString>",

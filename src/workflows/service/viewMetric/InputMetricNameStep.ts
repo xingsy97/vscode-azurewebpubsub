@@ -1,6 +1,8 @@
-import { AzureWizardPromptStep, IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import  { type IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import { AzureWizardPromptStep } from "@microsoft/vscode-azext-utils";
 import { localize } from "../../../utils";
-import { IPickMetricsContext, KnownMetricNameEnum, MetricName } from "../../common/contexts";
+import  { type IPickMetricsContext, type MetricName } from "../../common/contexts";
+import { KnownMetricNameEnum } from "../../common/contexts";
 
 const metricNamePickItems: IAzureQuickPickItem<MetricName>[] = [
     { label: "Server Load", data: KnownMetricNameEnum.ServerLoad },

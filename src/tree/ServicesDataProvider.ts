@@ -1,5 +1,6 @@
-import { IActionContext, TreeElementBase, callWithTelemetryAndErrorHandling, nonNullProp } from "@microsoft/vscode-azext-utils";
-import { AzureResource, AzureResourceBranchDataProvider } from '@microsoft/vscode-azureresources-api';
+import  { type IActionContext, type TreeElementBase} from "@microsoft/vscode-azext-utils";
+import { callWithTelemetryAndErrorHandling, nonNullProp } from "@microsoft/vscode-azext-utils";
+import  { type AzureResource, type AzureResourceBranchDataProvider } from '@microsoft/vscode-azureresources-api';
 import * as vscode from 'vscode';
 import { ext } from "../../extension.bundle";
 import { ServiceItem } from "./service/ServiceItem";

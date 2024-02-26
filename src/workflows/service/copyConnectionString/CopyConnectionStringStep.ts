@@ -5,7 +5,7 @@
 
 import { KnownKeyType } from "@azure/arm-webpubsub";
 import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-utils";
-import { IPickKeyContext } from "src/workflows/common/contexts";
+import  { type IPickKeyContext } from "src/workflows/common/contexts";
 import * as vscode from 'vscode';
 import { env, type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
@@ -24,7 +24,7 @@ export class CopyConnectionStringStep extends AzureWizardExecuteStep<IPickKeyCon
                 'invalidCopyConnectionStringParms',
                 `Failed to copy connection string of "${context.webPubSubName}" in resource group "${context.resourceGroupName}"`)
             );
-        };
+        }
         try {
             const keys = await client.webPubSub.listKeys(context.resourceGroupName, context.webPubSubName);
             const connString = context.keyType === KnownKeyType.Primary ? keys.primaryConnectionString : keys.secondaryConnectionString;

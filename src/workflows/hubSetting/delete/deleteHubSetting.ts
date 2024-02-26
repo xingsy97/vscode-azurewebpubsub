@@ -5,13 +5,13 @@
 
 import { AzureWizard, createSubscriptionContext, type IActionContext } from "@microsoft/vscode-azext-utils";
 import { ext } from "../../../extensionVariables";
-import { HubItem } from "../../../tree/hub/HubItem";
+import  { type HubItem } from "../../../tree/hub/HubItem";
 import { pickHub } from "../../../tree/pickitem/pickHub";
 import * as utils from "../../../utils";
 import { createActivityContext, localize } from "../../../utils";
 import { DeleteHubConfirmationStep } from "./DeleteHubConfirmationStep";
 import { DeleteHubSettingStep } from "./DeleteHubStep";
-import { IDeleteHubSettingContext } from "./IDeleteHubContext";
+import  { type IDeleteHubSettingContext } from "./IDeleteHubContext";
 
 
 export async function deleteHubSetting(context: IActionContext, node?: HubItem): Promise<void> {

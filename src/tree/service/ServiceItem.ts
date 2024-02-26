@@ -1,11 +1,13 @@
-import { KnownServiceKind, WebPubSubResource } from "@azure/arm-webpubsub";
+import  { type WebPubSubResource } from "@azure/arm-webpubsub";
+import { KnownServiceKind } from "@azure/arm-webpubsub";
 import { getResourceGroupFromId, uiUtils } from "@microsoft/vscode-azext-azureutils";
-import { IActionContext, TreeElementBase, TreeItemIconPath, createContextValue, createSubscriptionContext } from "@microsoft/vscode-azext-utils";
-import { AzureResource, AzureSubscription, ViewPropertiesModel } from '@microsoft/vscode-azureresources-api';
+import  { type IActionContext, type TreeElementBase, type TreeItemIconPath} from "@microsoft/vscode-azext-utils";
+import { createContextValue, createSubscriptionContext } from "@microsoft/vscode-azext-utils";
+import  { type AzureResource, type AzureSubscription, type ViewPropertiesModel } from '@microsoft/vscode-azureresources-api';
 import * as vscode from 'vscode';
 import { createWebPubSubHubsAPIClient } from "../../utils";
 import { HubsItem } from "../hub/HubsItem";
-import { WebPubSubModel } from "../models";
+import  { type WebPubSubModel } from "../models";
 import { treeUtils } from "../treeUtils";
 import { ServicePropertiesItem } from "./ServicePropertiesItem";
 

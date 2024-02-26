@@ -1,9 +1,10 @@
-import { EventHandler } from "@azure/arm-webpubsub";
-import { TreeElementBase, createContextValue } from "@microsoft/vscode-azext-utils";
-import { ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
+import  { type EventHandler } from "@azure/arm-webpubsub";
+import  { type TreeElementBase} from "@microsoft/vscode-azext-utils";
+import { createContextValue } from "@microsoft/vscode-azext-utils";
+import  { type ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
 import * as vscode from 'vscode';
 import { ThemeIcon } from "vscode";
-import { HubItem } from "../HubItem";
+import  { type HubItem } from "../HubItem";
 import { EventHandlerItem } from "./EventHandlerItem";
 
 

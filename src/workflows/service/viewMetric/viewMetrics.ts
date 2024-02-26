@@ -4,9 +4,9 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizard, createSubscriptionContext, type IActionContext } from "@microsoft/vscode-azext-utils";
-import { IPickMetricsContext, IPickServiceContext } from "src/workflows/common/contexts";
+import  { type IPickMetricsContext, type IPickServiceContext } from "src/workflows/common/contexts";
 import { pickService } from "../../../tree/pickitem/pickService";
-import { ServiceItem } from "../../../tree/service/ServiceItem";
+import  { type ServiceItem } from "../../../tree/service/ServiceItem";
 import * as utils from "../../../utils";
 import { createActivityContext, localize } from "../../../utils";
 import { InputAggregationTypeStep } from "./InputAggregationTypeStep";

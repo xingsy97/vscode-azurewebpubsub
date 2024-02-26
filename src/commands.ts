@@ -3,7 +3,8 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { CommandCallback, IActionContext, IParsedError, openUrl, parseError, registerCommandWithTreeNodeUnwrapping, registerErrorHandler, registerReportIssueCommand } from '@microsoft/vscode-azext-utils';
+import  { type CommandCallback, type IActionContext, type IParsedError} from '@microsoft/vscode-azext-utils';
+import { openUrl, parseError, registerCommandWithTreeNodeUnwrapping, registerErrorHandler, registerReportIssueCommand } from '@microsoft/vscode-azext-utils';
 import { instrumentOperation } from 'vscode-extension-telemetry-wrapper';
 import { showError } from './utils';
 import { createHubSetting } from './workflows/hubSetting/create/createHubSetting';

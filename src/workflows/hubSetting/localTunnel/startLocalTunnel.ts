@@ -3,10 +3,10 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { IActionContext } from "@microsoft/vscode-azext-utils";
+import  { type IActionContext } from "@microsoft/vscode-azext-utils";
 import * as vscode from "vscode";
 import { localTunnelPackageName, localTunnelTerminalName } from "../../../constants";
-import { HubItem } from "../../../tree/hub/HubItem";
+import  { type HubItem } from "../../../tree/hub/HubItem";
 import { pickHub } from "../../../tree/pickitem/pickHub";
 import { createEndpointFromHostName, localize } from "../../../utils";
 

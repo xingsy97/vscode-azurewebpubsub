@@ -3,9 +3,9 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { Sku } from "@azure/arm-webpubsub";
-import { IResourceGroupWizardContext } from '@microsoft/vscode-azext-azureutils';
-import { ExecuteActivityContext } from "@microsoft/vscode-azext-utils";
+import  { type Sku } from "@azure/arm-webpubsub";
+import  { type IResourceGroupWizardContext } from '@microsoft/vscode-azext-azureutils';
+import  { type ExecuteActivityContext } from "@microsoft/vscode-azext-utils";
 
 export interface ICreateServiceContext extends IResourceGroupWizardContext, ExecuteActivityContext {
     webPubSubName?: string;

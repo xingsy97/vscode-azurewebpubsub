@@ -1,7 +1,9 @@
-import { KnownServiceKind, ServiceKind } from "@azure/arm-webpubsub";
-import { AzureWizardPromptStep, IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import  { type ServiceKind } from "@azure/arm-webpubsub";
+import { KnownServiceKind } from "@azure/arm-webpubsub";
+import  { type IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import { AzureWizardPromptStep } from "@microsoft/vscode-azext-utils";
 import { localize } from "../../../utils";
-import { ICreateServiceContext } from "./ICreateServiceContext";
+import  { type ICreateServiceContext } from "./ICreateServiceContext";
 
 const serviceKindPickItems: IAzureQuickPickItem<ServiceKind>[] = [
     { label: "Web PubSub", data: KnownServiceKind.WebPubSub, detail: "Supports the native Web PubSub API and provides SDKs in various languages" },

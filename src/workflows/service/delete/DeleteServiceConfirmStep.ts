@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizardPromptStep, DialogResponses, nonNullValue, UserCancelledError } from '@microsoft/vscode-azext-utils';
-import { IPickServiceContext } from "src/workflows/common/contexts";
+import  { type IPickServiceContext } from "src/workflows/common/contexts";
 import { localize, settingUtils } from "../../../utils";
 
 export class DeleteServiceConfirmStep extends AzureWizardPromptStep<IPickServiceContext> {

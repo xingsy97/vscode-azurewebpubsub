@@ -3,11 +3,11 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { WebPubSubManagementClient } from "@azure/arm-webpubsub";
+import  { type WebPubSubManagementClient } from "@azure/arm-webpubsub";
 import { AzureWizardExecuteStep } from "@microsoft/vscode-azext-utils";
-import { Progress } from "vscode";
+import  { type Progress } from "vscode";
 import { localize, nonNullProp } from "../../../utils";
-import { ICreateServiceContext } from "./ICreateServiceContext";
+import  { type ICreateServiceContext } from "./ICreateServiceContext";
 
 export class CreateServiceStep extends AzureWizardExecuteStep<ICreateServiceContext> {
     public priority: number = 135;

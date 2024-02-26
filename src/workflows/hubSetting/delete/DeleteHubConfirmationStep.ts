@@ -5,7 +5,7 @@
 
 import { AzureWizardPromptStep, DialogResponses, nonNullValue, UserCancelledError } from '@microsoft/vscode-azext-utils';
 import { localize, settingUtils } from "../../../utils";
-import { IDeleteHubSettingContext } from './IDeleteHubContext';
+import  { type IDeleteHubSettingContext } from './IDeleteHubContext';
 
 export class DeleteHubConfirmationStep extends AzureWizardPromptStep<IDeleteHubSettingContext> {
     private hubName?: string;

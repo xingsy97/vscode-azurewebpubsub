@@ -8,7 +8,7 @@ import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-util
 import { type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
 import { createWebPubSubHubsAPIClient, localize } from '../../../utils';
-import { IDeleteHubSettingContext } from "./IDeleteHubContext";
+import  { type IDeleteHubSettingContext } from "./IDeleteHubContext";
 
 export class DeleteHubSettingStep extends AzureWizardExecuteStep<IDeleteHubSettingContext> {
     public priority: number = 110;

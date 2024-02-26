@@ -3,8 +3,8 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { WebPubSubHubProperties } from "@azure/arm-webpubsub";
-import { IPickHubSettingContext } from "src/workflows/common/contexts";
+import  { type WebPubSubHubProperties } from "@azure/arm-webpubsub";
+import  { type IPickHubSettingContext } from "src/workflows/common/contexts";
 
 export interface IDeleteEventHandlerContext extends IPickHubSettingContext {
     indexInHub: number;

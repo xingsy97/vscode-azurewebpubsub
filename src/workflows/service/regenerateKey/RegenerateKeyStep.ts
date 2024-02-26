@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-utils";
-import { IPickKeyContext } from "src/workflows/common/contexts";
+import  { type IPickKeyContext } from "src/workflows/common/contexts";
 import * as vscode from 'vscode';
 import { type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
@@ -20,7 +20,7 @@ export class RegenerateKeyStep extends AzureWizardExecuteStep<IPickKeyContext> {
                     'regenerateKeyError',
                     'Failed to regenerate key for "{0}" in resource group "{1}"', context.webPubSubName, context.resourceGroupName
                 ));
-        };
+        }
 
         const client = await createWebPubSubHubsAPIClient([context, context.subscription!]);
 

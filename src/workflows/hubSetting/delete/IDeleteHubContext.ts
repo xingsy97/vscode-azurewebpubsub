@@ -4,6 +4,6 @@
 *--------------------------------------------------------------------------------------------*/
 
 
-import { IPickHubSettingContext } from "src/workflows/common/contexts";
+import  { type IPickHubSettingContext } from "src/workflows/common/contexts";
 
-export interface IDeleteHubSettingContext extends IPickHubSettingContext { }
+export type IDeleteHubSettingContext = IPickHubSettingContext

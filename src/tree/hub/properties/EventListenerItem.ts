@@ -1,7 +1,8 @@
-import { EventListener } from "@azure/arm-webpubsub";
-import { TreeElementBase, createContextValue } from "@microsoft/vscode-azext-utils";
-import { ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
-import { HubsItem } from "src/tree/hub/HubsItem";
+import  { type EventListener } from "@azure/arm-webpubsub";
+import  { type TreeElementBase} from "@microsoft/vscode-azext-utils";
+import { createContextValue } from "@microsoft/vscode-azext-utils";
+import  { type ViewPropertiesModel } from "@microsoft/vscode-azureresources-api";
+import  { type HubsItem } from "src/tree/hub/HubsItem";
 import * as vscode from 'vscode';
 import { MarkdownString, ThemeIcon } from "vscode";
 

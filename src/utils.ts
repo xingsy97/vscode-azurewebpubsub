@@ -5,14 +5,17 @@
 
 // tslint:disable-next-line:no-require-imports no-implicit-dependencies
 import { WebPubSubManagementClient } from "@azure/arm-webpubsub";
-import { AzExtClientContext, OpenInPortalOptions, createAzureClient } from "@microsoft/vscode-azext-azureutils";
-import { ExecuteActivityContext, IActionContext, IGenericTreeItemOptions, TreeItemIconPath, createSubscriptionContext } from "@microsoft/vscode-azext-utils";
+import  { type AzExtClientContext, type OpenInPortalOptions} from "@microsoft/vscode-azext-azureutils";
+import { createAzureClient } from "@microsoft/vscode-azext-azureutils";
+import  { type ExecuteActivityContext, type IActionContext, type IGenericTreeItemOptions, type TreeItemIconPath} from "@microsoft/vscode-azext-utils";
+import { createSubscriptionContext } from "@microsoft/vscode-azext-utils";
 import { type AzureResourcesExtensionApiWithActivity } from "@microsoft/vscode-azext-utils/activity";
-import { AzureSubscription } from "@microsoft/vscode-azureresources-api";
+import  { type AzureSubscription } from "@microsoft/vscode-azureresources-api";
 import * as fs from "fs";
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { ConfigurationTarget, ExtensionContext, ProgressLocation, Uri, WorkspaceConfiguration, WorkspaceFolder, window, workspace } from 'vscode';
+import  { type ExtensionContext, type WorkspaceConfiguration, type WorkspaceFolder} from 'vscode';
+import { ConfigurationTarget, ProgressLocation, Uri, window, workspace } from 'vscode';
 import * as nls from 'vscode-nls';
 import { settingsFile, vscodeFolder } from "./constants";
 import { ext } from "./extensionVariables";

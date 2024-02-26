@@ -3,11 +3,11 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { WebPubSubManagementClient } from "@azure/arm-webpubsub";
+import  { type WebPubSubManagementClient } from "@azure/arm-webpubsub";
 import { AzureWizardExecuteStep } from "@microsoft/vscode-azext-utils";
-import { Progress } from "vscode";
+import  { type Progress } from "vscode";
 import { localize, nonNullProp } from "../../../../utils";
-import { ICreateEventHandlerContext } from "./ICreateEventHandlerContext";
+import  { type ICreateEventHandlerContext } from "./ICreateEventHandlerContext";
 
 export class CreateEventHandlerStep extends AzureWizardExecuteStep<ICreateEventHandlerContext> {
     public priority: number = 135;
@@ -19,7 +19,7 @@ export class CreateEventHandlerStep extends AzureWizardExecuteStep<ICreateEventH
     public async execute(context: ICreateEventHandlerContext, progress: Progress<{ message?: string; increment?: number }>): Promise<void> {
         const message: string = localize('creatingEventHandler', `Creating Event Handler in Hub ${context.hubName}`);
         progress.report({ message });
-        var hubProperties = context.hubProperties;
+        const hubProperties = context.hubProperties;
         if (!hubProperties.eventHandlers) hubProperties.eventHandlers = [];
 
         hubProperties.eventHandlers.push(context.eventHandler);

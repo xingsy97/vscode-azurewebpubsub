@@ -3,9 +3,9 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { AggregationType } from "@azure/arm-monitor";
+import  { type AggregationType } from "@azure/arm-monitor";
 import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-utils";
-import { IPickKeyContext, IPickMetricsContext, MetricName } from "src/workflows/common/contexts";
+import  { type IPickKeyContext, type IPickMetricsContext, type MetricName } from "src/workflows/common/contexts";
 import * as vscode from "vscode";
 import { ext } from "../../../extensionVariables";
 import { createWebPubSubHubsAPIClient, localize } from '../../../utils';
@@ -53,7 +53,7 @@ const getChartDefinitionContext = (resourceName: string, resourceId: string, met
 const getMetricPortalUrl = (resourceName: string, resourceId: string, startTime: Date, endTime: Date, metricName: MetricName, aggregationType: AggregationType) => {
     const timeContext = getTimeContext(startTime, endTime);
     const chartDefinitionContext = getChartDefinitionContext(resourceName, resourceId, metricName, aggregationType);
-    var url = "https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/blade/Microsoft_Azure_MonitoringMetrics/Metrics.ReactView/Referer/MetricsExplorer/ResourceId/";
+    let url = "https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/blade/Microsoft_Azure_MonitoringMetrics/Metrics.ReactView/Referer/MetricsExplorer/ResourceId/";
     url += encodeURIComponent(resourceId);
     url += `/TimeContext/${encodeURIComponent(JSON.stringify(timeContext))}`;
     url += `/ChartDefinition/${encodeURIComponent(JSON.stringify(chartDefinitionContext))}`;
@@ -73,7 +73,7 @@ export class ViewMetricStep extends AzureWizardExecuteStep<IPickMetricsContext> 
                 'invalidCopyConnectionStringParms',
                 `Failed to copy connection string of "${context.webPubSubName}" in resource group "${context.resourceGroupName}"`)
             );
-        };
+        }
         try {
             const resourceId = `/subscriptions/${context.subscription?.subscriptionPath}/resourceGroups/${context.resourceGroupName}/providers/Microsoft.SignalRService/WebPubSub/${context.webPubSubName}`;
             const metricsProtalUri = getMetricPortalUrl(

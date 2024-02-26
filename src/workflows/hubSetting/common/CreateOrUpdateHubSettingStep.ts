@@ -3,11 +3,11 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { WebPubSubManagementClient } from "@azure/arm-webpubsub";
+import  { type WebPubSubManagementClient } from "@azure/arm-webpubsub";
 import { AzureWizardExecuteStep } from "@microsoft/vscode-azext-utils";
-import { Progress } from "vscode";
+import  { type Progress } from "vscode";
 import { localize, nonNullProp } from "../../../utils";
-import { ICreateOrUpdateHubSettingContext } from "../create/ICreateEventHandlerContext";
+import  { type ICreateOrUpdateHubSettingContext } from "../create/ICreateEventHandlerContext";
 
 export class CreateOrUpdateHubSettingStep extends AzureWizardExecuteStep<ICreateOrUpdateHubSettingContext> {
     public priority: number = 135;
@@ -19,7 +19,7 @@ export class CreateOrUpdateHubSettingStep extends AzureWizardExecuteStep<ICreate
         progress.report({ message });
         if (!context.hubProperties) throw new Error("hubProperties is null");
 
-        var hubProperties = context.hubProperties;
+        const hubProperties = context.hubProperties;
         if (!hubProperties.eventHandlers) hubProperties.eventHandlers = [];
         if (!hubProperties.eventListeners) hubProperties.eventListeners = [];
 

@@ -3,8 +3,8 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { EventHandler, WebPubSubHubProperties } from "@azure/arm-webpubsub";
-import { IPickHubSettingContext } from "src/workflows/common/contexts";
+import  { type EventHandler, type WebPubSubHubProperties } from "@azure/arm-webpubsub";
+import  { type IPickHubSettingContext } from "src/workflows/common/contexts";
 
 export interface ICreateEventHandlerContext extends IPickHubSettingContext {
     eventHandler: EventHandler;

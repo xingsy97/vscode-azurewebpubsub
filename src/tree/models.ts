@@ -1,4 +1,4 @@
-import { Resource, WebPubSubHub, WebPubSubResource } from "@azure/arm-webpubsub";
+import  { type Resource, type WebPubSubHub, type WebPubSubResource } from "@azure/arm-webpubsub";
 import { getResourceGroupFromId } from "@microsoft/vscode-azext-azureutils";
 import { nonNullProp } from "@microsoft/vscode-azext-utils";
 

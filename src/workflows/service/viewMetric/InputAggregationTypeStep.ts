@@ -1,7 +1,10 @@
-import { AggregationType, KnownAggregationTypeEnum } from "@azure/arm-monitor";
-import { AzureWizardPromptStep, IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import  { type AggregationType} from "@azure/arm-monitor";
+import { KnownAggregationTypeEnum } from "@azure/arm-monitor";
+import  { type IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import { AzureWizardPromptStep } from "@microsoft/vscode-azext-utils";
 import { localize } from "../../../utils";
-import { IPickMetricsContext, KnownMetricNameEnum, MetricName } from "../../common/contexts";
+import  { type IPickMetricsContext, type MetricName } from "../../common/contexts";
+import { KnownMetricNameEnum } from "../../common/contexts";
 
 const completeAggregationTypePickItems: IAzureQuickPickItem<AggregationType>[] = [
     { label: "Minimum", data: KnownAggregationTypeEnum.Minimum },
@@ -11,7 +14,7 @@ const completeAggregationTypePickItems: IAzureQuickPickItem<AggregationType>[] =
 ];
 
 const mapMetricNameToAggregationPickItems = (metricsName: MetricName): IAzureQuickPickItem<AggregationType>[] => {
-    var pickIndexs: number[] = [];
+    let pickIndexs: number[] = [];
     switch (metricsName) {
         case KnownMetricNameEnum.ServerLoad:
         case KnownMetricNameEnum.ConnectionQuotaUtilization:

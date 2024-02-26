@@ -4,9 +4,9 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizard, createSubscriptionContext, type IActionContext } from "@microsoft/vscode-azext-utils";
-import { IPickServiceContext } from "src/workflows/common/contexts";
+import  { type IPickServiceContext } from "src/workflows/common/contexts";
 import { pickService } from "../../../tree/pickitem/pickService";
-import { ServiceItem } from "../../../tree/service/ServiceItem";
+import  { type ServiceItem } from "../../../tree/service/ServiceItem";
 import { createActivityContext, localize } from "../../../utils";
 import { RestartWebPubSubConfirmationStep } from "./RestartWebPubSubConfirmationStep";
 import { RestartWebPubSubStep } from "./RestartWebPubSubStep";

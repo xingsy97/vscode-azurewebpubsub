@@ -1,6 +1,7 @@
-import { AzureWizardPromptStep, IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import  { type IAzureQuickPickItem } from "@microsoft/vscode-azext-utils";
+import { AzureWizardPromptStep } from "@microsoft/vscode-azext-utils";
 import { localize } from "../../../utils";
-import { IPickMetricsContext } from "../../common/contexts";
+import  { type IPickMetricsContext } from "../../common/contexts";
 
 const hourDelta = 60 * 60 * 1000;
 const dayDelta = 24 * hourDelta;

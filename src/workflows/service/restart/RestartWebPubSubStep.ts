@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { AzureWizardExecuteStep, parseError } from "@microsoft/vscode-azext-utils";
-import { IPickServiceContext } from "src/workflows/common/contexts";
+import  { type IPickServiceContext } from "src/workflows/common/contexts";
 import { type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
 import { createWebPubSubHubsAPIClient, localize } from '../../../utils';
@@ -23,7 +23,7 @@ export class RestartWebPubSubStep extends AzureWizardExecuteStep<IPickServiceCon
                 'restartWebPubSubError',
                 `Failed to restart Web PubSub "${context.webPubSubName}", resource group "${context.resourceGroupName}"`)
             );
-        };
+        }
         try {
             await client.webPubSub.beginRestartAndWait(context.resourceGroupName, context.webPubSubName);
         } catch (error) {

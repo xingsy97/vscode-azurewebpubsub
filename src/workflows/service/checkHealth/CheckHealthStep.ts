@@ -9,7 +9,7 @@ import * as vscode from 'vscode';
 import { type Progress } from "vscode";
 import { ext } from "../../../extensionVariables";
 import { localize } from "../../../utils";
-import { ICheckHealthContext } from "./ICheckHealthContext";
+import  { type ICheckHealthContext } from "./ICheckHealthContext";
 
 export class CheckHealthStep extends AzureWizardExecuteStep<ICheckHealthContext> {
     public priority: number = 110;
@@ -43,7 +43,7 @@ export class CheckHealthStep extends AzureWizardExecuteStep<ICheckHealthContext>
                 'checkHealthError',
                 `Failed to check health of "${context.webPubSubName}", resource group "${context.resourceGroupName}"`)
             );
-        };
+        }
         return true;
     }
 }

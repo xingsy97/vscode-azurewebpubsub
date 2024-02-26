@@ -3,9 +3,9 @@
 *  Licensed under the MIT License. See License.txt in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 
-import { AggregationType } from "@azure/arm-monitor";
-import { EventHandler, KeyType } from "@azure/arm-webpubsub";
-import { ExecuteActivityContext, IActionContext, ISubscriptionContext } from "@microsoft/vscode-azext-utils";
+import  { type AggregationType } from "@azure/arm-monitor";
+import  { type EventHandler, type KeyType } from "@azure/arm-webpubsub";
+import  { type ExecuteActivityContext, type IActionContext, type ISubscriptionContext } from "@microsoft/vscode-azext-utils";
 
 
 export interface IPickServiceContext extends IActionContext, ExecuteActivityContext {

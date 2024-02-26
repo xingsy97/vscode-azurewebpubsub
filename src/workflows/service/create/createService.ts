@@ -1,16 +1,18 @@
-import { ResourceSku, WebPubSubManagementClient } from "@azure/arm-webpubsub";
+import  { type ResourceSku} from "@azure/arm-webpubsub";
+import { WebPubSubManagementClient } from "@azure/arm-webpubsub";
 import { LocationListStep, ResourceGroupListStep, VerifyProvidersStep, createAzureClient } from "@microsoft/vscode-azext-azureutils";
-import { AzureWizard, AzureWizardExecuteStep, AzureWizardPromptStep, IActionContext, azureResourceExperience, createSubscriptionContext, subscriptionExperience } from "@microsoft/vscode-azext-utils";
-import { AzureSubscription } from "@microsoft/vscode-azureresources-api";
+import  { type AzureWizardExecuteStep, type AzureWizardPromptStep, type IActionContext} from "@microsoft/vscode-azext-utils";
+import { AzureWizard, azureResourceExperience, createSubscriptionContext, subscriptionExperience } from "@microsoft/vscode-azext-utils";
+import  { type AzureSubscription } from "@microsoft/vscode-azureresources-api";
 import * as vscode from "vscode";
 import { signalrProvider, webPubSubWebProvider } from "../../../constants";
 import { ext } from "../../../extensionVariables";
-import { ServiceItem } from "../../../tree/service/ServiceItem";
+import  { type ServiceItem } from "../../../tree/service/ServiceItem";
 import * as utils from "../../../utils";
 import { createActivityContext } from "../../../utils";
 import { createHubSetting } from "../../hubSetting/create/createHubSetting";
 import { CreateServiceStep } from "./CreateServiceStep";
-import { ICreateServiceContext } from "./ICreateServiceContext";
+import  { type ICreateServiceContext } from "./ICreateServiceContext";
 import { InputSerivceSkuUnitCountStep } from "./InputSerivceSkuUnitCountStep";
 import { InputServiceKindStep } from "./InputServiceKindStep";
 import { InputServiceNameStep } from "./InputServiceNameStep";
@@ -19,7 +21,7 @@ import { InputServiceSkuTierStep } from "./InputServiceSkuTierStep";
 
 export async function createService(context: IActionContext, node?: { subscription: AzureSubscription; }): Promise<void> {
     const tdp = ext.rgApiV2.resources.azureResourceTreeDataProvider;
-    var selectKindContext: any = { ...context, kind: "" };
+    const selectKindContext: any = { ...context, kind: "" };
     const inputServiceKind = new InputServiceKindStep();
     await inputServiceKind.prompt(selectKindContext);
 

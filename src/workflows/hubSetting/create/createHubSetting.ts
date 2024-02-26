@@ -5,20 +5,21 @@
 
 import { WebPubSubManagementClient } from "@azure/arm-webpubsub";
 import { createAzureClient } from "@microsoft/vscode-azext-azureutils";
-import { AzureWizard, IActionContext, createSubscriptionContext } from "@microsoft/vscode-azext-utils";
+import  { type IActionContext} from "@microsoft/vscode-azext-utils";
+import { AzureWizard, createSubscriptionContext } from "@microsoft/vscode-azext-utils";
 import { ext } from "../../../extensionVariables";
 import { HubsItem } from "../../../tree/hub/HubsItem";
 import { pickHubs } from "../../../tree/pickitem/pickHubs";
-import { ServiceItem } from "../../../tree/service/ServiceItem";
+import  { type ServiceItem } from "../../../tree/service/ServiceItem";
 import * as utils from "../../../utils";
 import { createActivityContext, localize } from "../../../utils";
 import { CreateOrUpdateHubSettingStep } from "../common/CreateOrUpdateHubSettingStep";
-import { ICreateOrUpdateHubSettingContext } from "./ICreateEventHandlerContext";
+import  { type ICreateOrUpdateHubSettingContext } from "./ICreateEventHandlerContext";
 import { InputHubSettingStep } from "./InputHubSettingStep";
 
 export async function createHubSetting(context: IActionContext, node?: HubsItem | ServiceItem): Promise<void> {
     node = node ? node : await pickHubs(context);
-    let service: ServiceItem = node instanceof HubsItem ? node.service : node.hubs.service;
+    const service: ServiceItem = node instanceof HubsItem ? node.service : node.hubs.service;
 
     const subContext = createSubscriptionContext(service.subscription);
     const wizardContext: ICreateOrUpdateHubSettingContext = {

@@ -1,4 +1,4 @@
-import { TreeElementBase, TreeItemIconPath } from "@microsoft/vscode-azext-utils";
+import  { type TreeElementBase, type TreeItemIconPath } from "@microsoft/vscode-azext-utils";
 import * as vscode from 'vscode';
 import { ext } from "../../extension.bundle";
 
